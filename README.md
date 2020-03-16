@@ -1,68 +1,46 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Chowk
 
-## Available Scripts
+## Repo - 
+This repo contains the code for the client side application. 
+This app's usage is described in the `setup.md` file.
 
-In the project directory, you can run:
+The server-side application code is [here](https://github.com/gnithin/web-dev-project-server).
 
-### `yarn start`
+## About
+[Chowk](https://www.merriam-webster.com/dictionary/chowk) is an effective open communication Q&A forum for computer science students and staff. The students can post questions, ask for guidance, or help out their peers. The staff can answer questions and moderate the interactions within a course.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Think Piazza/Blackboard with a bit of StackOverflow mixed in, with only the essential features and waay better UI :)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Problems with existing forums
+This forum aims to plug a few problems that students and staff seem to face often - 
+- People asking questions about solved technical problems. A lot of technical questions are mostly resolved in StackOverflow. Repeating the same questions in the forum does not help much. It would be better if the forum itself, pointed out the relevant results before they are asked.
 
-### `yarn test`
+- Complex/Bad categorization of Q&A. Most of the forums have either too many options to answer or too few. The student's answer, instructor's answers, discussion, followup discussion ad infinitum.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Incentive for students to participate. All the burden to answer questions are usually on the staff members (teachers and TAs). There are very few students who participate, out of the goodness of their hearts. There is no incentive for the students to answer questions.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
+This forum tries to solve each of the above problems - 
+- Suggestions from Stackoverflow APIs when the question is being typed in. Most of the answers in any CS student forums contains a link to a Stackoverflow post. This integration will focus on solving the problem posed by the asker, rather than create unnecessary content for the website.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- For Q&A, There will be questions, answers and comments. That's it!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Reputation for Questions, and answers. Each question or an answer can be upvoted or downvoted by the community, and reputation can be gained. Gamification of the forum will allow higher quality content. This can also decrease the pressure on the staff to answer questions from many students at the same time (PDP and Web-dev :p). This can also be used by instructors as a tool to gauge the most helpful students for future positions in their staff. There will also be counter-measures to prevent gaming the reputation system as well.
 
-### `yarn eject`
+## Users
+There will be two types of users - 
+- Students - They can be ask questions, post answers, upvote/downvote posts.
+- Staff - Instructors/TAs who can post questions, post answers, general updates/articles, upvote/downvote posts and moderate content.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## External API
+- StackOverflow search API - https://api.stackexchange.com/docs/advanced-search#order=desc&sort=activity&q=list%20comprehension&filter=default&site=stackoverflow&run=true
+- This can be used as a suggestion, when the user is typing in the query. 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Links
+Github repo -
+https://github.com/gnithin/cs5610-final-project
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Google Docs -
+https://docs.google.com/document/d/1oojN3hU4jctmYicAaoftLO9cSYjgXnuymc3DVqKFb14/edit?usp=sharing
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
