@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 
 class CreateQuestionView extends Component {
     render() {
@@ -8,6 +9,15 @@ class CreateQuestionView extends Component {
             </div>
         );
     }
-}
 
-export default CreateQuestionView;
+
+}
+const stateMapper = () =>{
+console.log("called first")
+    return {}
+}
+const dispatchMapper=(dispatch)=>{
+
+    return {}
+}
+export default connect(stateMapper)(CreateQuestionView);
