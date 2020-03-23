@@ -4,13 +4,16 @@ import NavBarComponent from "../navbar/NavBarComponent";
 import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService'
 import Utils from "../../common/utils";
+const showdown  = require('showdown');
+
+const markdownConvertor = new showdown.Converter();
 
 class CreateQuestionView extends Component {
     state = {
         questionTitle: "",
         questionDescription: "",
         showMessage: false
-    }
+    };
 
     createQuestionMethod = (title, desc) => {
         let dummy = {
@@ -162,11 +165,13 @@ class CreateQuestionView extends Component {
         if (Utils.isEmptyStr(this.state.questionDescription)) {
             return (<React.Fragment/>);
         }
-        // TODO: Markdown
-        let markdown = this.state.questionDescription;
+
+        let markdown = markdownConvertor.makeHtml(this.state.questionDescription);
         return (
-            <div dangerouslySetInnerHTML={{__html: markdown}}>
-            </div>
+            <React.Fragment>
+                <div className="font-weight-bold">Question Preview</div>
+                <div dangerouslySetInnerHTML={{__html: markdown}} />
+            </React.Fragment>
         );
     }
 }
