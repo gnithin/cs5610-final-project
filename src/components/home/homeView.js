@@ -7,6 +7,7 @@ class HomeView extends Component {
     render() {
         return (
            <div>
+               <NavBarComponent />
                Home Component!!!!
              <Link
                  className="btn btn-primary"
