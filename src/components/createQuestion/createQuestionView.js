@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import NavBarComponent from "../navbar/NavBarComponent";
-import {CREATE_QUESTION, createQuestion} from "../../redux/actions/questionActions";
+import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService'
+import Utils from "../../common/utils";
 
 class CreateQuestionView extends Component {
     state = {
@@ -75,6 +76,11 @@ class CreateQuestionView extends Component {
                                               })
 
                             }}/>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <div className="offset-sm-2 col-sm-10">
+                                    {this.renderQuestionPreview()}
                                 </div>
                             </div>
 
@@ -152,6 +158,17 @@ class CreateQuestionView extends Component {
         );
     }
 
+    renderQuestionPreview() {
+        if (Utils.isEmptyStr(this.state.questionDescription)) {
+            return (<React.Fragment/>);
+        }
+        // TODO: Markdown
+        let markdown = this.state.questionDescription;
+        return (
+            <div dangerouslySetInnerHTML={{__html: markdown}}>
+            </div>
+        );
+    }
 }
 
 const stateMapper = (state) => {
