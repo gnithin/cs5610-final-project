@@ -5,23 +5,23 @@ import viewQuestion from "../components/displayQuestionAnswer";
 import Home from "../components/home";
 
 class AppRouter extends Component {
-    
+
     render() {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route
-                        path="/create-question"
-                        component={CreateQuestion}
-                    />
-
                     <Route
                         path="/home"
                         component={Home}
                     />
 
                     <Route
-                        path="/view-question/:questionID"
+                        path="/create/question"
+                        component={CreateQuestion}
+                    />
+
+                    <Route
+                        path="/question/:questionID"
                         component={viewQuestion}
                     />
 
