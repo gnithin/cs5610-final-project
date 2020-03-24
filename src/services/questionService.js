@@ -25,7 +25,23 @@ export const createQuestionService = (data) =>
         }
     });
 
+
+export const getQuestionService = () =>
+    fetch(API_URL + `/api/questions`).then(res => {
+
+        if (res.status === 200) {
+            console.log("inside 200");
+            return res.json()
+        } else {
+            errorMessage.responseCode = res.status;
+            errorMessage.responseData = res;
+
+            return errorMessage
+        }
+    });
+
 export default {
-    createQuestionService
+    createQuestionService,
+    getQuestionService
 }
 
