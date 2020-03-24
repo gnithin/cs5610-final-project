@@ -31,7 +31,7 @@ class HomeView extends Component {
              <Link
                  className="btn btn-primary"
                  title="Create Question"
-                 to={`/create-question`}
+                 to={`/create/question`}
              >
                Create Question
              </Link>
