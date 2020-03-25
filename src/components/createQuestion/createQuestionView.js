@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import NavBarComponent from "../navbar/NavBarComponent";
-import {createQuestion} from "../../redux/actions/questionActions";
-import questionService from '../../services/questionService'
+import {CREATE_QUESTION, createQuestion} from "../../redux/actions/questionActions";
+import questionService from '../../services/questionService';
+import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
 const showdown  = require('showdown');
 
@@ -12,7 +13,8 @@ class CreateQuestionView extends Component {
     state = {
         questionTitle: "",
         questionDescription: "",
-        showMessage: false
+        showMessage: false,
+        relatedQuestions: {items: []}
     };
 
     createQuestionMethod = (title, desc) => {
@@ -24,7 +26,6 @@ class CreateQuestionView extends Component {
         questionService.createQuestionService(dummy).then((res) => {
             console.log(res);
             if (res.status === 1) {
-                console.log("weruyjhtgrfesdsfgfhjkhgfdsa")
                 this.setState({
                                   showMessage: true
                               })
@@ -35,6 +36,23 @@ class CreateQuestionView extends Component {
             }
             this.props.createQuestion(res.data)
         });
+    }
+
+    SOQuery = (data) => {
+        // this.setState({
+        //                   relatedQuestions: {items: []}
+        //               });
+        if(data===""){
+           return;
+        }
+        SO.searchQuestions(data).then((resp) => {
+            console.log(resp);
+            this.setState({
+                              relatedQuestions: resp
+                          })
+        })
+
+        console.log(this.state.relatedQuestions)
     }
 
     render() {
@@ -60,6 +78,10 @@ class CreateQuestionView extends Component {
 
                                            }}
                                            value={this.state.questionTitle}
+                                           onBlur={(e) => {
+                                               this.SOQuery(e.target.value);
+                                               console.log('onblur called')
+                                           }}
                                     />
                                 </div>
                             </div>
@@ -137,23 +159,23 @@ class CreateQuestionView extends Component {
                     </div>
                     <div className={'col-md-4 '}>
                         <br/>
-                        <div className="card" style={{"width": "30rem"}}>
-                            <img src="http://via.placeholder.com/640x360"
-                                 className="card-img-top profileImageSize" alt="..."/>
-                            <div className="card-body">
-                                <h5 className="card-title">User Name</h5>
-                                <p className="card-text">Sample text here </p>
-                            </div>
-                            <ul className="list-group list-group-flush">
-                                <li className="list-group-item">Reputation</li>
-                                <li className="list-group-item">Questions asked</li>
-                                <li className="list-group-item">Questions answered</li>
-                            </ul>
-                            <div className="card-body">
-                                <a href="#" className="card-link">Card link</a>
-                                <a href="#" className="card-link">Another link</a>
-                            </div>
-                        </div>
+                        <h3>Related Questions</h3>
+                        <table className={'table  table-striped table-bordered'}>
+
+                            {this.state.relatedQuestions.items.slice(0, 5).map((item) => {
+                                return (<tr>
+                                    <td key={item.id}>
+                                        {item.title}
+                                    </td>
+                                    <td>
+                                        <a  target={'_blank'} className={'badge badge-pill badge-light'} href={item.link}>
+                                        link
+                                        </a>
+                                    </td>
+                                </tr>)
+                            })}
+
+                        </table>
                     </div>
                 </div>
 
