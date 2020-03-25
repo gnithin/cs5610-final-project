@@ -1,11 +1,29 @@
 import React, {Component} from 'react';
 import './navBarStyle.css'
+import {Link} from "react-router-dom";
 
 class NavBarComponent extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand titleStyle" href="/home">Chowk</a>
+                <div className="navbar-brand titleStyle">
+                    <Link
+                        title="Chowk"
+                        to={`/home`}
+                    >
+                        Chowk
+                    </Link>
+                </div>
+
+                <div className="navbar-nav ml-auto nav-right my-2 my-lg-0">
+                    <Link
+                        className="btn btn-primary"
+                        title="Create Question"
+                        to={`/create/question`}
+                    >
+                        Create Question
+                    </Link>
+                </div>
                 {/*<button className="navbar-toggler" type="button" data-toggle="collapse"*/}
                 {/*        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"*/}
                 {/*        aria-expanded="false" aria-label="Toggle navigation">*/}

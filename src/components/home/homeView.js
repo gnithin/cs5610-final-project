@@ -24,13 +24,6 @@ class HomeView extends Component {
         return (
             <div>
                 <NavBarComponent/>
-                <Link
-                    className="btn btn-primary"
-                    title="Create Question"
-                    to={`/create/question`}
-                >
-                    Create Question
-                </Link>
 
                 <div>
                     <table className="table table-striped vp-cs5610-table-layout">
