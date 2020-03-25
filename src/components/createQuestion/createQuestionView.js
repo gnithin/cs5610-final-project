@@ -3,7 +3,11 @@ import {connect} from "react-redux";
 import NavBarComponent from "../navbar/NavBarComponent";
 import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService';
-import SO from '../../services/stackOverflowService';
+import SO from '../../services/stackOverflowService'
+import Utils from "../../common/utils";
+const showdown  = require('showdown');
+
+const markdownConvertor = new showdown.Converter();
 
 class CreateQuestionView extends Component {
     state = {
@@ -11,7 +15,7 @@ class CreateQuestionView extends Component {
         questionDescription: "",
         showMessage: false,
         relatedQuestions: {items: []}
-    }
+    };
 
     createQuestionMethod = (title, desc) => {
         let dummy = {
@@ -97,6 +101,11 @@ class CreateQuestionView extends Component {
                                               })
 
                             }}/>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <div className="offset-sm-2 col-sm-10">
+                                    {this.renderQuestionPreview()}
                                 </div>
                             </div>
 
@@ -196,6 +205,19 @@ class CreateQuestionView extends Component {
         );
     }
 
+    renderQuestionPreview() {
+        if (Utils.isEmptyStr(this.state.questionDescription)) {
+            return (<React.Fragment/>);
+        }
+
+        let markdown = markdownConvertor.makeHtml(this.state.questionDescription);
+        return (
+            <React.Fragment>
+                <div className="font-weight-bold">Question Preview</div>
+                <div dangerouslySetInnerHTML={{__html: markdown}} />
+            </React.Fragment>
+        );
+    }
 }
 
 const stateMapper = (state) => {
