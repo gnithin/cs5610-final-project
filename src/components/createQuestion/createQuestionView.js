@@ -171,6 +171,7 @@ class CreateQuestionView extends Component {
                                     <td>
                                         <a target={'_blank'}
                                            className={'badge badge-pill badge-light'}
+                                           rel="noopener noreferrer"
                                            href={item.link}>
                                             link
                                         </a>

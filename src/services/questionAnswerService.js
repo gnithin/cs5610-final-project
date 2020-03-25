@@ -1,5 +1,6 @@
 const PROD_URL = "https://web-dev-project-server.herokuapp.com";
-const LOCAL_API_URL = "http://localhost:2000";
+// const LOCAL_API_URL = "http://localhost:2000";
+
 const API_URL = PROD_URL;
 let errorMessage = {
     responseCode: null,
