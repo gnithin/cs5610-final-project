@@ -6,7 +6,7 @@ const initialState = {
 const questionReducer = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_QUESTION:
-            console.log("inside create question reducer",action.questionData)
+            console.log("inside create question reducer", action.questionData)
 
             return {
                 ...state,

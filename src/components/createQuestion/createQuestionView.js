@@ -5,7 +5,8 @@ import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService';
 import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
-const showdown  = require('showdown');
+
+const showdown = require('showdown');
 
 const markdownConvertor = new showdown.Converter();
 
@@ -42,8 +43,8 @@ class CreateQuestionView extends Component {
         // this.setState({
         //                   relatedQuestions: {items: []}
         //               });
-        if(data===""){
-           return;
+        if (data === "") {
+            return;
         }
         SO.searchQuestions(data).then((resp) => {
             console.log(resp);
@@ -168,8 +169,10 @@ class CreateQuestionView extends Component {
                                         {item.title}
                                     </td>
                                     <td>
-                                        <a  target={'_blank'} className={'badge badge-pill badge-light'} href={item.link}>
-                                        link
+                                        <a target={'_blank'}
+                                           className={'badge badge-pill badge-light'}
+                                           href={item.link}>
+                                            link
                                         </a>
                                     </td>
                                 </tr>)
@@ -178,7 +181,7 @@ class CreateQuestionView extends Component {
                         </table>
                     </div>
 
-                  {/*<div className={'col-md-4 '}>
+                    {/*<div className={'col-md-4 '}>
                     <br/>
                     <div className="card" style={{"width": "30rem"}}>
                       <img src="http://via.placeholder.com/640x360"
@@ -214,7 +217,7 @@ class CreateQuestionView extends Component {
         return (
             <React.Fragment>
                 <div className="font-weight-bold">Question Preview</div>
-                <div dangerouslySetInnerHTML={{__html: markdown}} />
+                <div dangerouslySetInnerHTML={{__html: markdown}}/>
             </React.Fragment>
         );
     }

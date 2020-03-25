@@ -25,7 +25,6 @@ export const createQuestionService = (data) =>
         }
     });
 
-
 export const getQuestionService = () =>
     fetch(API_URL + `/api/questions`).then(res => {
 

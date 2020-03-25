@@ -6,8 +6,8 @@ import {connect} from "react-redux";
 import questionService from "../../services/questionService";
 
 class HomeView extends Component {
-    state={
-        questionList:[]
+    state = {
+        questionList: []
     }
 
     componentDidMount() {
@@ -15,39 +15,37 @@ class HomeView extends Component {
         questionService.getQuestionService().then((res) => {
             console.log(res);
             if (res.status === 1) {
-                console.log("asdsad--",res.data)
+                console.log("asdsad--", res.data)
             }
             // this.props.getAllQuestions(res.data)
         });
     }
 
-
     render() {
         return (
-           <div>
-               <NavBarComponent />
-               Home Component!!!!
-             <Link
-                 className="btn btn-primary"
-                 title="Create Question"
-                 to={`/create/question`}
-             >
-               Create Question
-             </Link>
+            <div>
+                <NavBarComponent/>
+                Home Component!!!!
+                <Link
+                    className="btn btn-primary"
+                    title="Create Question"
+                    to={`/create/question`}
+                >
+                    Create Question
+                </Link>
 
-             <Link
-                 className="btn btn-primary"
-                 title="View Question"
-                 to={`/question/2`}
-                 //TO DO: Change Default Path Here
-             >
-               View Question
-             </Link>
-           </div>
+                <Link
+                    className="btn btn-primary"
+                    title="View Question"
+                    to={`/question/2`}
+                    //TO DO: Change Default Path Here
+                >
+                    View Question
+                </Link>
+            </div>
         );
     }
 }
-
 
 const stateMapper = (state) => {
     console.log(state);
@@ -61,9 +59,9 @@ const dispatchMapper = (dispatch) => {
     console.log("DEBUG: stateMapper in getAllQuestions called first");
     return {
         getAllQuestions: () => {
-                dispatch()
+            dispatch()
         }
     }
 
 };
-export default connect(stateMapper,dispatchMapper) (HomeView);
+export default connect(stateMapper, dispatchMapper)(HomeView);

@@ -4,8 +4,6 @@ export const getQuestion = (questionList) => ({
     data: questionList
 })
 
-
-
 export const CREATE_QUESTION = "CREATE_QUESTION"
 export const createQuestion = (question) => ({
     type: CREATE_QUESTION,
