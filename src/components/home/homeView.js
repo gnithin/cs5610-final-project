@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import '../createQuestion/createQuestionView.css'
 import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
-import {createQuestion} from "../../redux/actions/questionActions";
 import {connect} from "react-redux";
 import questionService from "../../services/questionService";
 
@@ -31,9 +30,18 @@ class HomeView extends Component {
              <Link
                  className="btn btn-primary"
                  title="Create Question"
-                 to={`/create-question`}
+                 to={`/create/question`}
              >
                Create Question
+             </Link>
+
+             <Link
+                 className="btn btn-primary"
+                 title="View Question"
+                 to={`/question/2`}
+                 //TO DO: Change Default Path Here
+             >
+               View Question
              </Link>
            </div>
         );
