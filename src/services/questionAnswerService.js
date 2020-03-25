@@ -24,7 +24,7 @@ export const findQuestionDetails = (questionID) =>
 export const createAnswerForQuestion = (answer, questionId) => {
     console.log("DEBUG: Service Answer data", answer);
     console.log("DEBUG: API URL", `${API_URL}/api/answers/question/${questionId}`);
-    return fetch(`${API_URL}/api/answers/question/${questionId}`, {
+    return fetch(`${API_URL}/api/questions/${questionId}/answers`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
