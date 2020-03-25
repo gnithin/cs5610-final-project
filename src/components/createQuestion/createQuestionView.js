@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import NavBarComponent from "../navbar/NavBarComponent";
-import {CREATE_QUESTION, createQuestion} from "../../redux/actions/questionActions";
+import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService';
 import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
@@ -177,6 +177,28 @@ class CreateQuestionView extends Component {
 
                         </table>
                     </div>
+
+                  {/*<div className={'col-md-4 '}>
+                    <br/>
+                    <div className="card" style={{"width": "30rem"}}>
+                      <img src="http://via.placeholder.com/640x360"
+                           className="card-img-top profileImageSize" alt="..."/>
+                      <div className="card-body">
+                        <h5 className="card-title">User Name</h5>
+                        <p className="card-text">Sample text here </p>
+                      </div>
+                      <ul className="list-group list-group-flush">
+                        <li className="list-group-item">Reputation</li>
+                        <li className="list-group-item">Questions asked</li>
+                        <li className="list-group-item">Questions answered</li>
+                      </ul>
+                      <div className="card-body">
+                        <a href="#" className="card-link">Card link</a>
+                        <a href="#" className="card-link">Another link</a>
+                      </div>
+                    </div>
+                  </div>*/}
+
                 </div>
 
             </div>

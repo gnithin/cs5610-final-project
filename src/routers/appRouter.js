@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import CreateQuestion from "../components/createQuestion";
-import viewQuestion from "../components/displayQuestionAnswer";
+import ViewQuestion from "../components/displayQuestionAnswer";
 import Home from "../components/home";
 
 class AppRouter extends Component {
@@ -21,8 +21,9 @@ class AppRouter extends Component {
                     />
 
                     <Route
-                        path="/question/:questionID"
-                        component={viewQuestion}
+                        path="/question/:questionId"
+                        render={(props) => <ViewQuestion {...props} />}
+                        /*component={viewQuestion}*/
                     />
 
                     <Route
