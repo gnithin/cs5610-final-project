@@ -8,16 +8,15 @@ import questionService from "../../services/questionService";
 class HomeView extends Component {
     state = {
         questionList: []
-    }
+    };
 
     componentDidMount() {
-
-        questionService.getQuestionService().then((res) => {
-            console.log(res);
-            if (res.status === 1) {
-                console.log("asdsad--", res.data)
+        questionService.getQuestionService().then((allQuestions) => {
+            if (allQuestions.status === 1) {
+                this.setState({
+                    questionList: allQuestions.data
+                });
             }
-            // this.props.getAllQuestions(res.data)
         });
     }
 
@@ -25,7 +24,6 @@ class HomeView extends Component {
         return (
             <div>
                 <NavBarComponent/>
-                Home Component!!!!
                 <Link
                     className="btn btn-primary"
                     title="Create Question"
@@ -34,14 +32,36 @@ class HomeView extends Component {
                     Create Question
                 </Link>
 
-                <Link
-                    className="btn btn-primary"
-                    title="View Question"
-                    to={`/question/2`}
-                    //TO DO: Change Default Path Here
-                >
-                    View Question
-                </Link>
+                <div>
+                    <table className="table table-striped vp-cs5610-table-layout">
+                        <thead>
+                        <tr>
+                            <th scope="col"
+                                className="pl-5">
+                                Question Title
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.state.questionList
+                            &&
+                            this.state.questionList.map(function (eachQuestion) {
+                                return (
+                                    <tr key={eachQuestion.id}>
+                                        <td className="pl-5 pt-4">
+                                            <Link to={`/question/${eachQuestion.id}`}>
+                                                {eachQuestion.title}
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         );
     }
