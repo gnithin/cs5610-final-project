@@ -28,8 +28,8 @@ class CreateQuestionView extends Component {
             console.log(res);
             if (res.status === 1) {
                 this.setState({
-                                  showMessage: true
-                              })
+                    showMessage: true
+                })
 
                 setTimeout(function () { //Start the timer
                     this.setState({showMessage: false}) //After 1 second, set render to true
@@ -49,8 +49,8 @@ class CreateQuestionView extends Component {
         SO.searchQuestions(data).then((resp) => {
             console.log(resp);
             this.setState({
-                              relatedQuestions: resp
-                          })
+                relatedQuestions: resp
+            })
         })
 
         console.log(this.state.relatedQuestions)
@@ -74,8 +74,8 @@ class CreateQuestionView extends Component {
                                            placeholder="Question Title"
                                            onChange={(e) => {
                                                this.setState({
-                                                                 questionTitle: e.target.value
-                                                             })
+                                                   questionTitle: e.target.value
+                                               })
 
                                            }}
                                            value={this.state.questionTitle}
@@ -98,8 +98,8 @@ class CreateQuestionView extends Component {
 
                             onChange={(e) => {
                                 this.setState({
-                                                  questionDescription: e.target.value
-                                              })
+                                    questionDescription: e.target.value
+                                })
 
                             }}/>
                                 </div>

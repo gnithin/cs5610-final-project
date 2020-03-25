@@ -22,20 +22,20 @@ class displayQuestionAnswerView extends Component {
             if (questionResponse.status === 1) {
                 console.log("DEBUG: Title from response", questionResponse.data.title);
                 this.setState({
-                                  questionId: questionResponse.data.id,
-                                  questionTitle: questionResponse.data.title,
-                                  questionDescription: questionResponse.data.description,
-                                  answersToQuestion: questionResponse.data.answers
-                              });
+                    questionId: questionResponse.data.id,
+                    questionTitle: questionResponse.data.title,
+                    questionDescription: questionResponse.data.description,
+                    answersToQuestion: questionResponse.data.answers
+                });
 
                 SO.searchQuestions(this.state.questionTitle).then((response) => {
                     console.log("DEBUG: SO Data", response);
                     this.setState({
-                                      relatedQuestions: response
-                                  })
+                        relatedQuestions: response
+                    })
                 });
                 console.log("DEBUG: Related Questions are:",
-                            this.state.relatedQuestions);
+                    this.state.relatedQuestions);
 
             } else {
                 this.props.history.push("/");
@@ -51,16 +51,16 @@ class displayQuestionAnswerView extends Component {
             };
             console.log("DEBUG: Answer To Send", answerToSend);
             questionAnswerService.createAnswerForQuestion(answerToSend,
-                                                          questionId).then(responseStatus => {
+                questionId).then(responseStatus => {
                 console.log("DEBUG: Answer Response received", responseStatus.data);
                 if (responseStatus.status === 1) {
                     this.setState({
-                                      answerToPost: "",
-                                      answersToQuestion: [
-                                          {"answer": responseStatus.data.answer},
-                                          ...this.state.answersToQuestion
-                                      ],
-                                  });
+                        answerToPost: "",
+                        answersToQuestion: [
+                            {"answer": responseStatus.data.answer},
+                            ...this.state.answersToQuestion
+                        ],
+                    });
                 }
             })
         }
@@ -110,8 +110,8 @@ class displayQuestionAnswerView extends Component {
                                 value={this.state.answerToPost}
                                 onChange={(event) => {
                                     this.setState({
-                                                      answerToPost: event.target.value
-                                                  })
+                                        answerToPost: event.target.value
+                                    })
                                 }}
                       >
                       </textarea>
