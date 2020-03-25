@@ -31,7 +31,7 @@ class HomeView extends Component {
                         <tr>
                             <th scope="col"
                                 className="pl-5">
-                                Question Title
+                                All Questions
                             </th>
                         </tr>
                         </thead>

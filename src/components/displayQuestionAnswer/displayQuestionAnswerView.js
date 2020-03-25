@@ -127,7 +127,7 @@ class displayQuestionAnswerView extends Component {
                                         this.state.answersToQuestion.map((eachAnswer, index) => {
                                             return (
                                                 <div key={index}>
-                                                    <span>Answer from DB - {eachAnswer.answer}</span>
+                                                    <span>{eachAnswer.answer}</span>
                                                     <div>
                                                         <i className="fas fa-thumbs-up p-5"></i>
                                                         <span>"PLACE: COUNT"</span>
