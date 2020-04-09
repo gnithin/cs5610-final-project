@@ -3,7 +3,8 @@ import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import CreateQuestion from "../components/createQuestion";
 import ViewQuestion from "../components/displayQuestionAnswer";
 import Home from "../components/home";
-
+import Login from "../components/login"
+import Register from "../components/register"
 class AppRouter extends Component {
 
     render() {
@@ -13,6 +14,14 @@ class AppRouter extends Component {
                     <Route
                         path="/home"
                         component={Home}
+                    />
+                    <Route
+                        path="/login"
+                        component={Login}
+                    />
+                    <Route
+                        path="/register"
+                        component={Register}
                     />
 
                     <Route
