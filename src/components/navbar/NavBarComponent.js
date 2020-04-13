@@ -43,8 +43,6 @@ class NavBarComponent extends Component {
                         Logout
                     </button>
 
-
-
                 </div>
                 {/*<button className="navbar-toggler" type="button" data-toggle="collapse"*/}
                 {/*        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"*/}
