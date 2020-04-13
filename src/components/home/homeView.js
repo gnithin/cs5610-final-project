@@ -25,16 +25,15 @@ class HomeView extends Component {
     deleteQuestion = (questionId) => {
         questionAnswerService.deleteQuestion(questionId).then(responseStatus => {
             if (responseStatus.status === 1) {
-                /*this.props.history.push("/");*/
                 console.log('DEBUG: Deleted Question', responseStatus);
+                const updatedQuestionList = this.state.questionList.filter(eachQuestion => eachQuestion.id !== questionId);
+                this.setState({
+                    questionList: updatedQuestionList
+                })
             } else {
                 console.log('DEBUG: cannot Delete Question', responseStatus);
             }
         })
-    };
-
-    testCall = () => {
-        console.log('DEBUG: Test Call in Home');
     };
 
     render() {
@@ -61,7 +60,7 @@ class HomeView extends Component {
                         {
                             this.state.questionList
                             &&
-                            this.state.questionList.map(function (eachQuestion) {
+                            this.state.questionList.map((eachQuestion) => {
                                 return (
                                     <tr key={eachQuestion.id}>
                                         <td className="pl-5 pt-4">
@@ -70,8 +69,7 @@ class HomeView extends Component {
                                             </Link>
                                             <span className={"float-right"}>
                                                 <button className={"btn btn-danger"}
-                                                    /*onClick={() => this.deleteQuestion(eachQuestion.id)}>*/
-                                                        onClick={() => this.testCall()}>
+                                                    onClick={() => this.deleteQuestion(eachQuestion.id)}>
                                                     <i className={"fas fa-trash-alt mr-2"}></i>
                                                     Delete Question
                                                 </button>
