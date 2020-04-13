@@ -1,8 +1,20 @@
 import React, {Component} from 'react';
 import './navBarStyle.css'
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import loginService from '../../services/loginAndRegistrationService'
 
 class NavBarComponent extends Component {
+    logout = () => {
+        loginService.logoutService().then(r => {
+
+        })
+        return (
+            <Redirect to={{
+                pathname: '/login',
+            }}/>
+        );
+    }
+
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,6 +35,14 @@ class NavBarComponent extends Component {
                     >
                         Create Question
                     </Link>
+
+                    <button
+                        className="btn btn-danger ml-3"
+                        onClick={this.logout}
+                    >
+                        Logout
+                    </button>
+
                 </div>
                 {/*<button className="navbar-toggler" type="button" data-toggle="collapse"*/}
                 {/*        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"*/}

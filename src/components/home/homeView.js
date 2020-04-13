@@ -18,6 +18,8 @@ class HomeView extends Component {
                 });
             }
         });
+
+        console.log(this.props.userData)
     }
 
     render() {
@@ -63,7 +65,8 @@ class HomeView extends Component {
 const stateMapper = (state) => {
     console.log(state);
     return {
-        questionList: state.questionList
+        questionList: state.questionList,
+        userData:state.userProfile.userDetails
     }
 
 };
