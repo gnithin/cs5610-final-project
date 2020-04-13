@@ -45,7 +45,11 @@ class AppRouter extends Component {
 
                     <Route
                         path="/question/:questionId"
+
+                        component={ViewQuestion}
+
                         component={authenticateComponent(ViewQuestion)}
+
                     />
 
                     <Route
