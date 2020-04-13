@@ -22,6 +22,9 @@ class HomeView extends Component {
         console.log(this.props.userData)
     }
 
+
+
+
     render() {
         return (
             <div>
