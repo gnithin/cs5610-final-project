@@ -38,8 +38,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/question/:questionId"
-                        render={(props) => <ViewQuestion {...props} />}
-                        /*component={viewQuestion}*/
+                        component={ViewQuestion}
                     />
 
                     <Route

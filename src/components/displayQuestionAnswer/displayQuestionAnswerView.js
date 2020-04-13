@@ -20,7 +20,7 @@ class displayQuestionAnswerView extends Component {
         questionAnswerService.findQuestionDetails(
             this.props.match.params.questionId).then(questionResponse => {
             if (questionResponse.status === 1) {
-                console.log("DEBUG: Title from response", questionResponse.data.title);
+                console.log("DEBUG: questionResponse", questionResponse);
                 this.setState({
                     questionId: questionResponse.data.id,
                     questionTitle: questionResponse.data.title,
@@ -66,10 +66,41 @@ class displayQuestionAnswerView extends Component {
         }
     };
 
+    deleteQuestion = () => {
+        questionAnswerService.deleteQuestion(this.state.questionId).then(responseStatus => {
+            if (responseStatus.status === 1) {
+                this.props.history.push("/");
+                /*console.log('DEBUG: cannot Delete Question',responseStatus);*/
+            } else {
+                console.log('DEBUG: cannot Delete Question', responseStatus);
+            }
+        })
+    };
+
+    deleteAnswer = (answerId) => {
+        questionAnswerService.deleteAnswer(answerId).then(responseStatus => {
+            if (responseStatus.status === 1) {
+                this.props.history.push("/");
+                /*console.log('DEBUG: cannot Delete Question',responseStatus);*/
+            } else {
+                console.log('DEBUG: cannot Delete Answer', responseStatus);
+            }
+        })
+    };
+
     render() {
         return (
             <div className={''}>
                 <NavBarComponent/>
+
+                <div className={"row float-right mt-2 mr-2"}>
+                    <div className={"col"}>
+                        <button className={"btn btn-danger"} onClick={() => this.deleteQuestion()}>
+                            <i className={"fas fa-trash-alt mr-2"}></i>
+                            Delete Question
+                        </button>
+                    </div>
+                </div>
 
                 <div className={'row container-fluid'}>
                     <div className={'col-md-8 '}>
@@ -129,8 +160,13 @@ class displayQuestionAnswerView extends Component {
                                                     <span>{eachAnswer.answer}</span>
                                                     <div>
                                                         <i className="fas fa-thumbs-up p-5"></i>
-                                                        <span></span>
+                                                        <span>{eachAnswer.totalReputation}</span>
                                                         <i className="fas fa-thumbs-down p-5"></i>
+                                                        <button className={"btn btn-danger"}
+                                                                onClick={() => this.deleteAnswer(eachAnswer.id)}>
+                                                            <i className={"fas fa-trash-alt mr-2"}></i>
+                                                            Delete Answer
+                                                        </button>
                                                     </div>
                                                 </div>
                                             );

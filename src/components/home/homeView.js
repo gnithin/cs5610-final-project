@@ -4,7 +4,8 @@ import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import questionService from "../../services/questionService";
-import homeImage from "./logo.png";
+// import homeImage from "./logo.png";
+import questionAnswerService from "../../services/questionAnswerService";
 
 class HomeView extends Component {
     state = {
@@ -20,6 +21,21 @@ class HomeView extends Component {
             }
         });
     }
+
+    deleteQuestion = (questionId) => {
+        questionAnswerService.deleteQuestion(questionId).then(responseStatus => {
+            if (responseStatus.status === 1) {
+                /*this.props.history.push("/");*/
+                console.log('DEBUG: Deleted Question', responseStatus);
+            } else {
+                console.log('DEBUG: cannot Delete Question', responseStatus);
+            }
+        })
+    };
+
+    testCall = () => {
+        console.log('DEBUG: Test Call in Home');
+    };
 
     render() {
         return (
@@ -52,6 +68,14 @@ class HomeView extends Component {
                                             <Link to={`/question/${eachQuestion.id}`}>
                                                 {eachQuestion.title}
                                             </Link>
+                                            <span className={"float-right"}>
+                                                <button className={"btn btn-danger"}
+                                                    /*onClick={() => this.deleteQuestion(eachQuestion.id)}>*/
+                                                        onClick={() => this.testCall()}>
+                                                    <i className={"fas fa-trash-alt mr-2"}></i>
+                                                    Delete Question
+                                                </button>
+                                            </span>
                                         </td>
                                     </tr>
                                 )
