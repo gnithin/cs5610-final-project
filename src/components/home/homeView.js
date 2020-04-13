@@ -4,6 +4,7 @@ import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import questionService from "../../services/questionService";
+import homeImage from "./logo.png";
 
 class HomeView extends Component {
     state = {
@@ -24,6 +25,11 @@ class HomeView extends Component {
         return (
             <div>
                 <NavBarComponent/>
+
+                <div className="text-center mt-3 mb-2">
+                    <Link className={"btn btn-success"} to={"login"}>Login</Link>
+                    <Link className={"btn btn-primary ml-5"} to={"register"}>Register</Link>
+                </div>
 
                 <div>
                     <table className="table table-striped vp-cs5610-table-layout">
@@ -54,6 +60,16 @@ class HomeView extends Component {
                         </tbody>
                     </table>
                 </div>
+
+                {/*<div className="text-center">
+                    <img src={homeImage}
+                         className={"rounded mx-auto d-block pt-5"}
+                         alt={"Chowk"}/>
+                </div>
+                <div className="text-center mt-5">
+                    <Link className={"btn btn-success"} to={"login"}>Login</Link>
+                    <Link className={"btn btn-primary ml-5"} to={"register"}>Register</Link>
+                </div>*/}
 
             </div>
         );

@@ -13,15 +13,29 @@ class NavBarComponent extends Component {
                     >
                         Chowk
                     </Link>
+                    <Link
+                        className={"ml-5"}
+                        title="Profile"
+                        to={`/profile/:userId`}
+                    >
+                        Profile
+                    </Link>
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right my-2 my-lg-0">
                     <Link
-                        className="btn btn-primary"
+                        className="btn btn-primary ml-3"
                         title="Create Question"
                         to={`/create/question`}
                     >
                         Create Question
+                    </Link>
+                    <Link
+                        className="btn btn-danger ml-3"
+                        title="Create Question"
+                        to={`/`}
+                    >
+                        Logout
                     </Link>
                 </div>
                 {/*<button className="navbar-toggler" type="button" data-toggle="collapse"*/}
