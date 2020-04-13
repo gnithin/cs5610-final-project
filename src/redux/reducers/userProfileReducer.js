@@ -1,3 +1,4 @@
+
 import {GET_PROFILE_DATA, SET_USER_DATA, SET_IS_LOGGEDIN} from "../actions/userProfileActions";
 
 const initialState = {
@@ -30,6 +31,7 @@ const userProfileReducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: action.data
             }
+
 
         default:
             return state;

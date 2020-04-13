@@ -1,13 +1,16 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
+
 import loginService from '../services/loginAndRegistrationService'
 import userAction from "../redux/actions/userProfileActions";
 import utils from "../common/utils";
 
+
 const authenticateComponent = (WrappedComponent) => {
     const AuthComponent = (props) => {
         // TODO: Add logic to check for login here, and remove this constant
+
         // console.log(Object.keys(props.userData).length)
         if (utils.isNull(props.isLoggedIn)) {
 
@@ -27,6 +30,7 @@ const authenticateComponent = (WrappedComponent) => {
         // const IS_LOGGED_IN = props.isLoggedIn;
 
         if (false === props.isLoggedIn) {
+
             return (
                 <Redirect to={{
                     pathname: '/login',
@@ -35,13 +39,16 @@ const authenticateComponent = (WrappedComponent) => {
         }
 
 
+
             return (
                 <WrappedComponent {...props}/>
             );
+
     };
 
     // TODO: Add redux state
     const reduxToComponentMapper = (state) => {
+
         console.log(state)
         return {
             isLoggedIn: state.userProfile.isLoggedIn
@@ -59,6 +66,7 @@ const authenticateComponent = (WrappedComponent) => {
 
     // Whatever redux connection needs to be done can be added here.
     return connect(reduxToComponentMapper, dispatchMapper)(AuthComponent);
+
 };
 
 export default authenticateComponent;
