@@ -5,7 +5,11 @@ import ViewQuestion from "../components/displayQuestionAnswer";
 import Home from "../components/home";
 import Login from "../components/login"
 import Register from "../components/register"
+
 import Profile from "../components/profile"
+
+import authenticateComponent from "./authenticateComponent";
+
 class AppRouter extends Component {
 
     render() {
@@ -13,32 +17,39 @@ class AppRouter extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route
-                        path="/home"
-                        component={Home}
+                        path="/register"
+                        component={Register}
                     />
+
                     <Route
                         path="/login"
                         component={Login}
                     />
+
 
                     <Route
                         path="/profile/:userId"
                         component={Profile}
                     />
 
+
                     <Route
-                        path="/register"
-                        component={Register}
+                        path="/home"
+                        component={authenticateComponent(Home)}
                     />
 
                     <Route
                         path="/create/question"
-                        component={CreateQuestion}
+                        component={authenticateComponent(CreateQuestion)}
                     />
 
                     <Route
                         path="/question/:questionId"
+
                         component={ViewQuestion}
+
+                        component={authenticateComponent(ViewQuestion)}
+
                     />
 
                     <Route
