@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import './registerStyle.css'
 import registerService from "../../services/loginAndRegistrationService";
+import userAction from "../../redux/actions/userProfileActions";
 
 class RegisterView extends Component {
     state = {
@@ -24,14 +25,24 @@ class RegisterView extends Component {
             "email": this.state.email,
             "password": this.state.password,
             "name": this.state.firstName + " " + this.state.lastName
-        };
-        registerService.registerService(obj).then(response => {
-                if (response.status === 1) {
-                    setTimeout(function () { //Start the timer
-                        this.setState({showMessage: false}) //After 1 second, set render to true
-                    }.bind(this), 2000)
-                    console.log(response)
+
+        }
+        registerService.registerService(obj).then(r => {
+                console.log(r)
+                if (r.status === 1) {
+                    this.props.setUserData(r.data);
+                    registerService.loginService({
+                        email: this.state.email,
+                        password: this.state.password
+                    }).then(r => {
+                        this.props.history.push('/home');
+                    })
                 }
+                // setTimeout(function () { //Start the timer
+                //     this.setState({showMessage: false}) //After 1 second, set render to true
+                // }.bind(this), 2000)
+                console.log(r)
+
             }
         )
     };
@@ -92,6 +103,9 @@ const dispatchMapper = (dispatch) => {
     return {
         getAllQuestions: () => {
             dispatch()
+        },
+        setUserData: (data) => {
+            dispatch(userAction.setUserData(data))
         }
     }
 
