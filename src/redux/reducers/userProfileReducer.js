@@ -1,6 +1,10 @@
-import {GET_PROFILE_DATA} from "../actions/userProfileActions";
+
+import {GET_PROFILE_DATA, SET_USER_DATA, SET_IS_LOGGEDIN} from "../actions/userProfileActions";
 
 const initialState = {
+    userDetails: {},
+    isAdmin: false,
+    isLoggedIn:null,
     userProfileData: {}
 };
 const userProfileReducer = (state = initialState, action) => {
@@ -12,6 +16,22 @@ const userProfileReducer = (state = initialState, action) => {
                 ...state,
                 userProfileData: action.userProfileData
             };
+
+        case SET_USER_DATA:
+            console.log('DEBUG: GET_USER_DATA Reducer');
+
+            return {
+                ...state,
+                isAdmin: action.data.isAdmin,
+                isLoggedIn:true,
+                userDetails: action.data
+            };
+        case SET_IS_LOGGEDIN:
+            return {
+                ...state,
+                isLoggedIn: action.data
+            }
+
 
         default:
             return state;
