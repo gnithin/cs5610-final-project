@@ -3,6 +3,8 @@ import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import profileService from "../../services/profileService";
+import loginService from "../../services/loginAndRegistrationService";
+import userAction from "../../redux/actions/userProfileActions";
 
 class ProfileView extends Component {
     state = {
@@ -10,14 +12,22 @@ class ProfileView extends Component {
     };
 
     componentDidMount() {
-        profileService.getUserProfileData().then(
+        loginService.currentLoggedInService().then(response => {
+            if (response.status === 1) {
+                this.props.setIsLogin(true, response.data);
+            } else {
+                this.props.setIsLogin(false, {});
+            }
+        });
+
+        profileService.getUserProfileData(this.props.match.params.userId).then(
             userProfileData => {
                 if (userProfileData.status === 1) {
                     this.setState({
                         userProfileData: userProfileData.data
                     });
                 } else {
-                    this.props.history.push("/profile/:userId");
+                    this.props.history.push("/home");
                 }
             }
         );
@@ -40,19 +50,23 @@ class ProfileView extends Component {
                             </div>
 
                             <div className={"mt-4"}>
-                                <div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="username"
-                                               className="col-form-label">Username</label>
+                                {
+                                    typeof (this.state.userProfileData.name) !== "undefined"
+                                    &&
+                                    <div className="row form-group">
+                                        <div className="col-12">
+                                            <label htmlFor="name"
+                                                   className="col-form-label">Name</label>
+                                        </div>
+                                        <div className="col-12">
+                                            <input type="text"
+                                                   className="form-control"
+                                                   id="name"
+                                                   placeholder="Name - E.g. John Doe, Jane Doe"
+                                                   value={this.state.userProfileData.name} disabled/>
+                                        </div>
                                     </div>
-                                    <div className="col-12">
-                                        <input type="text"
-                                               className="form-control"
-                                               id="username"
-                                               placeholder="username - E.g. johndoe, janedoe"
-                                               value={this.state.userProfileData.name} disabled/>
-                                    </div>
-                                </div>
+                                }
 
                                 <div className="row form-group">
                                     <div className="col-12">
@@ -78,56 +92,58 @@ class ProfileView extends Component {
                                     </div>
                                 </div>
 
-                                {/*<div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="phone"
-                                               className="col-form-label">Phone</label>
+                                {
+                                    typeof (this.state.userProfileData.email) !== "undefined"
+                                    &&
+                                    <div className="row form-group">
+                                        <div className="col-12">
+                                            <label htmlFor="email"
+                                                   className="col-form-label">Email</label>
+                                        </div>
+                                        <div className="col-12">
+                                            <input type="email"
+                                                   className="form-control"
+                                                   id="email" autoComplete="off"
+                                                   value={this.state.userProfileData.email} disabled/>
+                                        </div>
                                     </div>
-                                    <div className="col-12">
-                                        <input type="text"
-                                               className="form-control" placeholder="(123) 456-7890"
-                                               id="phone" autoComplete="off" value="(123) 456-7890" required/>
-                                    </div>
-                                </div>*/}
+                                }
 
-                                <div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="email"
-                                               className="col-form-label">Email</label>
+                                {
+                                    typeof (this.state.userProfileData.totalReputation) !== "undefined"
+                                    &&
+                                    <div className="row form-group">
+                                        <div className="col-12">
+                                            <label htmlFor="reputation"
+                                                   className="col-form-label">Reputation</label>
+                                        </div>
+                                        <div className="col-12">
+                                            <input type="text"
+                                                   className="form-control"
+                                                   id="reputation" autoComplete="off"
+                                                   value={this.state.userProfileData.totalReputation} disabled/>
+                                        </div>
                                     </div>
-                                    <div className="col-12">
-                                        <input type="email"
-                                               className="form-control"
-                                               id="email" autoComplete="off" value={this.state.userProfileData.email}/>
-                                    </div>
-                                </div>
+                                }
 
-                                {/*<div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="birth-date"
-                                               className="col-form-label">Date of Birth</label>
+                                {
+                                    typeof (this.state.userProfileData.isAdmin) !== "undefined"
+                                    &&
+                                    <div className="row form-group">
+                                        <div className="col-12">
+                                            <label htmlFor="user-role"
+                                                   className="col-form-label">Role</label>
+                                        </div>
+                                        <div className="col-12">
+                                            <input type="user-role"
+                                                   className="form-control"
+                                                   id="user-role"
+                                                   placeholder="User Role"
+                                                   value={`${this.state.userProfileData.isAdmin ? "Admin" : "User"}`}
+                                                   disabled/>
+                                        </div>
                                     </div>
-                                    <div className="col-12">
-                                        <input type="date"
-                                               className="form-control"
-                                               id="birth-date" value="0001-01-01" autoComplete="off" required/>
-                                    </div>
-                                </div>*/}
-
-                                <div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="user-role"
-                                               className="col-form-label">Role</label>
-                                    </div>
-                                    <div className="col-12">
-                                        <input type="user-role"
-                                               className="form-control"
-                                               id="user-role"
-                                               placeholder="User Role"
-                                               value={`${this.state.userProfileData.isAdmin ? "Admin" : "User"}`}
-                                               disabled/>
-                                    </div>
-                                </div>
+                                }
 
                                 <div className="row">
                                     <div className="col form-group">
@@ -160,7 +176,7 @@ class ProfileView extends Component {
                                                     this.state.userProfileData.questions.map((eachQuestion, index) => {
                                                         if (index < 6) {
                                                             return (
-                                                                <tr>
+                                                                <tr key={index}>
                                                                     <td className="pl-5 pt-4">
                                                                         <Link to={`/profile/:userId`}>
                                                                             {eachQuestion.title}
@@ -175,23 +191,23 @@ class ProfileView extends Component {
                                                 </tbody>
                                             }
                                             {
-                                                !this.state.userProfileData.questions
+                                                (typeof (this.state.userProfileData.questions) === "undefined" || this.state.userProfileData.questions.length <= 0)
                                                 &&
                                                 <tbody>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 </tbody>
                                             }
@@ -217,7 +233,7 @@ class ProfileView extends Component {
                                                     this.state.userProfileData.answers.map((eachAnswer, index) => {
                                                         if (index < 6) {
                                                             return (
-                                                                <tr>
+                                                                <tr key={index}>
                                                                     <td className="pl-5 pt-4">
                                                                         <Link to={`/profile/:userId`}>
                                                                             {eachAnswer.answer}
@@ -232,23 +248,23 @@ class ProfileView extends Component {
                                                 </tbody>
                                             }
                                             {
-                                                !this.state.userProfileData.answers
+                                                (typeof (this.state.userProfileData.answers) === "undefined" || this.state.userProfileData.answers.length <= 0)
                                                 &&
                                                 <tbody>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 <tr>
-                                                    <td className="pl-5 pt-4"></td>
+                                                    <td className="pl-5 pt-4"/>
                                                 </tr>
                                                 </tbody>
                                             }
@@ -266,7 +282,6 @@ class ProfileView extends Component {
 }
 
 const stateMapper = (state) => {
-    console.log('DEBUG: profileView State', state);
     return {
         userProfileData: state.userProfile.userProfileData
     }
@@ -274,7 +289,11 @@ const stateMapper = (state) => {
 };
 
 const dispatchMapper = (dispatch) => {
-    return {}
+    return {
+        setIsLogin: (loginStatus, userData) => {
+            dispatch(userAction.setIsLogin(loginStatus, userData))
+        }
+    }
 
 };
 export default connect(stateMapper, dispatchMapper)(ProfileView);

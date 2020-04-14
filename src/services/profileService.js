@@ -7,13 +7,15 @@ let errorMessage = {
     responseData: {}
 };
 
-export const getUserProfileData = () =>
-    fetch(`${API_URL}/details/32`).then(
+export const getUserProfileData = (userId) =>
+    fetch(`${API_URL}/details/${userId}`, {
+        credentials: 'include'
+    }).then(
         response => {
             if (response.ok) {
-                console.log("DEBUG: Response 200");
                 return response.json();
             } else {
+                console.log('DEBUG: Error getting profile data');
                 errorMessage.responseCode = response.status;
                 errorMessage.responseData = response;
 
