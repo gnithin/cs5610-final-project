@@ -27,7 +27,8 @@ export const createAnswerForQuestion = (answer, questionId) => {
         headers: {
             'content-type': 'application/json'
         },
-        body: JSON.stringify(answer)
+        body: JSON.stringify(answer),
+        credentials: 'include'
     }).then(
         response => {
             if (response.status === 200) {
@@ -44,7 +45,8 @@ export const createAnswerForQuestion = (answer, questionId) => {
 
 const deleteQuestion = (questionId) => {
     return fetch(`${API_URL}/api/questions/${questionId}`,{
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
     }).then(
         response => {
             if (response.ok) {
@@ -61,7 +63,8 @@ const deleteQuestion = (questionId) => {
 
 const deleteAnswer = (answerId) => {
     return fetch(`${API_URL}/api/answers/${answerId}`,{
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
     }).then(
         response => {
             if (response.ok) {

@@ -80,8 +80,10 @@ class displayQuestionAnswerView extends Component {
     deleteAnswer = (answerId) => {
         questionAnswerService.deleteAnswer(answerId).then(responseStatus => {
             if (responseStatus.status === 1) {
-                this.props.history.push("/");
-                /*console.log('DEBUG: cannot Delete Question',responseStatus);*/
+                let newAnswerArray = this.state.answersToQuestion.filter(eachAnswer => eachAnswer.id !== answerId);
+                this.setState({
+                    answersToQuestion: newAnswerArray
+                })
             } else {
                 console.log('DEBUG: cannot Delete Answer', responseStatus);
             }
@@ -93,14 +95,18 @@ class displayQuestionAnswerView extends Component {
             <div className={''}>
                 <NavBarComponent/>
 
-                <div className={"row float-right mt-2 mr-2"}>
-                    <div className={"col"}>
-                        <button className={"btn btn-danger"} onClick={() => this.deleteQuestion()}>
-                            <i className={"fas fa-trash-alt mr-2"}></i>
-                            Delete Question
-                        </button>
+                {
+                    this.props.isAdmin
+                    &&
+                    <div className={"row float-right mt-2 mr-2"}>
+                        <div className={"col"}>
+                            <button className={"btn btn-danger"} onClick={() => this.deleteQuestion()}>
+                                <i className={"fas fa-trash-alt mr-2"}/>
+                                Delete Question
+                            </button>
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div className={'row container-fluid'}>
                     <div className={'col-md-8 '}>
@@ -135,16 +141,15 @@ class displayQuestionAnswerView extends Component {
                                 <div className="col-sm-10">
 
                                     <div className={'mb-4'}>
-                      <textarea className={'form-control mb-4'}
-                                rows={'4'}
-                                value={this.state.answerToPost}
-                                onChange={(event) => {
-                                    this.setState({
-                                        answerToPost: event.target.value
-                                    })
-                                }}
-                      >
-                      </textarea>
+                                        <textarea className={'form-control mb-4'}
+                                                  rows={'4'}
+                                                  value={this.state.answerToPost}
+                                                  onChange={(event) => {
+                                                      this.setState({
+                                                          answerToPost: event.target.value
+                                                      })
+                                                  }}>
+                                        </textarea>
                                         <button className={'btn btn-success'}
                                                 onClick={() => this.createAnswerToQuestion(
                                                     this.state.answerToPost,
@@ -159,14 +164,18 @@ class displayQuestionAnswerView extends Component {
                                                 <div key={index}>
                                                     <span>{eachAnswer.answer}</span>
                                                     <div>
-                                                        <i className="fas fa-thumbs-up p-5"></i>
+                                                        <i className="fas fa-thumbs-up p-5"/>
                                                         <span>{eachAnswer.totalReputation}</span>
-                                                        <i className="fas fa-thumbs-down p-5"></i>
-                                                        <button className={"btn btn-danger"}
-                                                                onClick={() => this.deleteAnswer(eachAnswer.id)}>
-                                                            <i className={"fas fa-trash-alt mr-2"}></i>
-                                                            Delete Answer
-                                                        </button>
+                                                        <i className="fas fa-thumbs-down p-5"/>
+                                                        {
+                                                            this.props.isAdmin
+                                                            &&
+                                                            <button className={"btn btn-danger"}
+                                                                    onClick={() => this.deleteAnswer(eachAnswer.id)}>
+                                                                <i className={"fas fa-trash-alt mr-2"}/>
+                                                                Delete Answer
+                                                            </button>
+                                                        }
                                                     </div>
                                                 </div>
                                             );
@@ -221,9 +230,11 @@ class displayQuestionAnswerView extends Component {
 
 }
 
-const stateMapper = () => {
-    console.log("DEBUG: stateMapper in CreateQuestionView called first")
-    return {}
+const stateMapper = (state) => {
+    console.log('DEBUG: isAdmin state',state.userProfile.isAdmin);
+    return {
+        isAdmin: state.userProfile.isAdmin
+    }
 };
 
 /*const dispatchMapper = (dispatch) => {

@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import '../createQuestion/createQuestionView.css'
 import NavBarComponent from "../navbar/NavBarComponent";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import loginService from "../../services/loginAndRegistrationService";
 import './loginStyle.css'
-import {Redirect} from 'react-router-dom'
 import userAction from '../../redux/actions/userProfileActions'
 
 class LoginView extends Component {
     state = {
         email: "",
-        password: ""
+        password: "",
+        redirectURL: "/home"
     };
 
     componentDidMount() {
@@ -19,26 +19,31 @@ class LoginView extends Component {
     }
 
     loginMethod = () => {
-        console.log(this.state.email, ' ', this.state.password)
         let obj = {
             "email": this.state.email,
             "password": this.state.password
-        }
-        loginService.loginService(obj).then(r => {
-                console.log(r)
-                if (r.status === 1) {
+        };
+        loginService.loginService(obj).then(response => {
+                if (response.status === 1) {
 
-                    this.props.setUserData(r.data)
+                    this.props.setUserData(response.data)
                     this.props.history.push('/home');
                 }
             }
         )
-    }
+    };
 
     render() {
         return (
             <div>
-                {/*<NavBarComponent/>*/}
+                {
+                    this.props.isLoggedIn
+                    &&
+                    <span>
+                        <Redirect to={this.state.redirectURL}/>
+                    </span>
+                }
+                <NavBarComponent/>
 
                 <div id="logreg-forms">
                     <br/>
@@ -61,7 +66,7 @@ class LoginView extends Component {
                         <button className="btn btn-success btn-block" type="submit" onClick={this.loginMethod}><i
                             className="fas fa-sign-in-alt"/> Sign in
                         </button>
-                        <a href="#" id="forgot_pswd">Forgot password?</a><br/>
+                        <Link to={"/login"} id="forgot_pswd">Forgot password?</Link><br/>
                         <hr/>
                         <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link
                             to={'/register'}><i
@@ -79,15 +84,12 @@ class LoginView extends Component {
 }
 
 const stateMapper = (state) => {
-    console.log(state);
     return {
-
+        isLoggedIn: state.userProfile.isLoggedIn
     }
-
 };
 
 const dispatchMapper = (dispatch) => {
-    console.log("DEBUG: stateMapper in getAllQuestions called first");
     return {
         getAllQuestions: () => {
             dispatch()

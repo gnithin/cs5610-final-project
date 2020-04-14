@@ -16,9 +16,10 @@ const setUserData = (data) => ({
 });
 
 
-const setIsLogin = (data) => ({
+const setIsLogin = (loginStatus, userData) => ({
     type: SET_IS_LOGGEDIN,
-    data: data
+    loginStatus: loginStatus,
+    userData: userData
 });
 
 const resetLoginStatus = () => ({
@@ -28,5 +29,6 @@ const resetLoginStatus = () => ({
 export default {
     getProfileData,
     setUserData,
-    setIsLogin
+    setIsLogin,
+    resetLoginStatus
 }
