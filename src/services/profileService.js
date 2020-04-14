@@ -8,7 +8,7 @@ let errorMessage = {
 };
 
 export const getUserProfileData = () =>
-    fetch(`${API_URL}/details`).then(
+    fetch(`${API_URL}/details/32`).then(
         response => {
             if (response.ok) {
                 console.log("DEBUG: Response 200");

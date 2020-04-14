@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import '../createQuestion/createQuestionView.css'
-import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import questionService from "../../services/questionService";
 import './registerStyle.css'
 import registerService from "../../services/loginAndRegistrationService";
 
@@ -14,7 +12,7 @@ class RegisterView extends Component {
         email: "",
         password: "",
         showMessage: false,
-        validationMessage:""
+        validationMessage: ""
     };
 
     componentDidMount() {
@@ -26,19 +24,17 @@ class RegisterView extends Component {
             "email": this.state.email,
             "password": this.state.password,
             "name": this.state.firstName + " " + this.state.lastName
-        }
-        registerService.registerService(obj).then(r => {
-
-            if(r.status!=1){
-                
-            }
-                setTimeout(function () { //Start the timer
-                    this.setState({showMessage: false}) //After 1 second, set render to true
-                }.bind(this), 2000)
-            console.log(r)
+        };
+        registerService.registerService(obj).then(response => {
+                if (response.status === 1) {
+                    setTimeout(function () { //Start the timer
+                        this.setState({showMessage: false}) //After 1 second, set render to true
+                    }.bind(this), 2000)
+                    console.log(response)
+                }
             }
         )
-    }
+    };
 
     render() {
         return (

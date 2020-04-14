@@ -1,4 +1,4 @@
-import React, {Component, Profiler} from 'react';
+import React, {Component} from 'react';
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import CreateQuestion from "../components/createQuestion";
 import ViewQuestion from "../components/displayQuestionAnswer";
@@ -45,9 +45,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/question/:questionId"
-
-                        component={ViewQuestion}
-
+                        // component={ViewQuestion}
                         component={authenticateComponent(ViewQuestion)}
 
                     />

@@ -13,11 +13,11 @@ export const createQuestionService = (data) =>
         body: JSON.stringify(data),
         headers: {
             'content-type': 'application/json'
-        }
+        },
+        credentials: 'include'
     }).then(res => {
 
         if (res.status === 200) {
-            console.log("inside 200");
             return res.json()
         } else {
             errorMessage.responseCode = res.status;
@@ -31,7 +31,6 @@ export const getQuestionService = () =>
     fetch(API_URL + `/api/questions`).then(res => {
 
         if (res.status === 200) {
-            console.log("inside 200");
             return res.json()
         } else {
             errorMessage.responseCode = res.status;

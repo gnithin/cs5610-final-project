@@ -1,5 +1,5 @@
 const PROD_URL = "https://web-dev-project-server.herokuapp.com";
-const LOCAL_API_URL = "http://10.0.0.138:2000";
+// const LOCAL_API_URL = "http://10.0.0.138:2000";
 
 const API_URL = PROD_URL;
 let errorMessage = {
@@ -16,16 +16,14 @@ export const loginService = (data) =>
             'content-type': 'application/json'
         }
     }).then(res => {
-        return res.json()
-        // if (res.status === 200) {
-        //     console.log("inside 200");
-        //     return res.json()
-        // } else {
-        //     errorMessage.responseCode = res.status;
-        //     errorMessage.responseData = res;
-        //
-        //     return errorMessage
-        // }
+        if (res.ok) {
+            return res.json()
+        } else {
+            errorMessage.responseCode = res.status;
+            errorMessage.responseData = res;
+
+            return errorMessage
+        }
     });
 
 
@@ -38,17 +36,14 @@ export const registerService = (data) =>
             'content-type': 'application/json'
         }
     }).then(res => {
+        if (res.status === 200) {
+            return res.json()
+        } else {
+            errorMessage.responseCode = res.status;
+            errorMessage.responseData = res;
 
-        // if (res.status === 200) {
-        //     console.log("inside 200");
-        //     return res.json()
-        // } else {
-        //     errorMessage.responseCode = res.status;
-        //     errorMessage.responseData = res;
-        //
-        //     return errorMessage
-        // }
-        return res.json()
+            return errorMessage
+        }
     });
 
 
@@ -60,16 +55,14 @@ export const logoutService = () =>
             'content-type': 'application/json'
         }
     }).then(res => {
-        return res.json()
-        // if (res.status === 200) {
-        //     console.log("inside 200");
-        //     return res.json()
-        // } else {
-        //     errorMessage.responseCode = res.status;
-        //     errorMessage.responseData = res;
-        //
-        //     return errorMessage
-        // }
+        if (res.status === 200) {
+            return res.json()
+        } else {
+            errorMessage.responseCode = res.status;
+            errorMessage.responseData = res;
+
+            return errorMessage
+        }
     });
 
 export const currentLoggedInService = () =>
@@ -80,16 +73,14 @@ export const currentLoggedInService = () =>
             'content-type': 'application/json'
         }
     }).then(res => {
-        return res.json()
-        // if (res.status === 200) {
-        //     console.log("inside 200");
-        //     return res.json()
-        // } else {
-        //     errorMessage.responseCode = res.status;
-        //     errorMessage.responseData = res;
-        //
-        //     return errorMessage
-        // }
+        if (res.status === 200) {
+            return res.json()
+        } else {
+            errorMessage.responseCode = res.status;
+            errorMessage.responseData = res;
+
+            return errorMessage
+        }
     });
 
 
