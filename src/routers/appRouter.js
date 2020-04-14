@@ -29,7 +29,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/profile/:userId"
-                        component={Profile}
+                        component={authenticateComponent(Profile)}
                     />
 
 
