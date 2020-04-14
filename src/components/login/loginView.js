@@ -3,21 +3,36 @@ import '../createQuestion/createQuestionView.css'
 import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import questionService from "../../services/questionService";
+import loginService from "../../services/loginAndRegistrationService";
 import './loginStyle.css'
+import {Redirect} from 'react-router-dom'
+import userAction from '../../redux/actions/userProfileActions'
+
 class LoginView extends Component {
     state = {
-        questionList: []
+        email: "",
+        password: ""
     };
 
     componentDidMount() {
-        questionService.getQuestionService().then((allQuestions) => {
-            if (allQuestions.status === 1) {
-                this.setState({
-                    questionList: allQuestions.data
-                });
+
+    }
+
+    loginMethod = () => {
+        console.log(this.state.email, ' ', this.state.password)
+        let obj = {
+            "email": this.state.email,
+            "password": this.state.password
+        }
+        loginService.loginService(obj).then(r => {
+                console.log(r)
+                if (r.status === 1) {
+
+                    this.props.setUserData(r.data)
+                    this.props.history.push('/home');
+                }
             }
-        });
+        )
     }
 
     render() {
@@ -26,57 +41,35 @@ class LoginView extends Component {
                 {/*<NavBarComponent/>*/}
 
                 <div id="logreg-forms">
-                    <form className="form-signin">
-                        <h1 className="h3 mb-3 font-weight-normal" style={{'text-align':'center'}}> Sign in</h1>
+                    <br/>
+                    <div className="form-signin container">
+                        <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign in</h1>
 
                         <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                               required="" autoFocus=""/>
-                            <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                                   required=""/>
+                               required="" autoFocus="" onChange={(e) => {
+                            this.setState({
+                                email: e.target.value
+                            })
+                        }}/>
+                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"
+                               required="" onChange={(e) => {
+                            this.setState({
+                                password: e.target.value
+                            })
+                        }}/>
 
-                                <button className="btn btn-success btn-block" type="submit"><i
-                                    className="fas fa-sign-in-alt"/> Sign in
-                                </button>
-                                <a href="#" id="forgot_pswd">Forgot password?</a><br/>
-                                <hr/>
-                                    <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link to={'/register'}><i
-                                        className="fas fa-user-plus"/> Sign up New Account</Link>
-                                    </button>
-                    </form>
+                        <button className="btn btn-success btn-block" type="submit" onClick={this.loginMethod}><i
+                            className="fas fa-sign-in-alt"/> Sign in
+                        </button>
+                        <a href="#" id="forgot_pswd">Forgot password?</a><br/>
+                        <hr/>
+                        <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link
+                            to={'/register'}><i
+                            className="fas fa-user-plus"/> Sign up New Account</Link>
+                        </button>
+                    </div>
 
-                    <form action="/reset/password/" className="form-reset">
-                        <input type="email" id="resetEmail" className="form-control" placeholder="Email address"
-                               required="" autoFocus=""/>
-                            <button className="btn btn-primary btn-block" type="submit">Reset Password</button>
-                            <a href="#" id="cancel_reset"><i className="fas fa-angle-left"/> Back</a>
-                    </form>
 
-                    <form action="/signup/" className="form-signup">
-                        <div className="social-login">
-                            <button className="btn facebook-btn social-btn" type="button"><span><i
-                                className="fab fa-facebook-f"/> Sign up with Facebook</span></button>
-                        </div>
-                        <div className="social-login">
-                            <button className="btn google-btn social-btn" type="button"><span><i
-                                className="fab fa-google-plus-g"/> Sign up with Google+</span></button>
-                        </div>
-
-                        <p style={{'text-align':'center'}}>OR</p>
-
-                        <input type="text" id="user-name" className="form-control" placeholder="Full name" required=""
-                               autoFocus=""/>
-                            <input type="email" id="user-email" className="form-control" placeholder="Email address"
-                                   required autoFocus=""/>
-                                <input type="password" id="user-pass" className="form-control" placeholder="Password"
-                                       required autoFocus=""/>
-                                    <input type="password" id="user-repeatpass" className="form-control"
-                                           placeholder="Repeat Password" required autoFocus=""/>
-
-                                        <button className="btn btn-primary btn-block" type="submit"><i
-                                            className="fas fa-user-plus"/> Sign Up
-                                        </button>
-                                        <a href="#" id="cancel_signup"><i className="fas fa-angle-left"/> Back</a>
-                    </form>
                     <br/>
 
                 </div>
@@ -88,7 +81,7 @@ class LoginView extends Component {
 const stateMapper = (state) => {
     console.log(state);
     return {
-        questionList: state.questionList
+
     }
 
 };
@@ -98,6 +91,9 @@ const dispatchMapper = (dispatch) => {
     return {
         getAllQuestions: () => {
             dispatch()
+        },
+        setUserData: (data) => {
+            dispatch(userAction.setUserData(data))
         }
     }
 

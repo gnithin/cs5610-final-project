@@ -20,7 +20,10 @@ class HomeView extends Component {
                 });
             }
         });
+
+        console.log(this.props.userData)
     }
+
 
     deleteQuestion = (questionId) => {
         questionAnswerService.deleteQuestion(questionId).then(responseStatus => {
@@ -35,6 +38,7 @@ class HomeView extends Component {
             }
         })
     };
+
 
     render() {
         return (
@@ -101,7 +105,8 @@ class HomeView extends Component {
 const stateMapper = (state) => {
     console.log(state);
     return {
-        questionList: state.questionList
+        questionList: state.questionList,
+        userData:state.userProfile.userDetails
     }
 
 };
