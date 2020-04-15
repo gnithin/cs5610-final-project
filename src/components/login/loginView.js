@@ -65,14 +65,14 @@ class LoginView extends Component {
                         <br/>
 
                         <button className="btn btn-success btn-block" type="submit" onClick={this.loginMethod}><i
-                            className="fas fa-sign-in-alt"/> Sign in
+                            className="fas fa-sign-in-alt"/> &nbsp; Sign in
                         </button>
 
-                        <br />
+                        <br/>
 
                         <button className="btn btn-primary btn-block" type="button" id="btn-signup">
                             <Link to={'/register'}>
-                                <i className="fas fa-user-plus"/>
+                                <i className="fas fa-user-plus"/> &nbsp;
                                 Register
                             </Link>
                         </button>
