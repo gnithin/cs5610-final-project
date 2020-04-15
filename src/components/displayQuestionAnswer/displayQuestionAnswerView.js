@@ -20,7 +20,6 @@ class displayQuestionAnswerView extends Component {
         questionAnswerService.findQuestionDetails(
             this.props.match.params.questionId).then(questionResponse => {
             if (questionResponse.status === 1) {
-                console.log("DEBUG: questionResponse", questionResponse);
                 this.setState({
                     questionId: questionResponse.data.id,
                     questionTitle: questionResponse.data.title,
@@ -29,14 +28,10 @@ class displayQuestionAnswerView extends Component {
                 });
 
                 SO.searchQuestions(this.state.questionTitle).then((response) => {
-                    console.log("DEBUG: SO Data", response);
                     this.setState({
                         relatedQuestions: response
                     })
                 });
-                console.log("DEBUG: Related Questions are:",
-                    this.state.relatedQuestions);
-
             } else {
                 this.props.history.push("/");
             }
@@ -44,15 +39,12 @@ class displayQuestionAnswerView extends Component {
     }
 
     createAnswerToQuestion = (answerToPost, questionId) => {
-        console.log("DEBUG: Posting Answer", answerToPost, questionId);
         if (answerToPost.trim() !== "") {
             let answerToSend = {
                 "answer": answerToPost.trim()
             };
-            console.log("DEBUG: Answer To Send", answerToSend);
             questionAnswerService.createAnswerForQuestion(answerToSend,
                 questionId).then(responseStatus => {
-                console.log("DEBUG: Answer Response received", responseStatus.data);
                 if (responseStatus.status === 1) {
                     this.setState({
                         answerToPost: "",
@@ -70,7 +62,6 @@ class displayQuestionAnswerView extends Component {
         questionAnswerService.deleteQuestion(this.state.questionId).then(responseStatus => {
             if (responseStatus.status === 1) {
                 this.props.history.push("/");
-                /*console.log('DEBUG: cannot Delete Question',responseStatus);*/
             } else {
                 console.log('DEBUG: cannot Delete Question', responseStatus);
             }
@@ -78,7 +69,7 @@ class displayQuestionAnswerView extends Component {
     };
 
     deleteAnswer = (answerId) => {
-        questionAnswerService.deleteAnswer(answerId).then(responseStatus => {
+        questionAnswerService.deleteAnswer(parseInt(answerId)).then(responseStatus => {
             if (responseStatus.status === 1) {
                 let newAnswerArray = this.state.answersToQuestion.filter(eachAnswer => eachAnswer.id !== answerId);
                 this.setState({
@@ -90,19 +81,117 @@ class displayQuestionAnswerView extends Component {
         })
     };
 
-    upvoteAnswer = (id, hasUserVoted) => {
-        console.log('upvote', id)
-        questionAnswerService.upvoteAnswer(id).then(r => {
-            console.log(r)
-        })
+    upVoteAnswer = (eachAnswer) => {
+        let answerIndex = this.state.answersToQuestion.findIndex(answer => eachAnswer.id === answer.id);
+        let updatedAnswerArray = [];
+        let updateUpVote = this.state.answersToQuestion.filter(answer => eachAnswer.id === answer.id);
 
-    }
-    downVoteAnswer = (id, hasUserVoted) => {
-        console.log('downvote', id)
-        questionAnswerService.downvoteAnswer(id).then(r => {
-            console.log(r)
-        })
-    }
+        if (eachAnswer.currentUserVote === 1) {
+            updateUpVote[0]["currentUserVote"] = 0;
+            updateUpVote[0]["totalReputation"] = parseInt(updateUpVote[0]["totalReputation"]) - 1;
+            questionAnswerService.deleteVote(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateUpVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        } else if (eachAnswer.currentUserVote === -1) {
+            updateUpVote[0]["currentUserVote"] = 1;
+            updateUpVote[0]["totalReputation"] = parseInt(updateUpVote[0]["totalReputation"]) + 2;
+            questionAnswerService.upVoteAnswer(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateUpVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        } else {
+            updateUpVote[0]["currentUserVote"] = 1;
+            updateUpVote[0]["totalReputation"] = parseInt(updateUpVote[0]["totalReputation"]) + 1;
+            questionAnswerService.upVoteAnswer(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateUpVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        }
+    };
+
+    downVoteAnswer = (eachAnswer) => {
+        let answerIndex = this.state.answersToQuestion.findIndex(answer => eachAnswer.id === answer.id);
+        let updatedAnswerArray = [];
+        let updateDownVote = this.state.answersToQuestion.filter(answer => eachAnswer.id === answer.id);
+
+        if (eachAnswer.currentUserVote === -1) {
+            updateDownVote[0]["currentUserVote"] = 0;
+            updateDownVote[0]["totalReputation"] = parseInt(updateDownVote[0]["totalReputation"]) + 1;
+            questionAnswerService.deleteVote(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateDownVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        } else if (eachAnswer.currentUserVote === 1) {
+            updateDownVote[0]["currentUserVote"] = -1;
+            updateDownVote[0]["totalReputation"] = parseInt(updateDownVote[0]["totalReputation"]) - 2;
+            questionAnswerService.downVoteAnswer(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateDownVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        } else {
+            updateDownVote[0]["currentUserVote"] = -1;
+            updateDownVote[0]["totalReputation"] = parseInt(updateDownVote[0]["totalReputation"]) - 1;
+            questionAnswerService.downVoteAnswer(eachAnswer.id).then(response => {
+                if (response.status === 1) {
+                    updatedAnswerArray = [
+                        ...this.state.answersToQuestion.slice(0, answerIndex),
+                        updateDownVote[0],
+                        ...this.state.answersToQuestion.slice(answerIndex + 1)
+                    ];
+
+                    this.setState({
+                        answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        }
+    };
 
     render() {
         return (
@@ -180,32 +269,32 @@ class displayQuestionAnswerView extends Component {
                                                         <span className={'card-body'}>{eachAnswer.answer}</span>
                                                         <div className={'card-footer'}>
                                                             <span className={'pull-left'}>
-                                                                Answered by <strong>  {eachAnswer.user.name}</strong>
+                                                                Answered by <strong>{eachAnswer.user.name}</strong>
                                                             </span>
                                                             <span className={'pull-right'}>
-                                                               <button className={'btn btn-outline-secondary'+( eachAnswer.currentUserVote === 1 ? ' active' : '')}> <i
-                                                                   className={"fas fa-thumbs-up " }
-                                                                   onClick={() => {
-                                                                       this.upvoteAnswer(eachAnswer.id, eachAnswer.currentUserVote)
-                                                                   }}/>
-                                                               </button>
-
-                                                               <span
-                                                                   className={'btn '}><strong>{eachAnswer.totalReputation}</strong></span>
-                                                               <button className={'btn btn-outline-secondary' + (eachAnswer.currentUserVote === -1 ? ' active' : '')}
-                                                                       onClick={() => {
-                                                                           this.downVoteAnswer(eachAnswer.id, eachAnswer.currentUserVote)
-                                                                       }}> <i
-                                                                   className={"fas fa-thumbs-down " }/>
-                                                               </button>
-
+                                                                <button
+                                                                    className={`btn ${eachAnswer.currentUserVote === 1 ? "btn-outline-success" : "btn-outline-secondary"}`}
+                                                                    onClick={() => {
+                                                                        this.upVoteAnswer(eachAnswer)
+                                                                    }}>
+                                                                    <i className={"fas fa-thumbs-up"}/>
+                                                                </button>
+                                                                <span className={'btn'}>
+                                                                    <strong>{eachAnswer.totalReputation}</strong>
+                                                                </span>
+                                                                <button
+                                                                    className={`btn ${eachAnswer.currentUserVote === -1 ? "btn-outline-danger" : "btn-outline-secondary"}`}
+                                                                    onClick={() => {
+                                                                        this.downVoteAnswer(eachAnswer)
+                                                                    }}>
+                                                                    <i className={"fas fa-thumbs-down "}/>
+                                                                </button>
                                                                 {
                                                                     this.props.isAdmin
                                                                     &&
-                                                                    <button className={"btn btn-outline-danger"}
+                                                                    <button className={"btn btn-outline-danger ml-1"}
                                                                             onClick={() => this.deleteAnswer(eachAnswer.id)}>
                                                                         <i className={"fas fa-trash-alt "}/>
-
                                                                     </button>
                                                                 }
                                                            </span>
@@ -266,7 +355,6 @@ class displayQuestionAnswerView extends Component {
 }
 
 const stateMapper = (state) => {
-    console.log('DEBUG: isAdmin state', state.userProfile.isAdmin);
     return {
         isAdmin: state.userProfile.isAdmin
     }
