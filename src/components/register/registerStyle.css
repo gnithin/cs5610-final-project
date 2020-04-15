@@ -43,12 +43,6 @@
     font-size: 0.9rem;
 }
 
-#logreg-forms a{
-    display: block;
-    padding-top:10px;
-    color:lightseagreen;
-}
-
 #logreg-form .lines{
     width:200px;
     border:1px solid red;
