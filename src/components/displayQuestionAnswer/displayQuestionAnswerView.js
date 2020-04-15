@@ -57,7 +57,7 @@ class displayQuestionAnswerView extends Component {
                     this.setState({
                         answerToPost: "",
                         answersToQuestion: [
-                            {"answer": responseStatus.data.answer},
+                            responseStatus.data,
                             ...this.state.answersToQuestion
                         ],
                     });
@@ -89,6 +89,20 @@ class displayQuestionAnswerView extends Component {
             }
         })
     };
+
+    upvoteAnswer = (id, hasUserVoted) => {
+        console.log('upvote', id)
+        questionAnswerService.upvoteAnswer(id).then(r => {
+            console.log(r)
+        })
+
+    }
+    downVoteAnswer = (id, hasUserVoted) => {
+        console.log('downvote', id)
+        questionAnswerService.downvoteAnswer(id).then(r => {
+            console.log(r)
+        })
+    }
 
     render() {
         return (
@@ -162,21 +176,42 @@ class displayQuestionAnswerView extends Component {
                                         this.state.answersToQuestion.map((eachAnswer, index) => {
                                             return (
                                                 <div key={index}>
-                                                    <span>{eachAnswer.answer}</span>
-                                                    <div>
-                                                        <i className="fas fa-thumbs-up p-5"/>
-                                                        <span>{eachAnswer.totalReputation}</span>
-                                                        <i className="fas fa-thumbs-down p-5"/>
-                                                        {
-                                                            this.props.isAdmin
-                                                            &&
-                                                            <button className={"btn btn-danger"}
-                                                                    onClick={() => this.deleteAnswer(eachAnswer.id)}>
-                                                                <i className={"fas fa-trash-alt mr-2"}/>
-                                                                Delete Answer
-                                                            </button>
-                                                        }
+                                                    <div className={'card '}>
+                                                        <span className={'card-body'}>{eachAnswer.answer}</span>
+                                                        <div className={'card-footer'}>
+                                                            <span className={'pull-left'}>
+                                                                Answered by <strong>  {eachAnswer.user.name}</strong>
+                                                            </span>
+                                                            <span className={'pull-right'}>
+                                                               <button className={'btn btn-outline-secondary'+( eachAnswer.currentUserVote === 1 ? ' active' : '')}> <i
+                                                                   className={"fas fa-thumbs-up " }
+                                                                   onClick={() => {
+                                                                       this.upvoteAnswer(eachAnswer.id, eachAnswer.currentUserVote)
+                                                                   }}/>
+                                                               </button>
+
+                                                               <span
+                                                                   className={'btn '}><strong>{eachAnswer.totalReputation}</strong></span>
+                                                               <button className={'btn btn-outline-secondary' + (eachAnswer.currentUserVote === -1 ? ' active' : '')}
+                                                                       onClick={() => {
+                                                                           this.downVoteAnswer(eachAnswer.id, eachAnswer.currentUserVote)
+                                                                       }}> <i
+                                                                   className={"fas fa-thumbs-down " }/>
+                                                               </button>
+
+                                                                {
+                                                                    this.props.isAdmin
+                                                                    &&
+                                                                    <button className={"btn btn-outline-danger"}
+                                                                            onClick={() => this.deleteAnswer(eachAnswer.id)}>
+                                                                        <i className={"fas fa-trash-alt "}/>
+
+                                                                    </button>
+                                                                }
+                                                           </span>
+                                                        </div>
                                                     </div>
+                                                    <br/>
                                                 </div>
                                             );
                                         })
@@ -231,7 +266,7 @@ class displayQuestionAnswerView extends Component {
 }
 
 const stateMapper = (state) => {
-    console.log('DEBUG: isAdmin state',state.userProfile.isAdmin);
+    console.log('DEBUG: isAdmin state', state.userProfile.isAdmin);
     return {
         isAdmin: state.userProfile.isAdmin
     }
