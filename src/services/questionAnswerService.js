@@ -8,7 +8,13 @@ let errorMessage = {
 };
 
 export const findQuestionDetails = (questionID) =>
-    fetch(`${API_URL}/api/questions/${questionID}`).then(
+    fetch(`${API_URL}/api/questions/${questionID}`,{
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json'
+        },
+        credentials: 'include'
+    }).then(
         response => {
             if (response.status === 200) {
                 console.log("DEBUG: Response 200");
@@ -63,6 +69,59 @@ const deleteQuestion = (questionId) => {
 
 const deleteAnswer = (answerId) => {
     return fetch(`${API_URL}/api/answers/${answerId}`,{
+        method: 'PUT',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+const upvoteAnswer = (answerId) => {
+    return fetch(`${API_URL}/api/answers/${answerId}/upvote`,{
+        method: 'PUT',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+
+const downvoteAnswer = (answerId) => {
+    return fetch(`${API_URL}/api/answers/${answerId}/downvote`,{
+        method: 'PUT',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+
+const deleteVote = (answerId) => {
+    return fetch(`${API_URL}/api/answers/${answerId}/votes`,{
         method: 'DELETE',
         credentials: 'include'
     }).then(
@@ -83,6 +142,9 @@ export default {
     findQuestionDetails,
     createAnswerForQuestion,
     deleteQuestion,
-    deleteAnswer
+    deleteAnswer,
+    upvoteAnswer,
+    downvoteAnswer,
+    deleteVote
 }
 
