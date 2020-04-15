@@ -17,7 +17,6 @@ export const findQuestionDetails = (questionID) =>
     }).then(
         response => {
             if (response.status === 200) {
-                console.log("DEBUG: Response 200");
                 return response.json();
             } else {
                 errorMessage.responseCode = response.status;
@@ -38,7 +37,6 @@ export const createAnswerForQuestion = (answer, questionId) => {
     }).then(
         response => {
             if (response.status === 200) {
-                console.log("DEBUG: Response 200");
                 return response.json();
             } else {
                 errorMessage.responseCode = response.status;
@@ -69,7 +67,7 @@ const deleteQuestion = (questionId) => {
 
 const deleteAnswer = (answerId) => {
     return fetch(`${API_URL}/api/answers/${answerId}`,{
-        method: 'PUT',
+        method: 'DELETE',
         credentials: 'include'
     }).then(
         response => {
@@ -84,7 +82,7 @@ const deleteAnswer = (answerId) => {
         }
     );
 };
-const upvoteAnswer = (answerId) => {
+const upVoteAnswer = (answerId) => {
     return fetch(`${API_URL}/api/answers/${answerId}/upvote`,{
         method: 'PUT',
         credentials: 'include'
@@ -102,7 +100,7 @@ const upvoteAnswer = (answerId) => {
     );
 };
 
-const downvoteAnswer = (answerId) => {
+const downVoteAnswer = (answerId) => {
     return fetch(`${API_URL}/api/answers/${answerId}/downvote`,{
         method: 'PUT',
         credentials: 'include'
@@ -143,8 +141,7 @@ export default {
     createAnswerForQuestion,
     deleteQuestion,
     deleteAnswer,
-    upvoteAnswer,
-    downvoteAnswer,
+    upVoteAnswer,
+    downVoteAnswer,
     deleteVote
 }
-
