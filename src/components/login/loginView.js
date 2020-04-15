@@ -66,8 +66,8 @@ class LoginView extends Component {
                         <button className="btn btn-success btn-block" type="submit" onClick={this.loginMethod}><i
                             className="fas fa-sign-in-alt"/> Sign in
                         </button>
-                        <Link to={"/login"} id="forgot_pswd">Forgot password?</Link><br/>
                         <hr/>
+
                         <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link
                             to={'/register'}><i
                             className="fas fa-user-plus"/> Sign up New Account</Link>
