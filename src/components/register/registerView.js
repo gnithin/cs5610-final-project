@@ -73,12 +73,15 @@ class RegisterView extends Component {
                                placeholder="Confirm Password"
                                required="" style={{"textAlign": "center"}}/>
 
+                        <br/>
+
                         <button className="btn btn-success btn-block" type="submit" onClick={this.registerMethod}><i
-                            className="fas fa-sign-in-alt"/> Sign up
+                            className="fas fa-sign-in-alt"/> &nbsp;
+                            Register
                         </button>
-                        <hr/>
+                        <br/>
                         <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link to={'/login'}><i
-                            className="fas fa-user-plus"/> Back to Login</Link>
+                            className="fas fa-user-plus"/> &nbsp; Back to Login</Link>
                         </button>
                     </div>
 
