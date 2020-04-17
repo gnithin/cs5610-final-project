@@ -5,6 +5,7 @@ import profileService from "../../services/profileService";
 import userAction from "../../redux/actions/userProfileActions";
 import './profile.css'
 import Utils from "../../common/utils";
+import {withRouter} from "react-router-dom";
 
 class ProfileView extends Component {
     state = {
@@ -116,7 +117,9 @@ class ProfileView extends Component {
             <div className="questions-list">
                 {questions.map((question) => {
                     return (
-                        <div className="card activity-card">
+                        <div className="card activity-card" onClick={() => {
+                            this.props.history.push(`/questions/${question.id}`)
+                        }}>
                             <div className="card-body">
                                 {question.title}
                             </div>
@@ -297,4 +300,4 @@ const dispatchMapper = (dispatch) => {
     }
 
 };
-export default connect(stateMapper, dispatchMapper)(ProfileView);
+export default withRouter(connect(stateMapper, dispatchMapper)(ProfileView));
