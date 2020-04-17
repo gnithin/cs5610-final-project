@@ -1,29 +1,28 @@
 import React, {Component} from 'react';
 import NavBarComponent from "../navbar/NavBarComponent";
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import profileService from "../../services/profileService";
-import loginService from "../../services/loginAndRegistrationService";
 import userAction from "../../redux/actions/userProfileActions";
+import './profile.css'
+import Utils from "../../common/utils";
+import {withRouter} from "react-router-dom";
+import LoadingComponent from "../loader";
+
+const MAX_COUNT_DETAILS = 180;
+
 
 class ProfileView extends Component {
     state = {
-        userProfileData: {}
+        userProfileData: {},
+        isLoading: true,
     };
 
     componentDidMount() {
-        loginService.currentLoggedInService().then(response => {
-            if (response.status === 1) {
-                this.props.setIsLogin(true, response.data);
-            } else {
-                this.props.setIsLogin(false, {});
-            }
-        });
-
         profileService.getUserProfileData(this.props.match.params.userId).then(
             userProfileData => {
                 if (userProfileData.status === 1) {
                     this.setState({
+                        isLoading: false,
                         userProfileData: userProfileData.data
                     });
                 } else {
@@ -33,259 +32,168 @@ class ProfileView extends Component {
         );
     }
 
-    render() {
+    renderSidebar() {
+        let user = this.state.userProfileData;
         return (
-            <div>
-                <NavBarComponent/>
+            <div className="sidebar-wrapper">
+                <h2>Profile</h2>
+                <div className="avatar-wrapper">
+                    <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
+                    </div>
+                </div>
 
-                <div className={"container-fluid"}>
-                    <div className="row align-items-center">
-                        <div className="col-12 col-lg-4 mx-auto">
-                            <div className="alert alert-danger mt-4" role="alert">
-                                Alerts goes here
-                            </div>
+                <div className="profile-entry">
+                    <div className="profile-entry-header">
+                        <i className="fa fa-user" aria-hidden="true"></i> &nbsp; Name
+                    </div>
+                    <div className="profile-entry-content">
+                        {this.state.userProfileData.name}
+                    </div>
+                </div>
 
-                            <div className="alert alert-success mt-4" role="status">
-                                Status goes here
-                            </div>
+                {false === Utils.isNull(this.state.userProfileData.email) &&
+                <div className="profile-entry">
+                    <div className="profile-entry-header">
+                        <i className="fa fa-envelope" aria-hidden="true"></i> &nbsp; Email
+                    </div>
+                    <div className="profile-entry-content">
+                        {this.state.userProfileData.email}
+                    </div>
+                </div>
+                }
 
-                            <div className={"mt-4"}>
-                                {
-                                    typeof (this.state.userProfileData.name) !== "undefined"
-                                    &&
-                                    <div className="row form-group">
-                                        <div className="col-12">
-                                            <label htmlFor="name"
-                                                   className="col-form-label">Name</label>
-                                        </div>
-                                        <div className="col-12">
-                                            <input type="text"
-                                                   className="form-control"
-                                                   id="name"
-                                                   placeholder="Name - E.g. John Doe, Jane Doe"
-                                                   value={this.state.userProfileData.name} disabled/>
-                                        </div>
-                                    </div>
-                                }
+                <div className="profile-entry">
+                    <div className="profile-entry-header">
+                        <i className="fa fa-star" aria-hidden="true"></i> &nbsp; Reputation
+                    </div>
+                    <div className="profile-entry-content">
+                        {this.state.userProfileData.totalReputation}
+                    </div>
+                </div>
 
-                                <div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="password"
-                                               className="col-form-label">Password</label>
-                                    </div>
-                                    <div className="col-12">
-                                        <input type="password"
-                                               className="form-control"
-                                               id="password" autoComplete="off"/>
-                                    </div>
+                <div className="profile-entry">
+                    <div className="profile-entry-header">
+                        <i className="fa fa-lock" aria-hidden="true"></i> &nbsp; Admin
+                    </div>
+                    <div className="profile-entry-content">
+                        {(this.state.userProfileData.isAdmin) ? "Yes" : "No"}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    renderActivity() {
+        return (
+            <div className="activity-wrapper">
+                <h2>
+                    Activity
+                </h2>
+                <div className="questions-wrapper">
+                    <div className="profile-entry-header">
+                        Questions
+                    </div>
+                    {this.renderQuestions()}
+                </div>
+                <div className="answers-wrapper">
+                    <div className="profile-entry-header">
+                        Answers
+                    </div>
+                    {this.renderAnswers()}
+                </div>
+            </div>
+        )
+    }
+
+    renderQuestions() {
+        let questions = this.state.userProfileData.questions;
+        if (Utils.isNull(questions) || questions.length === 0) {
+            return (<div>No questions asked!</div>)
+        }
+
+        return (
+            <div className="questions-list">
+                {questions.map((question) => {
+                    return (
+                        <div key={`q-${question.id}`} className="card activity-card" onClick={() => {
+                            let url = `/questions/${question.id}`;
+                            window.open(url, '_blank').focus();
+                        }}>
+                            <div className="card-body">
+                                <div className="activity-heading">
+                                    {Utils.limitSentence(question.title)}
                                 </div>
-
-                                <div className="row form-group">
-                                    <div className="col-12">
-                                        <label htmlFor="confirm-password"
-                                               className="col-form-label">Confirm Password</label>
-                                    </div>
-                                    <div className="col-12">
-                                        <input type="password"
-                                               className="form-control"
-                                               id="confirm-password" autoComplete="off"/>
-                                    </div>
-                                </div>
-
-                                {
-                                    typeof (this.state.userProfileData.email) !== "undefined"
-                                    &&
-                                    <div className="row form-group">
-                                        <div className="col-12">
-                                            <label htmlFor="email"
-                                                   className="col-form-label">Email</label>
-                                        </div>
-                                        <div className="col-12">
-                                            <input type="email"
-                                                   className="form-control"
-                                                   id="email" autoComplete="off"
-                                                   value={this.state.userProfileData.email} disabled/>
-                                        </div>
-                                    </div>
-                                }
-
-                                {
-                                    typeof (this.state.userProfileData.totalReputation) !== "undefined"
-                                    &&
-                                    <div className="row form-group">
-                                        <div className="col-12">
-                                            <label htmlFor="reputation"
-                                                   className="col-form-label">Reputation</label>
-                                        </div>
-                                        <div className="col-12">
-                                            <input type="text"
-                                                   className="form-control"
-                                                   id="reputation" autoComplete="off"
-                                                   value={this.state.userProfileData.totalReputation} disabled/>
-                                        </div>
-                                    </div>
-                                }
-
-                                {
-                                    typeof (this.state.userProfileData.isAdmin) !== "undefined"
-                                    &&
-                                    <div className="row form-group">
-                                        <div className="col-12">
-                                            <label htmlFor="user-role"
-                                                   className="col-form-label">Role</label>
-                                        </div>
-                                        <div className="col-12">
-                                            <input type="user-role"
-                                                   className="form-control"
-                                                   id="user-role"
-                                                   placeholder="User Role"
-                                                   value={`${this.state.userProfileData.isAdmin ? "Admin" : "User"}`}
-                                                   disabled/>
-                                        </div>
-                                    </div>
-                                }
-
-                                <div className="row">
-                                    <div className="col form-group">
-                                        <button className="btn btn-success form-group" disabled>Update</button>
-                                        <Link className={"btn btn-danger form-group float-right disabled"} to={`/`}>
-                                            Logout
-                                        </Link>
-                                    </div>
+                                <div className="activity-contents">
+                                    {Utils.limitSentence(question.description, MAX_COUNT_DETAILS)}
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-8 mx-auto">
-                            <div className={"container-fluid"}>
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        <table className="table table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col"
-                                                    className="d-flex justify-content-center">
-                                                    All Questions Asked
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            {
-                                                this.state.userProfileData.questions
-                                                &&
-                                                <tbody>
-                                                {
-                                                    this.state.userProfileData.questions.map((eachQuestion, index) => {
-                                                        if (index < 6) {
-                                                            return (
-                                                                <tr key={index}>
-                                                                    <td className="pl-5 pt-4">
-                                                                        <Link to={`/profile/:userId`}>
-                                                                            {eachQuestion.title}
-                                                                        </Link>
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                        return null;
-                                                    })
-                                                }
-                                                </tbody>
-                                            }
-                                            {
-                                                (typeof (this.state.userProfileData.questions) === "undefined" || this.state.userProfileData.questions.length <= 0)
-                                                &&
-                                                <tbody>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                </tbody>
-                                            }
-                                        </table>
-                                    </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    renderAnswers() {
+        let answers = this.state.userProfileData.answers;
+        if (Utils.isNull(answers) || answers.length === 0) {
+            return (<div>No answers given!</div>)
+        }
+
+        return (
+            <div className="answers-list">
+                {answers.map((answer) => {
+                    return (
+                        <div key={`a-${answer.id}`} className="card activity-card" onClick={() => {
+                            let url = `/questions/${answer.question.id}`;
+                            window.open(url, '_blank').focus();
+                        }}>
+                            <div className="card-body">
+                                <div className="activity-heading">
+                                    {Utils.limitSentence(answer.question.title)}
                                 </div>
-                                <div className={"row"}>
-                                    <div className={"col-12"}>
-                                        <table className="table table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col"
-                                                    className="d-flex justify-content-center">
-                                                    All Questions Answered
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            {
-                                                this.state.userProfileData.answers
-                                                &&
-                                                <tbody>
-                                                {
-                                                    this.state.userProfileData.answers.map((eachAnswer, index) => {
-                                                        if (index < 6) {
-                                                            return (
-                                                                <tr key={index}>
-                                                                    <td className="pl-5 pt-4">
-                                                                        <Link to={`/profile/:userId`}>
-                                                                            {eachAnswer.answer}
-                                                                        </Link>
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        }
-                                                        return null;
-                                                    })
-                                                }
-                                                </tbody>
-                                            }
-                                            {
-                                                (typeof (this.state.userProfileData.answers) === "undefined" || this.state.userProfileData.answers.length <= 0)
-                                                &&
-                                                <tbody>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                <tr>
-                                                    <td className="pl-5 pt-4"/>
-                                                </tr>
-                                                </tbody>
-                                            }
-                                        </table>
-                                    </div>
+                                <div className="activity-contents">
+                                    {Utils.limitSentence(answer.answer, MAX_COUNT_DETAILS)}
                                 </div>
                             </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (
+                <LoadingComponent
+                    message="Loading Profile"
+                />
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <NavBarComponent/>
+
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-12 col-sm-3">
+                            {this.renderSidebar()}
+                        </div>
+                        <div className="col-12 col-sm-9">
+                            {this.renderActivity()}
                         </div>
                     </div>
                 </div>
 
-            </div>
+            </React.Fragment>
         );
     }
 }
 
 const stateMapper = (state) => {
-    return {
-        userProfileData: state.userProfile.userProfileData
-    }
-
+    return {}
 };
 
 const dispatchMapper = (dispatch) => {
@@ -296,4 +204,4 @@ const dispatchMapper = (dispatch) => {
     }
 
 };
-export default connect(stateMapper, dispatchMapper)(ProfileView);
+export default withRouter(connect(stateMapper, dispatchMapper)(ProfileView));

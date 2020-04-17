@@ -1,0 +1,12 @@
+.loading-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150%;
+    margin: 50px 0px;
+}
+
+.loading-content {
+    margin: 0px 10px;
+}

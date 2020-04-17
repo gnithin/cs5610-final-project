@@ -26,12 +26,10 @@ class AppRouter extends Component {
                         component={Login}
                     />
 
-
                     <Route
-                        path="/profile/:userId"
+                        path="/profiles/:userId"
                         component={Profile}
                     />
-
 
                     <Route
                         path="/home"
@@ -39,15 +37,14 @@ class AppRouter extends Component {
                     />
 
                     <Route
-                        path="/create/question"
+                        path="/create/questions"
                         component={authenticateComponent(CreateQuestion)}
                     />
 
                     <Route
-                        path="/question/:questionId"
+                        path="/questions/:questionId"
                         // component={ViewQuestion}
                         component={authenticateComponent(ViewQuestion)}
-
                     />
 
                     <Route

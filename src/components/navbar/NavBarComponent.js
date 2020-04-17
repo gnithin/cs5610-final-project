@@ -31,7 +31,7 @@ class NavBarComponent extends Component {
                         <Link
                             className={"ml-5"}
                             title="Profile"
-                            to={`/profile/${this.props.userDetails.id}`}
+                            to={`/profiles/${this.props.userDetails.id}`}
                         >
                             Profile
                         </Link>
@@ -45,7 +45,7 @@ class NavBarComponent extends Component {
                         <Link
                             className="btn btn-primary ml-3"
                             title="Create Question"
-                            to={`/create/question`}
+                            to={`/create/questions`}
                         >
                             Create Question
                         </Link>
