@@ -41,3 +41,10 @@
 .activity-card {
     cursor: pointer;
 }
+
+.activity-heading {
+    font-size: 130%;
+}
+
+.activity-contents {
+}

@@ -17,4 +17,12 @@ export default class Utils {
     static escapeRegexStr(s) {
         return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
+
+    static limitSentence(s, MAX_COUNT = 50) {
+        if (Utils.isEmptyStr(s) || s.length < MAX_COUNT) {
+            return s
+        }
+
+        return s.substring(0, MAX_COUNT) + '...';
+    }
 }

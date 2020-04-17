@@ -7,6 +7,9 @@ import './profile.css'
 import Utils from "../../common/utils";
 import {withRouter} from "react-router-dom";
 
+const MAX_COUNT_DETAILS = 180;
+
+
 class ProfileView extends Component {
     state = {
         userProfileData: {}
@@ -117,11 +120,17 @@ class ProfileView extends Component {
             <div className="questions-list">
                 {questions.map((question) => {
                     return (
-                        <div className="card activity-card" onClick={() => {
-                            this.props.history.push(`/questions/${question.id}`)
+                        <div key={`q-${question.id}`} className="card activity-card" onClick={() => {
+                            let url = `/questions/${question.id}`;
+                            window.open(url, '_blank').focus();
                         }}>
                             <div className="card-body">
-                                {question.title}
+                                <div className="activity-heading">
+                                    {Utils.limitSentence(question.title)}
+                                </div>
+                                <div className="activity-contents">
+                                    {Utils.limitSentence(question.description, MAX_COUNT_DETAILS)}
+                                </div>
                             </div>
                         </div>
                     );
@@ -140,9 +149,17 @@ class ProfileView extends Component {
             <div className="answers-list">
                 {answers.map((answer) => {
                     return (
-                        <div className="card activity-card">
+                        <div key={`a-${answer.id}`} className="card activity-card" onClick={() => {
+                            let url = `/questions/${answer.question.id}`;
+                            window.open(url, '_blank').focus();
+                        }}>
                             <div className="card-body">
-                                {answer.answer}
+                                <div className="activity-heading">
+                                    {Utils.limitSentence(answer.question.title)}
+                                </div>
+                                <div className="activity-contents">
+                                    {Utils.limitSentence(answer.answer, MAX_COUNT_DETAILS)}
+                                </div>
                             </div>
                         </div>
                     );
