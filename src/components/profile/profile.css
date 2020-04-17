@@ -1,4 +1,4 @@
-.sidebar-wrapper {
+.sidebar-wrapper, .activity-wrapper {
     padding: 10px;
 }
 
@@ -22,8 +22,22 @@
 .profile-entry-header {
     font-size: 150%;
     font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .profile-entry-content {
     font-size: 130%;
+}
+
+.question-wrapper {
+    margin: 10px 0px;
+}
+
+.answer-wrapper {
+    margin: 10px 0px;
+}
+
+.activity-card {
+    cursor: pointer;
 }

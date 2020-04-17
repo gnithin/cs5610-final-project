@@ -87,9 +87,65 @@ class ProfileView extends Component {
     renderActivity() {
         return (
             <div className="activity-wrapper">
-                Activity
+                <h2>
+                    Activity
+                </h2>
+                <div className="questions-wrapper">
+                    <div className="profile-entry-header">
+                        Questions
+                    </div>
+                    {this.renderQuestions()}
+                </div>
+                <div className="answers-wrapper">
+                    <div className="profile-entry-header">
+                        Answers
+                    </div>
+                    {this.renderAnswers()}
+                </div>
             </div>
         )
+    }
+
+    renderQuestions() {
+        let questions = this.state.userProfileData.questions;
+        if (Utils.isNull(questions)) {
+            return (<div>No questions asked!</div>)
+        }
+
+        return (
+            <div className="questions-list">
+                {questions.map((question) => {
+                    return (
+                        <div className="card activity-card">
+                            <div className="card-body">
+                                {question.title}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
+    renderAnswers() {
+        let answers = this.state.userProfileData.answers;
+        if (Utils.isNull(answers)) {
+            return (<div>No answers given!</div>)
+        }
+
+        return (
+            <div className="answers-list">
+                {answers.map((answer) => {
+                    return (
+                        <div className="card activity-card">
+                            <div className="card-body">
+                                {answer.answer}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        );
     }
 
     render() {
@@ -102,7 +158,7 @@ class ProfileView extends Component {
                         <div className="col-12 col-sm-4">
                             {this.renderSidebar()}
                         </div>
-                        <div className="col-12 col-sm-4">
+                        <div className="col-12 col-sm-8">
                             {this.renderActivity()}
                         </div>
                     </div>
