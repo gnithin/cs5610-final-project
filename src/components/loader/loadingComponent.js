@@ -13,7 +13,7 @@ const LoadingComponent = ({message}) => {
                 <span className="sr-only">Loading...</span>
             </div>
             <div className="loading-content">
-                {message}
+                {message}...
             </div>
         </div>
     );

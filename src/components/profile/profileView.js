@@ -6,29 +6,23 @@ import userAction from "../../redux/actions/userProfileActions";
 import './profile.css'
 import Utils from "../../common/utils";
 import {withRouter} from "react-router-dom";
+import LoadingComponent from "../loader";
 
 const MAX_COUNT_DETAILS = 180;
 
 
 class ProfileView extends Component {
     state = {
-        userProfileData: {}
+        userProfileData: {},
+        isLoading: true,
     };
 
     componentDidMount() {
-        // Why are we calling this?
-        // loginService.currentLoggedInService().then(response => {
-        //     if (response.status === 1) {
-        //         this.props.setIsLogin(true, response.data);
-        //     } else {
-        //         this.props.setIsLogin(false, {});
-        //     }
-        // });
-
         profileService.getUserProfileData(this.props.match.params.userId).then(
             userProfileData => {
                 if (userProfileData.status === 1) {
                     this.setState({
+                        isLoading: false,
                         userProfileData: userProfileData.data
                     });
                 } else {
@@ -170,6 +164,14 @@ class ProfileView extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <LoadingComponent
+                    message="Loading Profile"
+                />
+            );
+        }
+
         return (
             <React.Fragment>
                 <NavBarComponent/>
@@ -183,119 +185,6 @@ class ProfileView extends Component {
                             {this.renderActivity()}
                         </div>
                     </div>
-
-                    {/*                            <th scope="col"*/}
-                    {/*                                className="d-flex justify-content-center">*/}
-                    {/*                                All Questions Asked*/}
-                    {/*                            </th>*/}
-                    {/*                        </tr>*/}
-                    {/*                        </thead>*/}
-                    {/*                        {*/}
-                    {/*                            this.state.userProfileData.questions*/}
-                    {/*                            &&*/}
-                    {/*                            <tbody>*/}
-                    {/*                            {*/}
-                    {/*                                this.state.userProfileData.questions.map((eachQuestion, index) => {*/}
-                    {/*                                    if (index < 6) {*/}
-                    {/*                                        return (*/}
-                    {/*                                            <tr key={index}>*/}
-                    {/*                                                <td className="pl-5 pt-4">*/}
-                    {/*                                                    <Link to={`/profile/:userId`}>*/}
-                    {/*                                                        {eachQuestion.title}*/}
-                    {/*                                                    </Link>*/}
-                    {/*                                                </td>*/}
-                    {/*                                            </tr>*/}
-                    {/*                                        )*/}
-                    {/*                                    }*/}
-                    {/*                                    return null;*/}
-                    {/*                                })*/}
-                    {/*                            }*/}
-                    {/*                            </tbody>*/}
-                    {/*                        }*/}
-                    {/*                        {*/}
-                    {/*                            (typeof (this.state.userProfileData.questions) === "undefined" || this.state.userProfileData.questions.length <= 0)*/}
-                    {/*                            &&*/}
-                    {/*                            <tbody>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            </tbody>*/}
-                    {/*                        }*/}
-                    {/*                    </table>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className={"row"}>*/}
-                    {/*                <div className={"col-12"}>*/}
-                    {/*                    <table className="table table-striped">*/}
-                    {/*                        <thead>*/}
-                    {/*                        <tr>*/}
-                    {/*                            <th scope="col"*/}
-                    {/*                                className="d-flex justify-content-center">*/}
-                    {/*                                All Questions Answered*/}
-                    {/*                            </th>*/}
-                    {/*                        </tr>*/}
-                    {/*                        </thead>*/}
-                    {/*                        {*/}
-                    {/*                            this.state.userProfileData.answers*/}
-                    {/*                            &&*/}
-                    {/*                            <tbody>*/}
-                    {/*                            {*/}
-                    {/*                                this.state.userProfileData.answers.map((eachAnswer, index) => {*/}
-                    {/*                                    if (index < 6) {*/}
-                    {/*                                        return (*/}
-                    {/*                                            <tr key={index}>*/}
-                    {/*                                                <td className="pl-5 pt-4">*/}
-                    {/*                                                    <Link to={`/profile/:userId`}>*/}
-                    {/*                                                        {eachAnswer.answer}*/}
-                    {/*                                                    </Link>*/}
-                    {/*                                                </td>*/}
-                    {/*                                            </tr>*/}
-                    {/*                                        )*/}
-                    {/*                                    }*/}
-                    {/*                                    return null;*/}
-                    {/*                                })*/}
-                    {/*                            }*/}
-                    {/*                            </tbody>*/}
-                    {/*                        }*/}
-                    {/*                        {*/}
-                    {/*                            (typeof (this.state.userProfileData.answers) === "undefined" || this.state.userProfileData.answers.length <= 0)*/}
-                    {/*                            &&*/}
-                    {/*                            <tbody>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            <tr>*/}
-                    {/*                                <td className="pl-5 pt-4"/>*/}
-                    {/*                            </tr>*/}
-                    {/*                            </tbody>*/}
-                    {/*                        }*/}
-                    {/*                    </table>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
 
             </React.Fragment>
@@ -304,10 +193,7 @@ class ProfileView extends Component {
 }
 
 const stateMapper = (state) => {
-    return {
-        userProfileData: state.userProfile.userProfileData
-    }
-
+    return {}
 };
 
 const dispatchMapper = (dispatch) => {
