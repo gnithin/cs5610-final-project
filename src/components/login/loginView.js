@@ -11,7 +11,6 @@ class LoginView extends Component {
     state = {
         email: "",
         password: "",
-        redirectURL: "/home"
     };
 
     componentDidMount() {
@@ -40,7 +39,7 @@ class LoginView extends Component {
                     this.props.isLoggedIn
                     &&
                     <span>
-                        <Redirect to={this.state.redirectURL}/>
+                        <Redirect to={"/home"}/>
                     </span>
                 }
                 <NavBarComponent/>
