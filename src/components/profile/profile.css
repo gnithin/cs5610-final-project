@@ -1,0 +1,29 @@
+.sidebar-wrapper {
+    padding: 10px;
+}
+
+.avatar {
+    width: 300px;
+    height: 200px;
+    background-color: #DF4B3B;
+}
+
+.avatar-wrapper {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.profile-entry {
+    margin: 20px;
+}
+
+.profile-entry-header {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.profile-entry-content {
+    font-size: 130%;
+}
