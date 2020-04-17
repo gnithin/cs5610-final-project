@@ -39,11 +39,12 @@ class ProfileView extends Component {
     }
 
     renderSidebar() {
+        let user = this.state.userProfileData;
         return (
             <div className="sidebar-wrapper">
                 <h2>Profile</h2>
                 <div className="avatar-wrapper">
-                    <div className="avatar">
+                    <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
                     </div>
                 </div>
 
@@ -175,10 +176,10 @@ class ProfileView extends Component {
 
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col-12 col-sm-4">
+                        <div className="col-12 col-sm-3">
                             {this.renderSidebar()}
                         </div>
-                        <div className="col-12 col-sm-8">
+                        <div className="col-12 col-sm-9">
                             {this.renderActivity()}
                         </div>
                     </div>

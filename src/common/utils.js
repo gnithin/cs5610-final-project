@@ -25,4 +25,23 @@ export default class Utils {
 
         return s.substring(0, MAX_COUNT) + '...';
     }
+
+    // Reference - https://stackoverflow.com/a/16348977/1518924
+    // Stolen from here ^
+    static stringToColour(str) {
+        if (Utils.isEmptyStr(str)) {
+            return '#000';
+        }
+
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        let colour = '#';
+        for (let i = 0; i < 3; i++) {
+            let value = (hash >> (i * 8)) & 0xFF;
+            colour += ('00' + value.toString(16)).substr(-2);
+        }
+        return colour;
+    }
 }
