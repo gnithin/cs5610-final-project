@@ -69,7 +69,7 @@ class HomeView extends Component {
                                 return (
                                     <tr key={eachQuestion.id}>
                                         <td className="pl-5 pt-4">
-                                            <Link to={`/question/${eachQuestion.id}`}>
+                                            <Link to={`/questions/${eachQuestion.id}`}>
                                                 {eachQuestion.title}
                                             </Link>
                                             {
