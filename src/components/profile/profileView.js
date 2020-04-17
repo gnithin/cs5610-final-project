@@ -107,7 +107,7 @@ class ProfileView extends Component {
 
     renderQuestions() {
         let questions = this.state.userProfileData.questions;
-        if (Utils.isNull(questions)) {
+        if (Utils.isNull(questions) || questions.length === 0) {
             return (<div>No questions asked!</div>)
         }
 
@@ -136,7 +136,7 @@ class ProfileView extends Component {
 
     renderAnswers() {
         let answers = this.state.userProfileData.answers;
-        if (Utils.isNull(answers)) {
+        if (Utils.isNull(answers) || answers.length === 0) {
             return (<div>No answers given!</div>)
         }
 
