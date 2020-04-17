@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import loginService from '../services/loginAndRegistrationService'
 import userAction from "../redux/actions/userProfileActions";
 import utils from "../common/utils";
+import Loader from "../components/loader";
 
 
 const authenticateComponent = (WrappedComponent) => {
@@ -19,9 +20,8 @@ const authenticateComponent = (WrappedComponent) => {
                     props.setIsLogin(false, {});
                 }
             });
-            return (<div>loading</div>)
+            return (<Loader/>)
         }
-        // const IS_LOGGED_IN = props.isLoggedIn;
 
         if (false === props.isLoggedIn) {
             return (
