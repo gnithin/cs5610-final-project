@@ -8,8 +8,7 @@ import userAction from "../../redux/actions/userProfileActions";
 
 class RegisterView extends Component {
     state = {
-        firstName: "",
-        lastName: "",
+        name: "",
         email: "",
         password: "",
         showMessage: false,
@@ -20,11 +19,11 @@ class RegisterView extends Component {
     }
 
     registerMethod = () => {
-        console.log(this.state.email, ' ', this.state.password, ' ', this.state.firstName + this.state.lastName)
+        console.log(this.state.email, ' ', this.state.password, ' ', this.state.name)
         let obj = {
             "email": this.state.email,
             "password": this.state.password,
-            "name": this.state.firstName + " " + this.state.lastName
+            "name": this.state.name,
 
         }
         registerService.registerService(obj).then(r => {
@@ -57,18 +56,18 @@ class RegisterView extends Component {
                     <div className="form-signin container">
                         <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign Up</h1>
 
-                        <input type="text" id="inputFName" className="form-control" placeholder="First Name"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({firstName: e.target.value})}/>
-                        <input type="text" id="inputLName" className="form-control" placeholder="Last Name"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({lastName: e.target.value})}/>
                         <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
                                required="" autoFocus="" style={{"textAlign": "center"}}
                                onChange={(e) => this.setState({email: e.target.value})}/>
+
+                        <input type="text" id="inputFName" className="form-control" placeholder="Name"
+                               required="" autoFocus="" style={{"textAlign": "center"}}
+                               onChange={(e) => this.setState({name: e.target.value})}/>
+
                         <input type="password" id="inputPassword" className="form-control" placeholder="Password"
                                required="" style={{"textAlign": "center"}}
                                onChange={(e) => this.setState({password: e.target.value})}/>
+
                         <input type="password" id="inputConfirmPassword" className="form-control"
                                placeholder="Confirm Password"
                                required="" style={{"textAlign": "center"}}/>
