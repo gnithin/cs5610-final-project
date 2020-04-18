@@ -4,6 +4,8 @@ import NavBarComponent from "../navbar/NavBarComponent";
 
 import questionAnswerService from "../../services/questionAnswerService";
 import SO from "../../services/stackOverflowService";
+import './displayQuestionAnswer.css'
+import Utils from "../../common/utils";
 
 class displayQuestionAnswerView extends Component {
 
@@ -13,7 +15,9 @@ class displayQuestionAnswerView extends Component {
         questionDescription: "",
         answersToQuestion: [],
         answerToPost: "",
-        relatedQuestions: {items: []}
+        relatedQuestions: {items: []},
+        questionAuthor: null,
+        questionVotes: 0,
     };
 
     componentDidMount() {
@@ -24,7 +28,9 @@ class displayQuestionAnswerView extends Component {
                     questionId: questionResponse.data.id,
                     questionTitle: questionResponse.data.title,
                     questionDescription: questionResponse.data.description,
-                    answersToQuestion: questionResponse.data.answers
+                    answersToQuestion: questionResponse.data.answers,
+                    questionAuthor: questionResponse.data.user,
+                    questionVotes: questionResponse.data.totalReputation,
                 });
 
                 SO.searchQuestions(this.state.questionTitle).then((response) => {
@@ -198,160 +204,197 @@ class displayQuestionAnswerView extends Component {
             <div className={''}>
                 <NavBarComponent/>
 
-                {
-                    this.props.isAdmin
-                    &&
-                    <div className={"row float-right mt-2 mr-2"}>
-                        <div className={"col"}>
-                            <button className={"btn btn-danger"} onClick={() => this.deleteQuestion()}>
-                                <i className={"fas fa-trash-alt mr-2"}/>
-                                Delete Question
-                            </button>
+                <div className={'container-fluid'}>
+                    <div className="row">
+                        <div className={'col-md-8 dq-question-wrapper'}>
+                            {this.renderQuestion()}
+
+                            <div className="col-12 dq-entry">
+                                {this.renderAnswers()}
+                                {this.renderPostAnswer()}
+                            </div>
                         </div>
-                    </div>
-                }
 
-                <div className={'row container-fluid'}>
-                    <div className={'col-md-8 '}>
-                        <div className={'container mt-5'}>
-
-                            <div className="form-group row">
-                                <label htmlFor="questionTitle"
-                                       className="col-sm-2 col-form-label">Question</label>
-                                <div className="form-control col-sm-10" id={'questionTitle'}>
-                                    {this.state.questionTitle}
-                                </div>
-                            </div>
-                            <div className="form-group row">
-                                <label htmlFor="questionDesc"
-                                       className="col-sm-2 col-form-label">Question
-                                    Description</label>
-                                <div className="form-control col-sm-10" id="questionDesc">
-                                    {this.state.questionDescription}
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label className="col-sm-2 col-form-label">Selected
-                                    Tags</label>
-                                <div className="col-sm-10">
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label className="col-sm-2 col-form-label">Answer to the
-                                    Question</label>
-                                <div className="col-sm-10">
-
-                                    <div className={'mb-4'}>
-                                        <textarea className={'form-control mb-4'}
-                                                  rows={'4'}
-                                                  value={this.state.answerToPost}
-                                                  onChange={(event) => {
-                                                      this.setState({
-                                                          answerToPost: event.target.value
-                                                      })
-                                                  }}>
-                                        </textarea>
-                                        <button className={'btn btn-success'}
-                                                onClick={() => this.createAnswerToQuestion(
-                                                    this.state.answerToPost,
-                                                    this.state.questionId)}>
-                                            Post Answer
-                                        </button>
-                                    </div>
-
-                                    {
-                                        this.state.answersToQuestion.map((eachAnswer, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <div className={'card '}>
-                                                        <span className={'card-body'}>{eachAnswer.answer}</span>
-                                                        <div className={'card-footer'}>
-                                                            <span className={'pull-left'}>
-                                                                Answered by <strong>{eachAnswer.user.name}</strong>
-                                                            </span>
-                                                            <span className={'pull-right'}>
-                                                                <button
-                                                                    className={`btn ${eachAnswer.currentUserVote === 1 ? "btn-outline-success" : "btn-outline-secondary"}`}
-                                                                    onClick={() => {
-                                                                        this.upVoteAnswer(eachAnswer)
-                                                                    }}>
-                                                                    <i className={"fas fa-thumbs-up"}/>
-                                                                </button>
-                                                                <span className={'btn'}>
-                                                                    <strong>{eachAnswer.totalReputation}</strong>
-                                                                </span>
-                                                                <button
-                                                                    className={`btn ${eachAnswer.currentUserVote === -1 ? "btn-outline-danger" : "btn-outline-secondary"}`}
-                                                                    onClick={() => {
-                                                                        this.downVoteAnswer(eachAnswer)
-                                                                    }}>
-                                                                    <i className={"fas fa-thumbs-down "}/>
-                                                                </button>
-                                                                {
-                                                                    this.props.isAdmin
-                                                                    &&
-                                                                    <button className={"btn btn-outline-danger ml-1"}
-                                                                            onClick={() => this.deleteAnswer(eachAnswer.id)}>
-                                                                        <i className={"fas fa-trash-alt "}/>
-                                                                    </button>
-                                                                }
-                                                           </span>
-                                                        </div>
-                                                    </div>
-                                                    <br/>
-                                                </div>
-                                            );
-                                        })
-                                    }
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className={'col-md-4 mt-5'}>
-                        <div className={'mt-5'}>
-                            <div className="col-sm-12">
-                                <h3>Similar Questions which might be helpful:</h3>
-                                <table className={'table  table-striped table-bordered'}>
-                                    <tbody>
-                                    {
-                                        this.state.relatedQuestions
-                                        &&
-                                        this.state.relatedQuestions.items.slice(0, 5).map(
-                                            (eachItem, index) => {
-                                                return (
-                                                    <tr key={index}>
-                                                        <td key={eachItem.id}>
-                                                            {eachItem.title}
-                                                        </td>
-                                                        <td>
-                                                            <a target={'_blank'}
-                                                               className={'badge badge-pill badge-light'}
-                                                               rel="noopener noreferrer"
-                                                               href={eachItem.link}>
-                                                                link
+                        <div className={'col-md-4'}>
+                            <div>
+                                <div className="col-12">
+                                    <h3>Similar Questions from StackOverflow</h3>
+                                    <ul className="list-group">
+                                        {
+                                            this.state.relatedQuestions
+                                            &&
+                                            this.state.relatedQuestions.items.slice(0, 10).map(
+                                                (eachItem, index) => {
+                                                    return (
+                                                        <li className="list-group-item" key={index}>
+                                                            <a
+                                                                target={'_blank'}
+                                                                rel="noopener noreferrer"
+                                                                href={eachItem.link}
+                                                            >
+                                                                {eachItem.title}
                                                             </a>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })
-                                    }
-                                    </tbody>
-                                </table>
+                                                        </li>
+                                                    )
+                                                })
+                                        }
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             </div>
         );
     }
 
+    renderQuestion() {
+        let author = (<span></span>);
+        if (false === Utils.isNull(this.state.questionAuthor)) {
+            author = (
+                <a
+                    href={`/profiles/${this.state.questionAuthor.id}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    {this.state.questionAuthor.name}
+                </a>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <div className="col-12 dq-entry dq-question-head-wrapper" id={'questionTitle'}>
+                    <div className="dq-question-head">
+                        <div className="dq-question-title">{this.state.questionTitle}</div>
+                        <div className="dq-question-author">
+                            Asked by - {author}
+                        </div>
+                    </div>
+                    {this.renderQuestionVotes()}
+                </div>
+
+                {
+                    this.props.isAdmin
+                    &&
+                    <div className={"col-12 dq-entry"}>
+                        <button className={"btn btn-danger"} onClick={() => this.deleteQuestion()}>
+                            <i className={"fas fa-trash-alt"}/>
+                            &nbsp; Delete Question
+                        </button>
+                    </div>
+                }
+
+                <div className="col-12 dq-entry dq-question-description" id="questionDesc">
+                    {this.state.questionDescription}
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    renderQuestionVotes() {
+        // TODO: Link up the votes for the question
+        return (
+            <div className="dq-question-votes-wrapper">
+                <button className="btn btn-outline-secondary">
+                    <i className="fas fa-thumbs-up"/>
+                </button>
+                <span className="dq-question-vote">{this.state.questionVotes}</span>
+                <button className="btn btn-outline-secondary">
+                    <i class="fas fa-thumbs-down"/>
+                </button>
+            </div>
+        );
+    }
+
+    renderAnswers() {
+        if (Utils.isNull(this.state.answersToQuestion) || this.state.answersToQuestion.length === 0) {
+            return (
+                <div className="dq-empty-answer">
+                    No answers yet. Be the first to answer!
+                </div>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <h3>Answers</h3>
+                <hr/>
+                {this.state.answersToQuestion.map(
+                    (eachAnswer, index) => {
+                        return (
+                            <div key={index}>
+                                <div className={'card '}>
+                                    <span className={'card-body'}>{eachAnswer.answer}</span>
+                                    <div className={'card-footer'}>
+                                <span className={'pull-left'}>
+                                    Answered by <strong>{eachAnswer.user.name}</strong>
+                                </span>
+
+                                        <span className={'pull-right'}>
+                                    <button
+                                        className={`btn ${eachAnswer.currentUserVote === 1 ? "btn-outline-success" : "btn-outline-secondary"}`}
+                                        onClick={() => {
+                                            this.upVoteAnswer(eachAnswer)
+                                        }}
+                                    >
+                                        <i className={"fas fa-thumbs-up"}/>
+                                    </button>
+
+                                    <span className={'btn'}>
+                                        <strong>{eachAnswer.totalReputation}</strong>
+                                    </span>
+
+                                    <button
+                                        className={`btn ${eachAnswer.currentUserVote === -1 ? "btn-outline-danger" : "btn-outline-secondary"}`}
+                                        onClick={() => {
+                                            this.downVoteAnswer(eachAnswer)
+                                        }}>
+                                        <i className={"fas fa-thumbs-down "}/>
+                                    </button>
+
+                                            {
+                                                this.props.isAdmin
+                                                &&
+                                                <button className={"btn btn-outline-danger ml-1"}
+                                                        onClick={() => this.deleteAnswer(eachAnswer.id)}>
+                                                    <i className={"fas fa-trash-alt "}/>
+                                                </button>
+                                            }
+                               </span>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>
+                        );
+                    })}
+            </React.Fragment>
+        );
+    }
+
+    renderPostAnswer() {
+        return (
+            <div className={'mb-4'}>
+                                        <textarea className={'form-control mb-4'}
+                                                  rows={'4'}
+                                                  value={this.state.answerToPost}
+                                                  placeholder="Post your answer here..."
+                                                  onChange={(event) => {
+                                                      this.setState({
+                                                          answerToPost: event.target.value
+                                                      })
+                                                  }}>
+                                        </textarea>
+                <button className={'btn btn-success'}
+                        onClick={() => this.createAnswerToQuestion(
+                            this.state.answerToPost,
+                            this.state.questionId)}>
+                    Post Answer
+                </button>
+            </div>
+        );
+    }
 }
 
 const stateMapper = (state) => {
@@ -360,8 +403,4 @@ const stateMapper = (state) => {
     }
 };
 
-/*const dispatchMapper = (dispatch) => {
-
-  return {}
-};*/
 export default connect(stateMapper)(displayQuestionAnswerView);
