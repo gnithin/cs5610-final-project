@@ -4,12 +4,15 @@ import NavBarComponent from "../navbar/NavBarComponent";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import questionService from "../../services/questionService";
-// import homeImage from "./logo.png";
 import questionAnswerService from "../../services/questionAnswerService";
+import LoadingComponent from "../loader";
+import Utils from "../../common/utils";
+import './home.css'
 
 class HomeView extends Component {
     state = {
-        questionList: []
+        questionList: [],
+        isLoading: true,
     };
 
     componentDidMount() {
@@ -19,6 +22,8 @@ class HomeView extends Component {
                     questionList: allQuestions.data
                 });
             }
+        }).finally(() => {
+            this.setState({isLoading: false});
         });
     }
 
@@ -38,10 +43,17 @@ class HomeView extends Component {
 
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <LoadingComponent
+                    message="Fetching questions..."
+                />
+            );
+        }
+
         return (
             <div>
                 <NavBarComponent/>
-
                 {
                     !this.props.isLoggedIn
                     &&
@@ -50,58 +62,81 @@ class HomeView extends Component {
                         <Link className={"btn btn-primary ml-5"} to={"register"}>Register</Link>
                     </div>
                 }
-
-                <div>
-                    <table className="table table-striped vp-cs5610-table-layout">
-                        <thead>
-                        <tr>
-                            <th scope="col"
-                                className="pl-5">
-                                All Questions
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.questionList
-                            &&
-                            this.state.questionList.map((eachQuestion) => {
-                                return (
-                                    <tr key={eachQuestion.id}>
-                                        <td className="pl-5 pt-4">
-                                            <Link to={`/questions/${eachQuestion.id}`}>
-                                                {eachQuestion.title}
-                                            </Link>
-                                            {
-                                                this.props.isAdmin
-                                                &&
-                                                <span className={"float-right"}>
-                                                    <button className={"btn btn-danger"}
-                                                            onClick={() => this.deleteQuestion(eachQuestion.id)}>
-                                                        <i className={"fas fa-trash-alt mr-2"}></i>
-                                                        Delete Question
-                                                    </button>
-                                                </span>
-                                            }
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        }
-                        </tbody>
-                    </table>
+                <div className="container-fluid home-content-wrapper">
+                    <div className="row">
+                        <div className="offset-1 col-9 home-header">
+                            <h2>New Questions</h2>
+                        </div>
+                        {this.renderQuestions()}
+                    </div>
                 </div>
+            </div>
+        );
+    }
 
-                {/*<div className="text-center">
-                    <img src={homeImage}
-                         className={"rounded mx-auto d-block pt-5"}
-                         alt={"Chowk"}/>
-                </div>
-                <div className="text-center mt-5">
-                    <Link className={"btn btn-success"} to={"login"}>Login</Link>
-                    <Link className={"btn btn-primary ml-5"} to={"register"}>Register</Link>
-                </div>*/}
+    renderQuestions() {
+        if (
+            Utils.isNull(this.state.questionList) ||
+            this.state.questionList.length === 0
+        ) {
+            return (<div>No new questions!. Try refreshing in sometime :)</div>);
+        }
 
+        return (
+            this.state.questionList.map(question => {
+                let username = "";
+                if (false === Utils.isNull(question.user)) {
+                    username = question.user.name;
+                }
+                if (Utils.isEmptyStr(username)) {
+                    username = "Unknown";
+                }
+
+                return (
+                    <div
+                        className="card offset-1 col-9 question-entry"
+                        key={`q-${question.id}`}
+                        onClick={(e) => {
+                            this.props.history.push(`/questions/${question.id}`);
+                        }}
+                    >
+                        <div className="card-body block-wrapper">
+                            <div className="rep-block">
+                                <div>{question.totalReputation}</div>
+                                <div>votes</div>
+                            </div>
+                            <div className="q-block">
+                                {this.renderAdminDelete(() => {
+                                    this.deleteQuestion(question.id)
+                                })}
+                                <h4 className="card-title">{question.title}</h4>
+                                <p className="card-text">
+                                    {Utils.limitSentence(question.description, 100)}
+                                </p>
+                                <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })
+        );
+    }
+
+    renderAdminDelete(deleteCb) {
+        if (false === this.props.isAdmin) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <div className="admin-delete-question">
+                <button
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        deleteCb()
+                    }}>
+                    <i className={"fas fa-trash-alt"}></i>
+                </button>
             </div>
         );
     }
