@@ -275,6 +275,7 @@ class displayQuestionAnswerView extends Component {
             );
         }
 
+        let markdown = markdownConvertor.makeHtml(this.state.questionDescription);
         return (
             <React.Fragment>
                 <div className="col-12 dq-entry dq-question-head-wrapper" id={'questionTitle'}>
@@ -299,7 +300,7 @@ class displayQuestionAnswerView extends Component {
                 }
 
                 <div className="col-12 dq-entry dq-question-description" id="questionDesc">
-                    {this.state.questionDescription}
+                    <div dangerouslySetInnerHTML={{__html: markdown}}/>
                 </div>
             </React.Fragment>
         );
@@ -335,10 +336,13 @@ class displayQuestionAnswerView extends Component {
                 <hr/>
                 {this.state.answersToQuestion.map(
                     (eachAnswer, index) => {
+                        let markdown = markdownConvertor.makeHtml(eachAnswer.answer);
                         return (
                             <div key={index}>
                                 <div className={'card '}>
-                                    <span className={'card-body'}>{eachAnswer.answer}</span>
+                                    <span className={'card-body '}>
+                                        <div className="md-formatting" dangerouslySetInnerHTML={{__html: markdown}}/>
+                                    </span>
                                     <div className={'card-footer'}>
                                 <span className={'pull-left'}>
                                     Answered by <strong>{eachAnswer.user.name}</strong>
@@ -425,7 +429,7 @@ class displayQuestionAnswerView extends Component {
         return (
             <React.Fragment>
                 <div className="font-weight-bold">Answer Preview</div>
-                <div dangerouslySetInnerHTML={{__html: markdown}}/>
+                <div className="md-formatting" dangerouslySetInnerHTML={{__html: markdown}}/>
             </React.Fragment>
         );
     }
