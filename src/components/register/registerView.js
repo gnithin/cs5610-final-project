@@ -11,23 +11,18 @@ class RegisterView extends Component {
         name: "",
         email: "",
         password: "",
-        showMessage: false,
-        validationMessage: ""
     };
 
-    componentDidMount() {
-    }
-
     registerMethod = () => {
-        console.log(this.state.email, ' ', this.state.password, ' ', this.state.name)
+        console.log(this.state.email, ' ', this.state.password, ' ', this.state.name);
         let obj = {
             "email": this.state.email,
             "password": this.state.password,
             "name": this.state.name,
+        };
 
-        }
         registerService.registerService(obj).then(r => {
-                console.log(r)
+                console.log(r);
                 if (r.status === 1) {
                     this.props.setUserData(r.data);
                     registerService.loginService({
@@ -37,11 +32,6 @@ class RegisterView extends Component {
                         this.props.history.push('/home');
                     })
                 }
-                // setTimeout(function () { //Start the timer
-                //     this.setState({showMessage: false}) //After 1 second, set render to true
-                // }.bind(this), 2000)
-                console.log(r)
-
             }
         )
     };
@@ -97,19 +87,14 @@ const stateMapper = (state) => {
     return {
         questionList: state.questionList
     }
-
 };
 
 const dispatchMapper = (dispatch) => {
-    console.log("DEBUG: stateMapper in getAllQuestions called first");
     return {
-        getAllQuestions: () => {
-            dispatch()
-        },
         setUserData: (data) => {
             dispatch(userAction.setUserData(data))
         }
     }
-
 };
+
 export default connect(stateMapper, dispatchMapper)(RegisterView);
