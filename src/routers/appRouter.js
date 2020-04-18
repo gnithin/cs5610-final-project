@@ -9,6 +9,7 @@ import Register from "../components/register"
 import Profile from "../components/profile"
 
 import authenticateComponent from "./authenticateComponent";
+import WelcomeView from "../components/welcome";
 
 class AppRouter extends Component {
 
@@ -16,6 +17,11 @@ class AppRouter extends Component {
         return (
             <BrowserRouter>
                 <Switch>
+                    <Route
+                        path="/welcome"
+                        component={WelcomeView}
+                    />
+
                     <Route
                         path="/register"
                         component={Register}
