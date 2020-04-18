@@ -219,26 +219,7 @@ class displayQuestionAnswerView extends Component {
                             <div>
                                 <div className="col-12">
                                     <h3>Similar Questions from StackOverflow</h3>
-                                    <ul className="list-group">
-                                        {
-                                            this.state.relatedQuestions
-                                            &&
-                                            this.state.relatedQuestions.items.slice(0, 10).map(
-                                                (eachItem, index) => {
-                                                    return (
-                                                        <li className="list-group-item" key={index}>
-                                                            <a
-                                                                target={'_blank'}
-                                                                rel="noopener noreferrer"
-                                                                href={eachItem.link}
-                                                            >
-                                                                {eachItem.title}
-                                                            </a>
-                                                        </li>
-                                                    )
-                                                })
-                                        }
-                                    </ul>
+                                    {this.renderRelatedQA()}
                                 </div>
                             </div>
                         </div>
@@ -246,6 +227,34 @@ class displayQuestionAnswerView extends Component {
                 </div>
 
             </div>
+        );
+    }
+
+    renderRelatedQA() {
+        if (Utils.isNull(this.state.relatedQuestions) || this.state.relatedQuestions.items.length === 0) {
+            return (<div>No match found!</div>)
+        }
+
+        return (
+            <ul className="list-group">
+                {
+                    this.state.relatedQuestions.items.slice(0, 10).map(
+                        (eachItem, index) => {
+                            return (
+                                <li className="list-group-item" key={index}>
+                                    <a
+                                        target={'_blank'}
+                                        rel="noopener noreferrer"
+                                        href={eachItem.link}
+                                    >
+                                        {eachItem.title}
+                                    </a>
+                                </li>
+                            )
+                        }
+                    )
+                }
+            </ul>
         );
     }
 

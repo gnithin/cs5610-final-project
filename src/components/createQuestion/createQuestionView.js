@@ -132,29 +132,37 @@ class CreateQuestionView extends Component {
                     </div>
                     <div className={'col-md-4 '}>
                         <br/>
-                        <h3>Related Questions</h3>
-                        <table className={'table  table-striped table-bordered'}>
-
-                            {this.state.relatedQuestions.items.slice(0, 5).map((item) => {
-                                return (<tr>
-                                    <td key={item.id}>
-                                        {item.title}
-                                    </td>
-                                    <td>
-                                        <a target={'_blank'}
-                                           className={'badge badge-pill badge-light'}
-                                           rel="noopener noreferrer"
-                                           href={item.link}>
-                                            link
-                                        </a>
-                                    </td>
-                                </tr>)
-                            })}
-
-                        </table>
+                        <h3>Similar Questions from StackOverflow</h3>
+                        {this.renderRelatedQA()}
                     </div>
                 </div>
             </div>
+        );
+    }
+
+    renderRelatedQA() {
+        if (Utils.isNull(this.state.relatedQuestions) || this.state.relatedQuestions.items.length === 0) {
+            return (<div>No match found!</div>)
+        }
+
+        return (
+            <ul className="list-group">
+                {this.state.relatedQuestions.items.slice(0, 10).map(
+                    (eachItem, index) => {
+                        return (
+                            <li className="list-group-item" key={index}>
+                                <a
+                                    target={'_blank'}
+                                    rel="noopener noreferrer"
+                                    href={eachItem.link}
+                                >
+                                    {eachItem.title}
+                                </a>
+                            </li>
+                        )
+                    }
+                )}
+            </ul>
         );
     }
 
