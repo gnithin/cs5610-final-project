@@ -53,6 +53,14 @@ class AppRouter extends Component {
                     />
 
                     <Route
+                        exact
+                        path="/"
+                        render={() => {
+                            return (<Redirect to="/welcome"/>);
+                        }}
+                    />
+
+                    <Route
                         path="*"
                         render={() => {
                             return (<Redirect to="/home"/>);
