@@ -147,9 +147,6 @@ const stateMapper = (state) => {
 
 const dispatchMapper = (dispatch) => {
     return {
-        getAllQuestions: () => {
-            dispatch()
-        },
         setUserData: (data) => {
             dispatch(userAction.setUserData(data))
         }
