@@ -72,25 +72,30 @@ class LoginView extends Component {
                     {this.renderErrMsg()}
                     <div className="form-signin container">
                         <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign in</h1>
+                        <form className="login-reg-form" onSubmit={(e) => {
+                            e.preventDefault();
+                            this.loginMethod();
+                        }}>
 
-                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                               required="" autoFocus="" onChange={(e) => {
-                            this.setState({
-                                email: e.target.value
-                            })
-                        }}/>
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                               required="" onChange={(e) => {
-                            this.setState({
-                                password: e.target.value
-                            })
-                        }}/>
-                        <br/>
+                            <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
+                                   required autoFocus="" onChange={(e) => {
+                                this.setState({
+                                    email: e.target.value
+                                })
+                            }}/>
+                            <input type="password" id="inputPassword" className="form-control" placeholder="Password"
+                                   required onChange={(e) => {
+                                this.setState({
+                                    password: e.target.value
+                                })
+                            }}/>
+                            <br/>
 
-                        <button className="btn btn-success btn-block" type="submit" onClick={this.loginMethod}><i
-                            className="fas fa-sign-in-alt"/> &nbsp; Sign in
-                        </button>
+                            <button className="btn btn-success btn-block" type="submit"><i
+                                className="fas fa-sign-in-alt"/> &nbsp; Sign in
+                            </button>
 
+                        </form>
                         <br/>
 
                         <Link to={'/register'}>

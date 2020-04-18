@@ -72,29 +72,35 @@ class RegisterView extends Component {
                     {this.renderErrMsg()}
                     <div className="form-signin container">
                         <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign Up</h1>
+                        <form className="login-reg-form" onSubmit={(e) => {
+                            e.preventDefault();
+                            this.registerMethod();
+                        }}>
 
-                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({email: e.target.value})}/>
 
-                        <input type="text" id="inputFName" className="form-control" placeholder="Name"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({name: e.target.value})}/>
+                            <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
+                                   required autoFocus="" style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({email: e.target.value})}/>
 
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                               required="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({password: e.target.value})}/>
+                            <input type="text" id="inputFName" className="form-control" placeholder="Name"
+                                   required autoFocus="" style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({name: e.target.value})}/>
 
-                        <input type="password" id="inputConfirmPassword" className="form-control"
-                               placeholder="Confirm Password"
-                               required="" style={{"textAlign": "center"}}/>
+                            <input type="password" id="inputPassword" className="form-control" placeholder="Password"
+                                   required style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({password: e.target.value})}/>
 
-                        <br/>
+                            <input type="password" id="inputConfirmPassword" className="form-control"
+                                   placeholder="Confirm Password"
+                                   required style={{"textAlign": "center"}}/>
 
-                        <button className="btn btn-success btn-block" type="submit" onClick={this.registerMethod}><i
-                            className="fas fa-sign-in-alt"/> &nbsp;
-                            Register
-                        </button>
+                            <br/>
+
+                            <button className="btn btn-success btn-block" type="submit"><i
+                                className="fas fa-sign-in-alt"/> &nbsp;
+                                Register
+                            </button>
+                        </form>
                         <br/>
                         <Link to={'/login'}>
                             <button className="btn btn-primary btn-block" type="button" id="btn-signup">

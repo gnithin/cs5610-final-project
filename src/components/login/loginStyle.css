@@ -10,7 +10,6 @@
 
 #logreg-forms form {
     width: 100%;
-    max-width: 410px;
     padding: 15px;
     margin: auto;
 }
@@ -125,3 +124,7 @@
     }
 }
 
+form.login-reg-form {
+    margin: 0px !important;
+    padding: 0px !important;
+}
