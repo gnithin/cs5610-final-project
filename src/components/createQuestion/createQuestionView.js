@@ -26,16 +26,23 @@ class CreateQuestionView extends Component {
         console.log('create question call here');
         questionService.createQuestionService(dummy).then((res) => {
             console.log(res);
-            if (res.status === 1) {
-                this.setState({
-                    showMessage: true
-                })
-
-                setTimeout(function () { //Start the timer
-                    this.setState({showMessage: false}) //After 1 second, set render to true
-                }.bind(this), 2000)
+            if (res.status !== 1) {
+                throw new Error("");
             }
-            this.props.createQuestion(res.data)
+
+            this.setState({
+                showMessage: true
+            });
+
+            setTimeout(function () { //Start the timer
+                this.setState({showMessage: false}) //After 1 second, set render to true
+            }.bind(this), 2000)
+
+            this.props.createQuestion(res.data);
+            let qid = res.data.id;
+            this.props.history.push(`/questions/${qid}`);
+        }).catch(e => {
+            console.error("Question was created!");
         });
     }
 
@@ -91,7 +98,7 @@ class CreateQuestionView extends Component {
                   <textarea type="text"
                             className="form-control"
                             id="questionDesc"
-                            placeholder="provide details about the problem"
+                            placeholder="Provide details about the problem"
 
                             onChange={(e) => {
                                 this.setState({
@@ -117,7 +124,10 @@ class CreateQuestionView extends Component {
                             </div>
                         </div>
                         {this.state.showMessage && <div className={'alert alert-success'}>
-                            <strong>Question was created successfully!!</strong>
+                            <strong>
+                                Question was created successfully!!
+                                Redirecting...
+                            </strong>
                         </div>}
                     </div>
                     <div className={'col-md-4 '}>
