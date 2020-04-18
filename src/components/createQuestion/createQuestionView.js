@@ -5,6 +5,7 @@ import {createQuestion} from "../../redux/actions/questionActions";
 import questionService from '../../services/questionService';
 import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
+import {DebounceInput} from 'react-debounce-input';
 
 const showdown = require('showdown');
 
@@ -48,8 +49,12 @@ class CreateQuestionView extends Component {
 
     SOQuery = (data) => {
         if (data === "") {
+            this.setState({
+                relatedQuestions:null,
+            });
             return;
         }
+
         SO.searchQuestions(data).then((resp) => {
             console.log(resp);
             this.setState({
@@ -73,20 +78,21 @@ class CreateQuestionView extends Component {
                                 <label htmlFor="questionTitle"
                                        className="col-sm-2 col-form-label">Title</label>
                                 <div className="col-sm-10">
-                                    <input type="text" className="form-control"
-                                           id="questionTitle"
-                                           placeholder="Question Title"
-                                           onChange={(e) => {
-                                               this.setState({
-                                                   questionTitle: e.target.value
-                                               })
-
-                                           }}
-                                           value={this.state.questionTitle}
-                                           onBlur={(e) => {
-                                               this.SOQuery(e.target.value);
-                                               console.log('onblur called')
-                                           }}
+                                    <DebounceInput
+                                        minLength={2}
+                                        debounceTimeout={300}
+                                        type="text"
+                                        className="form-control"
+                                        id="questionTitle"
+                                        placeholder="Question Title"
+                                        value={this.state.questionTitle}
+                                        onChange={(e) => {
+                                            console.log("DEBUG: - ", e.target.value);
+                                            this.setState({
+                                                questionTitle: e.target.value
+                                            });
+                                            this.SOQuery(e.target.value);
+                                        }}
                                     />
                                 </div>
                             </div>
