@@ -110,8 +110,12 @@ class HomeView extends Component {
                                     this.deleteQuestion(question.id)
                                 })}
                                 <h4 className="card-title">{question.title}</h4>
-                                <p className="card-text">
-                                    {Utils.limitSentence(question.description, 100)}
+                                <p className="card-block">
+                                    <div className="text-truncate">
+
+                                    {question.description} asa sas as a as as as as asa sa aas s as as as as as as as as
+                                    as as as asa as a sa as as a sa s a sa a sa sa s as a sa sa a sa a sas as as
+                                    </div>
                                 </p>
                                 <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
                             </div>

@@ -16,3 +16,9 @@ code {
 .md-formatting {
     white-space: pre-wrap;
 }
+
+.wbdv-text-overflow-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
