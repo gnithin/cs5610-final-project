@@ -26,23 +26,27 @@ class CreateQuestionView extends Component {
         console.log('create question call here');
         questionService.createQuestionService(dummy).then((res) => {
             console.log(res);
-            if (res.status === 1) {
-                this.setState({
-                    showMessage: true
-                })
-
-                setTimeout(function () { //Start the timer
-                    this.setState({showMessage: false}) //After 1 second, set render to true
-                }.bind(this), 2000)
+            if (res.status !== 1) {
+                throw new Error("");
             }
-            this.props.createQuestion(res.data)
+
+            this.setState({
+                showMessage: true
+            });
+
+            setTimeout(function () { //Start the timer
+                this.setState({showMessage: false}) //After 1 second, set render to true
+            }.bind(this), 2000)
+
+            this.props.createQuestion(res.data);
+            let qid = res.data.id;
+            this.props.history.push(`/questions/${qid}`);
+        }).catch(e => {
+            console.error("Question was created!");
         });
     }
 
     SOQuery = (data) => {
-        // this.setState({
-        //                   relatedQuestions: {items: []}
-        //               });
         if (data === "") {
             return;
         }
@@ -94,7 +98,7 @@ class CreateQuestionView extends Component {
                   <textarea type="text"
                             className="form-control"
                             id="questionDesc"
-                            placeholder="provide details about the problem"
+                            placeholder="Provide details about the problem"
 
                             onChange={(e) => {
                                 this.setState({
@@ -111,41 +115,6 @@ class CreateQuestionView extends Component {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-sm-2 col-form-label">Tags</label>
-                                <div className="col-sm-10">
-                                    <div className="form-inline">
-                                        <label className="my-1 mr-2"
-                                               htmlFor="searchTag">Search for other tags</label>
-                                        <input type="text" id="searchTag"
-                                               placeholder={'Enter tag names'}
-                                               className={'form-control'}
-                                               autoComplete="off"/>
-                                    </div>
-                                    <br/>
-
-                                    <div className="btn-group-toggle" data-toggle="buttons">
-
-                                        <label>Commonly used tags: &nbsp;</label>
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked1
-                                        </label>
-
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked2
-                                        </label>
-
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked3
-                                        </label>
-                                        <hr/>
-                                        <label>Selected Tags:&nbsp;</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group row">
                                 <div className="col-sm-10">
                                     <button type="submit" onClick={() => this.createQuestionMethod(
                                         this.state.questionTitle, this.state.questionDescription)}
@@ -155,57 +124,45 @@ class CreateQuestionView extends Component {
                             </div>
                         </div>
                         {this.state.showMessage && <div className={'alert alert-success'}>
-                            <strong>Question was created successfully!!</strong>
+                            <strong>
+                                Question was created successfully!!
+                                Redirecting...
+                            </strong>
                         </div>}
                     </div>
                     <div className={'col-md-4 '}>
                         <br/>
-                        <h3>Related Questions</h3>
-                        <table className={'table  table-striped table-bordered'}>
-
-                            {this.state.relatedQuestions.items.slice(0, 5).map((item) => {
-                                return (<tr>
-                                    <td key={item.id}>
-                                        {item.title}
-                                    </td>
-                                    <td>
-                                        <a target={'_blank'}
-                                           className={'badge badge-pill badge-light'}
-                                           rel="noopener noreferrer"
-                                           href={item.link}>
-                                            link
-                                        </a>
-                                    </td>
-                                </tr>)
-                            })}
-
-                        </table>
+                        <h3>Similar Questions from StackOverflow</h3>
+                        {this.renderRelatedQA()}
                     </div>
-
-                    {/*<div className={'col-md-4 '}>
-                    <br/>
-                    <div className="card" style={{"width": "30rem"}}>
-                      <img src="http://via.placeholder.com/640x360"
-                           className="card-img-top profileImageSize" alt="..."/>
-                      <div className="card-body">
-                        <h5 className="card-title">User Name</h5>
-                        <p className="card-text">Sample text here </p>
-                      </div>
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item">Reputation</li>
-                        <li className="list-group-item">Questions asked</li>
-                        <li className="list-group-item">Questions answered</li>
-                      </ul>
-                      <div className="card-body">
-                        <a href="#" className="card-link">Card link</a>
-                        <a href="#" className="card-link">Another link</a>
-                      </div>
-                    </div>
-                  </div>*/}
-
                 </div>
-
             </div>
+        );
+    }
+
+    renderRelatedQA() {
+        if (Utils.isNull(this.state.relatedQuestions) || this.state.relatedQuestions.items.length === 0) {
+            return (<div>No match found!</div>)
+        }
+
+        return (
+            <ul className="list-group">
+                {this.state.relatedQuestions.items.slice(0, 10).map(
+                    (eachItem, index) => {
+                        return (
+                            <li className="list-group-item" key={index}>
+                                <a
+                                    target={'_blank'}
+                                    rel="noopener noreferrer"
+                                    href={eachItem.link}
+                                >
+                                    {eachItem.title}
+                                </a>
+                            </li>
+                        )
+                    }
+                )}
+            </ul>
         );
     }
 
