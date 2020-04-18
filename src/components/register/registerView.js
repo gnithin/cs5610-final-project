@@ -5,47 +5,62 @@ import {connect} from "react-redux";
 import './registerStyle.css'
 import registerService from "../../services/loginAndRegistrationService";
 import userAction from "../../redux/actions/userProfileActions";
+import Utils from "../../common/utils";
 
 class RegisterView extends Component {
     state = {
-        firstName: "",
-        lastName: "",
+        name: "",
         email: "",
         password: "",
-        showMessage: false,
-        validationMessage: ""
+        errMsg: null,
     };
 
-    componentDidMount() {
-    }
-
     registerMethod = () => {
-        console.log(this.state.email, ' ', this.state.password, ' ', this.state.firstName + this.state.lastName)
+        console.log(this.state.email, ' ', this.state.password, ' ', this.state.name);
         let obj = {
             "email": this.state.email,
             "password": this.state.password,
-            "name": this.state.firstName + " " + this.state.lastName
+            "name": this.state.name,
+        };
 
-        }
-        registerService.registerService(obj).then(r => {
-                console.log(r)
-                if (r.status === 1) {
-                    this.props.setUserData(r.data);
-                    registerService.loginService({
-                        email: this.state.email,
-                        password: this.state.password
-                    }).then(r => {
-                        this.props.history.push('/home');
-                    })
+        registerService.registerService(obj).then(response => {
+                if (response.status !== 1) {
+                    throw new Error("Unable to register user. Please try again!");
                 }
-                // setTimeout(function () { //Start the timer
-                //     this.setState({showMessage: false}) //After 1 second, set render to true
-                // }.bind(this), 2000)
-                console.log(r)
 
+                this.props.setUserData(response.data);
+                registerService.loginService({
+                    email: this.state.email,
+                    password: this.state.password
+                }).then(loginResponse => {
+                    if (loginResponse.status !== 1) {
+                        throw new Error('Register was successful, but login failed :( Please try logging in.')
+                    }
+
+                    this.props.history.push('/home');
+                });
             }
-        )
+        ).catch(e => {
+            let msg = e.message;
+            if (Utils.isEmptyStr(msg)) {
+                msg = "Error registering user. Please try again!";
+            }
+
+            this.setState({errMsg: msg});
+        })
     };
+
+    renderErrMsg() {
+        if (Utils.isEmptyStr(this.state.errMsg)) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <div className="alert alert-danger" role="alert">
+                {this.state.errMsg}
+            </div>
+        );
+    }
 
     render() {
         return (
@@ -54,35 +69,44 @@ class RegisterView extends Component {
 
                 <div id="logreg-forms">
                     <br/>
+                    {this.renderErrMsg()}
                     <div className="form-signin container">
                         <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign Up</h1>
+                        <form className="login-reg-form" onSubmit={(e) => {
+                            e.preventDefault();
+                            this.registerMethod();
+                        }}>
 
-                        <input type="text" id="inputFName" className="form-control" placeholder="First Name"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({firstName: e.target.value})}/>
-                        <input type="text" id="inputLName" className="form-control" placeholder="Last Name"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({lastName: e.target.value})}/>
-                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
-                               required="" autoFocus="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({email: e.target.value})}/>
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password"
-                               required="" style={{"textAlign": "center"}}
-                               onChange={(e) => this.setState({password: e.target.value})}/>
-                        <input type="password" id="inputConfirmPassword" className="form-control"
-                               placeholder="Confirm Password"
-                               required="" style={{"textAlign": "center"}}/>
 
+                            <input type="email" id="inputEmail" className="form-control" placeholder="Email address"
+                                   required autoFocus="" style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({email: e.target.value})}/>
+
+                            <input type="text" id="inputFName" className="form-control" placeholder="Name"
+                                   required autoFocus="" style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({name: e.target.value})}/>
+
+                            <input type="password" id="inputPassword" className="form-control" placeholder="Password"
+                                   required style={{"textAlign": "center"}}
+                                   onChange={(e) => this.setState({password: e.target.value})}/>
+
+                            <input type="password" id="inputConfirmPassword" className="form-control"
+                                   placeholder="Confirm Password"
+                                   required style={{"textAlign": "center"}}/>
+
+                            <br/>
+
+                            <button className="btn btn-success btn-block" type="submit"><i
+                                className="fas fa-sign-in-alt"/> &nbsp;
+                                Register
+                            </button>
+                        </form>
                         <br/>
-
-                        <button className="btn btn-success btn-block" type="submit" onClick={this.registerMethod}><i
-                            className="fas fa-sign-in-alt"/> &nbsp;
-                            Register
-                        </button>
-                        <br/>
-                        <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link to={'/login'}><i
-                            className="fas fa-user-plus"/> &nbsp; Back to Login</Link>
-                        </button>
+                        <Link to={'/login'}>
+                            <button className="btn btn-primary btn-block" type="button" id="btn-signup">
+                                <i className="fas fa-user-plus"/> &nbsp; Back to Login
+                            </button>
+                        </Link>
                     </div>
 
                     <br/>
@@ -98,19 +122,14 @@ const stateMapper = (state) => {
     return {
         questionList: state.questionList
     }
-
 };
 
 const dispatchMapper = (dispatch) => {
-    console.log("DEBUG: stateMapper in getAllQuestions called first");
     return {
-        getAllQuestions: () => {
-            dispatch()
-        },
         setUserData: (data) => {
             dispatch(userAction.setUserData(data))
         }
     }
-
 };
+
 export default connect(stateMapper, dispatchMapper)(RegisterView);
