@@ -6,6 +6,7 @@ import questionService from '../../services/questionService';
 import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
 import {DebounceInput} from 'react-debounce-input';
+import './createQuestionView.css'
 
 const showdown = require('showdown');
 
@@ -70,7 +71,7 @@ class CreateQuestionView extends Component {
             <div className={''}>
                 <NavBarComponent/>
                 <div className={'row container-fluid'}>
-                    <div className={'col-md-8 '}>
+                    <div className={'col-md-8 cq-question-wrapper'}>
 
                         <h3>Post your question here:</h3>
                         <div className={'container'}>
