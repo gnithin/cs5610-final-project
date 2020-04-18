@@ -1,0 +1,33 @@
+.wc-wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wc-contents {
+    text-align: center;
+}
+
+.wc-links-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.wc-link {
+    margin: 5px;
+    width: 200px;
+    font-size: 130%;
+}
+
+.wc-header {
+    font-size: 400%;
+}
+
+.wc-tagline {
+    font-size: 150%;
+}
