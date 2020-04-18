@@ -21,7 +21,7 @@ class LoginView extends Component {
             "password": this.state.password
         };
         loginService.loginService(obj).then(response => {
-                if (response.ok) {
+                if (response.status === 1) {
                     this.props.setUserData(response.data);
                     this.props.history.push('/home');
                 } else {

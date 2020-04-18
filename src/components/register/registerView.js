@@ -24,7 +24,7 @@ class RegisterView extends Component {
         };
 
         registerService.registerService(obj).then(response => {
-                if (!response.ok) {
+                if (response.status !== 1) {
                     throw new Error("Unable to register user. Please try again!");
                 }
 
@@ -33,7 +33,7 @@ class RegisterView extends Component {
                     email: this.state.email,
                     password: this.state.password
                 }).then(loginResponse => {
-                    if (!loginResponse.ok) {
+                    if (loginResponse.status !== 1) {
                         throw new Error('Register was successful, but login failed :( Please try logging in.')
                     }
 
