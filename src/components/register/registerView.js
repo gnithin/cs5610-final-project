@@ -6,12 +6,14 @@ import './registerStyle.css'
 import registerService from "../../services/loginAndRegistrationService";
 import userAction from "../../redux/actions/userProfileActions";
 import Utils from "../../common/utils";
+import LoadingComponent from "../loader";
 
 class RegisterView extends Component {
     state = {
         name: "",
         email: "",
         password: "",
+        isLoading: false,
         errMsg: null,
     };
 
@@ -23,6 +25,7 @@ class RegisterView extends Component {
             "name": this.state.name,
         };
 
+        this.setState({isLoading: true});
         registerService.registerService(obj).then(response => {
                 if (response.status !== 1) {
                     throw new Error("Unable to register user. Please try again!");
@@ -47,6 +50,8 @@ class RegisterView extends Component {
             }
 
             this.setState({errMsg: msg});
+        }).finally(onFinally => {
+            this.setState({isLoading: false});
         })
     };
 
@@ -96,10 +101,8 @@ class RegisterView extends Component {
 
                             <br/>
 
-                            <button className="btn btn-success btn-block" type="submit"><i
-                                className="fas fa-sign-in-alt"/> &nbsp;
-                                Register
-                            </button>
+                            {this.renderRegister()}
+
                         </form>
                         <br/>
                         <Link to={'/login'}>
@@ -113,6 +116,35 @@ class RegisterView extends Component {
 
                 </div>
             </div>
+        );
+    }
+
+    renderRegister() {
+        let message = (
+            <span>
+                <i className="fas fa-sign-in-alt"/> &nbsp;
+                Register
+            </span>
+        );
+
+        if (this.state.isLoading) {
+            message = (<span>
+                <LoadingComponent
+                    message="Registering..."
+                    wrapperClass="custom-wrapper"
+                    loadingClass="custom-loader"
+                />
+            </span>);
+        }
+        
+        return (
+            <button
+                className="btn btn-success btn-block"
+                type="submit"
+                disabled={this.state.isLoading}
+            >
+                {message}
+            </button>
         );
     }
 }

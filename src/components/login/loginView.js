@@ -7,12 +7,14 @@ import loginService from "../../services/loginAndRegistrationService";
 import './loginStyle.css'
 import userAction from '../../redux/actions/userProfileActions'
 import Utils from "../../common/utils";
+import LoadingComponent from "../loader";
 
 class LoginView extends Component {
     state = {
         email: "",
         password: "",
         errMsg: null,
+        isLoading: false,
     };
 
     loginMethod = () => {
@@ -20,6 +22,8 @@ class LoginView extends Component {
             "email": this.state.email,
             "password": this.state.password
         };
+
+        this.setState({isLoading: true});
         loginService.loginService(obj).then(response => {
                 if (response.status === 1) {
                     this.props.setUserData(response.data);
@@ -38,8 +42,10 @@ class LoginView extends Component {
             if (Utils.isEmptyStr(msg)) {
                 msg = "Error logging in. Please try again!";
             }
-
             this.setState({errMsg: msg});
+
+        }).finally(onFinally => {
+            this.setState({isLoading: false});
         })
     };
 
@@ -90,11 +96,7 @@ class LoginView extends Component {
                                 })
                             }}/>
                             <br/>
-
-                            <button className="btn btn-success btn-block" type="submit"><i
-                                className="fas fa-sign-in-alt"/> &nbsp; Sign in
-                            </button>
-
+                            {this.renderSignIn()}
                         </form>
                         <br/>
 
@@ -112,6 +114,29 @@ class LoginView extends Component {
             </div>
         );
     }
+
+    renderSignIn() {
+        let message = (<span><i className="fas fa-sign-in-alt"/> &nbsp; Sign in</span>);
+        if (this.state.isLoading) {
+            message = (<span>
+                <LoadingComponent
+                    message="Logging in..."
+                    wrapperClass="custom-wrapper"
+                    loadingClass="custom-loader"
+                />
+            </span>);
+        }
+
+        return (
+            <button
+                className="btn btn-success btn-block"
+                type="submit"
+                disabled={this.state.isLoading}
+            >
+                {message}
+            </button>
+        );
+    }
 }
 
 const stateMapper = (state) => {
@@ -122,9 +147,6 @@ const stateMapper = (state) => {
 
 const dispatchMapper = (dispatch) => {
     return {
-        getAllQuestions: () => {
-            dispatch()
-        },
         setUserData: (data) => {
             dispatch(userAction.setUserData(data))
         }
