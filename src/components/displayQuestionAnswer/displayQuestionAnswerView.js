@@ -351,7 +351,6 @@ class displayQuestionAnswerView extends Component {
             </div>
         );
     }
-
 }
 
 const stateMapper = (state) => {
@@ -360,8 +359,4 @@ const stateMapper = (state) => {
     }
 };
 
-/*const dispatchMapper = (dispatch) => {
-
-  return {}
-};*/
 export default connect(stateMapper)(displayQuestionAnswerView);
