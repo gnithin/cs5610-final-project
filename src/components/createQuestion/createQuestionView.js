@@ -111,41 +111,6 @@ class CreateQuestionView extends Component {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-sm-2 col-form-label">Tags</label>
-                                <div className="col-sm-10">
-                                    <div className="form-inline">
-                                        <label className="my-1 mr-2"
-                                               htmlFor="searchTag">Search for other tags</label>
-                                        <input type="text" id="searchTag"
-                                               placeholder={'Enter tag names'}
-                                               className={'form-control'}
-                                               autoComplete="off"/>
-                                    </div>
-                                    <br/>
-
-                                    <div className="btn-group-toggle" data-toggle="buttons">
-
-                                        <label>Commonly used tags: &nbsp;</label>
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked1
-                                        </label>
-
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked2
-                                        </label>
-
-                                        <label className="btn btn-outline-success btn-sm ">
-                                            <input type="checkbox"
-                                                   autoComplete="off"/> Checked3
-                                        </label>
-                                        <hr/>
-                                        <label>Selected Tags:&nbsp;</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group row">
                                 <div className="col-sm-10">
                                     <button type="submit" onClick={() => this.createQuestionMethod(
                                         this.state.questionTitle, this.state.questionDescription)}
