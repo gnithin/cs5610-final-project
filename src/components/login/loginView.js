@@ -93,12 +93,12 @@ class LoginView extends Component {
 
                         <br/>
 
-                        <button className="btn btn-primary btn-block" type="button" id="btn-signup">
-                            <Link to={'/register'}>
+                        <Link to={'/register'}>
+                            <button className="btn btn-primary btn-block" type="button" id="btn-signup">
                                 <i className="fas fa-user-plus"/> &nbsp;
                                 Register
-                            </Link>
-                        </button>
+                            </button>
+                        </Link>
                     </div>
 
                     <br/>

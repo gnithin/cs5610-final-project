@@ -5,12 +5,14 @@ import {connect} from "react-redux";
 import './registerStyle.css'
 import registerService from "../../services/loginAndRegistrationService";
 import userAction from "../../redux/actions/userProfileActions";
+import Utils from "../../common/utils";
 
 class RegisterView extends Component {
     state = {
         name: "",
         email: "",
         password: "",
+        errMsg: null,
     };
 
     registerMethod = () => {
@@ -21,20 +23,44 @@ class RegisterView extends Component {
             "name": this.state.name,
         };
 
-        registerService.registerService(obj).then(r => {
-                console.log(r);
-                if (r.status === 1) {
-                    this.props.setUserData(r.data);
-                    registerService.loginService({
-                        email: this.state.email,
-                        password: this.state.password
-                    }).then(r => {
-                        this.props.history.push('/home');
-                    })
+        registerService.registerService(obj).then(response => {
+                if (!response.ok) {
+                    throw new Error("Unable to register user. Please try again!");
                 }
+
+                this.props.setUserData(response.data);
+                registerService.loginService({
+                    email: this.state.email,
+                    password: this.state.password
+                }).then(loginResponse => {
+                    if (!loginResponse.ok) {
+                        throw new Error('Register was successful, but login failed :( Please try logging in.')
+                    }
+
+                    this.props.history.push('/home');
+                });
             }
-        )
+        ).catch(e => {
+            let msg = e.message;
+            if (Utils.isEmptyStr(msg)) {
+                msg = "Error registering user. Please try again!";
+            }
+
+            this.setState({errMsg: msg});
+        })
     };
+
+    renderErrMsg() {
+        if (Utils.isEmptyStr(this.state.errMsg)) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <div className="alert alert-danger" role="alert">
+                {this.state.errMsg}
+            </div>
+        );
+    }
 
     render() {
         return (
@@ -43,6 +69,7 @@ class RegisterView extends Component {
 
                 <div id="logreg-forms">
                     <br/>
+                    {this.renderErrMsg()}
                     <div className="form-signin container">
                         <h1 className="h3 mb-3 font-weight-normal" style={{'textAlign': 'center'}}> Sign Up</h1>
 
@@ -69,9 +96,11 @@ class RegisterView extends Component {
                             Register
                         </button>
                         <br/>
-                        <button className="btn btn-primary btn-block" type="button" id="btn-signup"><Link to={'/login'}><i
-                            className="fas fa-user-plus"/> &nbsp; Back to Login</Link>
-                        </button>
+                        <Link to={'/login'}>
+                            <button className="btn btn-primary btn-block" type="button" id="btn-signup">
+                                <i className="fas fa-user-plus"/> &nbsp; Back to Login
+                            </button>
+                        </Link>
                     </div>
 
                     <br/>
