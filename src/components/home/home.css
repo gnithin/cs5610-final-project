@@ -1,0 +1,32 @@
+.home-content-wrapper {
+    margin: 20px 0px;
+}
+
+.home-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.admin-delete-question {
+    float: right;
+}
+
+.question-entry {
+    cursor: pointer;
+}
+
+.block-wrapper {
+    display: flex;
+}
+
+.rep-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.q-block {
+    flex-grow: 2;
+}
