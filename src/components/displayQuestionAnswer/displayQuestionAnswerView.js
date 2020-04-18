@@ -311,7 +311,7 @@ class displayQuestionAnswerView extends Component {
                 </button>
                 <span className="dq-question-vote">{this.state.questionVotes}</span>
                 <button className="btn btn-outline-secondary">
-                    <i class="fas fa-thumbs-down"/>
+                    <i className="fas fa-thumbs-down"/>
                 </button>
             </div>
         );
