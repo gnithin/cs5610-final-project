@@ -265,8 +265,14 @@ class displayQuestionAnswerView extends Component {
 
         return (
             <React.Fragment>
-                <div className="col-12 dq-entry" id={'questionTitle'}>
-                    <div className="dq-question-title">{this.state.questionTitle}</div>
+                <div className="col-12 dq-entry dq-question-head-wrapper" id={'questionTitle'}>
+                    <div className="dq-question-head">
+                        <div className="dq-question-title">{this.state.questionTitle}</div>
+                        <div className="dq-question-author">
+                            Asked by - {author}
+                        </div>
+                    </div>
+                    {this.renderQuestionVotes()}
                 </div>
 
                 {
@@ -283,10 +289,22 @@ class displayQuestionAnswerView extends Component {
                 <div className="col-12 dq-entry dq-question-description" id="questionDesc">
                     {this.state.questionDescription}
                 </div>
-                <div className="col-12 dq-question-author">
-                    Asked by - {author}
-                </div>
             </React.Fragment>
+        );
+    }
+
+    renderQuestionVotes() {
+        // TODO: Link up the votes for the question
+        return (
+            <div className="dq-question-votes-wrapper">
+                <button className="btn btn-outline-secondary">
+                    <i className="fas fa-thumbs-up"/>
+                </button>
+                <span className="dq-question-vote">{this.state.questionVotes}</span>
+                <button className="btn btn-outline-secondary">
+                    <i class="fas fa-thumbs-down"/>
+                </button>
+            </div>
         );
     }
 
