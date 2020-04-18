@@ -216,7 +216,7 @@ class displayQuestionAnswerView extends Component {
                         </div>
 
                         <div className={'col-md-4'}>
-                            <div>
+                            <div className="dq-similar-questions-wrapper">
                                 <div className="col-12">
                                     <h3>Similar Questions from StackOverflow</h3>
                                     {this.renderRelatedQA()}
