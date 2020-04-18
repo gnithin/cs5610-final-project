@@ -128,3 +128,14 @@ form.login-reg-form {
     margin: 0px !important;
     padding: 0px !important;
 }
+
+.custom-wrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.custom-loader {
+    font-size: 110%;
+    margin: 0px 15px;
+}
