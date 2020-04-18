@@ -7,6 +7,9 @@ import SO from "../../services/stackOverflowService";
 import './displayQuestionAnswer.css'
 import Utils from "../../common/utils";
 
+const showdown = require('showdown');
+const markdownConvertor = new showdown.Converter();
+
 class displayQuestionAnswerView extends Component {
 
     state = {
@@ -385,16 +388,22 @@ class displayQuestionAnswerView extends Component {
     renderPostAnswer() {
         return (
             <div className={'mb-4'}>
-                                        <textarea className={'form-control mb-4'}
-                                                  rows={'4'}
-                                                  value={this.state.answerToPost}
-                                                  placeholder="Post your answer here..."
-                                                  onChange={(event) => {
-                                                      this.setState({
-                                                          answerToPost: event.target.value
-                                                      })
-                                                  }}>
-                                        </textarea>
+                <textarea
+                    className={'form-control mb-4'}
+                    rows={'4'}
+                    value={this.state.answerToPost}
+                    placeholder="Post your answer here..."
+                    onChange={(event) => {
+                        this.setState({
+                            answerToPost: event.target.value
+                        })
+                    }}>
+                </textarea>
+
+                <div className="answer-preview">
+                    {this.renderPreview()}
+                </div>
+
                 <button className={'btn btn-success'}
                         onClick={() => this.createAnswerToQuestion(
                             this.state.answerToPost,
@@ -402,6 +411,22 @@ class displayQuestionAnswerView extends Component {
                     Post Answer
                 </button>
             </div>
+        );
+    }
+
+    renderPreview() {
+        if (Utils.isEmptyStr(this.state.answerToPost)) {
+            return (
+                <React.Fragment/>
+            );
+        }
+
+        let markdown = markdownConvertor.makeHtml(this.state.answerToPost);
+        return (
+            <React.Fragment>
+                <div className="font-weight-bold">Answer Preview</div>
+                <div dangerouslySetInnerHTML={{__html: markdown}}/>
+            </React.Fragment>
         );
     }
 }
