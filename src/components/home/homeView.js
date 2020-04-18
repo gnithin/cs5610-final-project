@@ -6,10 +6,12 @@ import {connect} from "react-redux";
 import questionService from "../../services/questionService";
 // import homeImage from "./logo.png";
 import questionAnswerService from "../../services/questionAnswerService";
+import LoadingComponent from "../loader";
 
 class HomeView extends Component {
     state = {
-        questionList: []
+        questionList: [],
+        isLoading: true,
     };
 
     componentDidMount() {
@@ -19,6 +21,8 @@ class HomeView extends Component {
                     questionList: allQuestions.data
                 });
             }
+        }).finally(() => {
+            this.setState({isLoading: false});
         });
     }
 
@@ -38,10 +42,17 @@ class HomeView extends Component {
 
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <LoadingComponent
+                    message="Fetching questions..."
+                />
+            );
+        }
+
         return (
             <div>
                 <NavBarComponent/>
-
                 {
                     !this.props.isLoggedIn
                     &&
