@@ -1,0 +1,19 @@
+.dq-entry {
+    margin: 20px 0px;
+}
+
+.dq-question-title {
+    font-size: 200%;
+}
+
+.dq-question-author {
+    color: grey;
+}
+
+.dq-question-description {
+    font-size: 130%;
+}
+
+.dq-empty-answer {
+   margin: 30px 0px
+}
