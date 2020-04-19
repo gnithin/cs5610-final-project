@@ -11,6 +11,7 @@ import Profile from "../components/profile"
 import authenticatedComponent from "./authenticatedComponent";
 import WelcomeView from "../components/welcome";
 import unauthenticatedComponent from "./unauthenticatedComponent";
+import AnyAuthComponent from "./anyAuthComponent";
 
 class AppRouter extends Component {
 
@@ -20,7 +21,7 @@ class AppRouter extends Component {
                 <Switch>
                     <Route
                         path="/welcome"
-                        component={WelcomeView}
+                        component={AnyAuthComponent(WelcomeView)}
                     />
 
                     <Route
@@ -35,7 +36,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/profiles/:userId"
-                        component={Profile}
+                        component={AnyAuthComponent(Profile)}
                     />
 
                     <Route

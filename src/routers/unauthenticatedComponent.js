@@ -5,7 +5,12 @@ import baseAuthComponent from "./baseAuthComponent";
  * @param WrappedComponent Component to be rendered if the user is authenticated
  */
 const unauthenticatedComponent = (WrappedComponent) => {
-    return baseAuthComponent(WrappedComponent, true, '/home')
+    return baseAuthComponent(
+        WrappedComponent,
+        true,
+        true,
+        '/home'
+    )
 };
 
 export default unauthenticatedComponent;
