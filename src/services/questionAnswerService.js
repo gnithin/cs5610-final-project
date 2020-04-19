@@ -8,7 +8,7 @@ let errorMessage = {
 };
 
 export const findQuestionDetails = (questionID) =>
-    fetch(`${API_URL}/api/questions/${questionID}`,{
+    fetch(`${API_URL}/api/questions/${questionID}`, {
         method: 'GET',
         headers: {
             'content-type': 'application/json'
@@ -48,7 +48,7 @@ export const createAnswerForQuestion = (answer, questionId) => {
 };
 
 const deleteQuestion = (questionId) => {
-    return fetch(`${API_URL}/api/questions/${questionId}`,{
+    return fetch(`${API_URL}/api/questions/${questionId}`, {
         method: 'DELETE',
         credentials: 'include'
     }).then(
@@ -66,7 +66,7 @@ const deleteQuestion = (questionId) => {
 };
 
 const deleteAnswer = (answerId) => {
-    return fetch(`${API_URL}/api/answers/${answerId}`,{
+    return fetch(`${API_URL}/api/answers/${answerId}`, {
         method: 'DELETE',
         credentials: 'include'
     }).then(
@@ -82,8 +82,9 @@ const deleteAnswer = (answerId) => {
         }
     );
 };
+
 const upVoteAnswer = (answerId) => {
-    return fetch(`${API_URL}/api/answers/${answerId}/upvote`,{
+    return fetch(`${API_URL}/api/answers/${answerId}/upvote`, {
         method: 'PUT',
         credentials: 'include'
     }).then(
@@ -101,7 +102,7 @@ const upVoteAnswer = (answerId) => {
 };
 
 const downVoteAnswer = (answerId) => {
-    return fetch(`${API_URL}/api/answers/${answerId}/downvote`,{
+    return fetch(`${API_URL}/api/answers/${answerId}/downvote`, {
         method: 'PUT',
         credentials: 'include'
     }).then(
@@ -118,8 +119,62 @@ const downVoteAnswer = (answerId) => {
     );
 };
 
-const deleteVote = (answerId) => {
-    return fetch(`${API_URL}/api/answers/${answerId}/votes`,{
+const deleteAnswerVote = (answerId) => {
+    return fetch(`${API_URL}/api/answers/${answerId}/votes`, {
+        method: 'DELETE',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+
+const upVoteQuestion = (questionId) => {
+    return fetch(`${API_URL}/api/questions/${questionId}/upvote`, {
+        method: 'PUT',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+
+const downVoteQuestion = (questionId) => {
+    return fetch(`${API_URL}/api/questions/${questionId}/downvote`, {
+        method: 'PUT',
+        credentials: 'include'
+    }).then(
+        response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                errorMessage.responseCode = response.status;
+                errorMessage.responseData = response;
+
+                return errorMessage
+            }
+        }
+    );
+};
+
+const deleteQuestionVote = (questionId) => {
+    return fetch(`${API_URL}/api/questions/${questionId}/votes`, {
         method: 'DELETE',
         credentials: 'include'
     }).then(
@@ -143,5 +198,8 @@ export default {
     deleteAnswer,
     upVoteAnswer,
     downVoteAnswer,
-    deleteVote
+    deleteAnswerVote,
+    upVoteQuestion,
+    downVoteQuestion,
+    deleteQuestionVote,
 }
