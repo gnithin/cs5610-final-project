@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './navBarStyle.css'
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import loginService from '../../services/loginAndRegistrationService'
 import {connect} from "react-redux";
 import userProfileActions from "../../redux/actions/userProfileActions";
@@ -10,9 +10,14 @@ class NavBarComponent extends Component {
 
     logout = () => {
         loginService.logoutService().then(response => {
-            if (response.status === 1) {
-                this.props.resetLoginState();
+            if (response.status !== 1) {
+                throw new Error("Logout was unsuccessful!");
             }
+
+            this.props.resetLoginState();
+            this.props.history.push('/login');
+        }).catch(e => {
+            console.log("Error logging out of the system! - ", e);
         });
     };
 
@@ -103,4 +108,4 @@ const dispatchMapper = (dispatch) => {
     }
 
 };
-export default connect(stateMapper, dispatchMapper)(NavBarComponent);
+export default withRouter(connect(stateMapper, dispatchMapper)(NavBarComponent));
