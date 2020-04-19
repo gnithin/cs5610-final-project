@@ -24,9 +24,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-right: 50px;
 }
 
 .q-block {
-    flex-grow: 2;
 }

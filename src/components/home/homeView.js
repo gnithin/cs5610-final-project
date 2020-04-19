@@ -100,18 +100,20 @@ class HomeView extends Component {
                             this.props.history.push(`/questions/${question.id}`);
                         }}
                     >
-                        <div className="card-body block-wrapper">
-                            <div className="rep-block">
+                        <div className="card-body block-wrapper row">
+                            <div className="col-1 rep-block">
                                 <div>{question.totalReputation}</div>
                                 <div>votes</div>
                             </div>
-                            <div className="q-block">
+                            <div className="q-block col-11">
                                 {this.renderAdminDelete(() => {
                                     this.deleteQuestion(question.id)
                                 })}
                                 <h4 className="card-title">{question.title}</h4>
-                                <p className="card-text">
-                                    {Utils.limitSentence(question.description, 100)}
+                                <p className="card-text text-truncate">
+                                    {Utils.limitSentence(question.description, 100)} asad a da asdadsasd ad asda sd asda
+                                    sd ad a sda sd a dasd asd asdasdasda sd asda sd adsasd asda sda sd d sfs df sdf
+                                    sdfsdfs das da dsa da dss
                                 </p>
                                 <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
                             </div>
