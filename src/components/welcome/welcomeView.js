@@ -18,6 +18,14 @@ const WelcomeView = () => {
                         <button className="btn btn-primary wc-link">Register</button>
                     </Link>
                 </div>
+                <div className="wc-privacy-links-wrapper">
+                    <Link
+                        target="_blank"
+                        to={"/privacy-policy"}
+                    >
+                        Privacy Policy
+                    </Link>
+                </div>
             </div>
         </div>
     );

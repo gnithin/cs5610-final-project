@@ -70,6 +70,16 @@ class HomeView extends Component {
                         </div>
                         {this.renderQuestions()}
                     </div>
+                    <div className="row">
+                        <div className="col-12 home-privacy-wrapper">
+                            <Link
+                                target="_blank"
+                                to={"/privacy-policy"}
+                            >
+                                Privacy Policy
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
