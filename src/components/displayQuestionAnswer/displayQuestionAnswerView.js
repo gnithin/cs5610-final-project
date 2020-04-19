@@ -19,11 +19,13 @@ class displayQuestionAnswerView extends Component {
         relatedQuestions: {items: []},
         questionAuthor: null,
         questionVotes: 0,
+        currentUserVoteForQuestion: 0,
     };
 
     componentDidMount() {
         questionAnswerService.findQuestionDetails(
             this.props.match.params.questionId).then(questionResponse => {
+            console.log('DEBUG: questionResponse', questionResponse);
             if (questionResponse.status === 1) {
                 this.setState({
                     questionId: questionResponse.data.id,
@@ -32,6 +34,7 @@ class displayQuestionAnswerView extends Component {
                     answersToQuestion: questionResponse.data.answers,
                     questionAuthor: questionResponse.data.user,
                     questionVotes: questionResponse.data.totalReputation,
+                    currentUserVoteForQuestion: questionResponse.data.currentUserVote,
                 });
 
                 SO.searchQuestions(this.state.questionTitle).then((response) => {
@@ -96,7 +99,7 @@ class displayQuestionAnswerView extends Component {
         if (eachAnswer.currentUserVote === 1) {
             updateUpVote[0]["currentUserVote"] = 0;
             updateUpVote[0]["totalReputation"] = parseInt(updateUpVote[0]["totalReputation"]) - 1;
-            questionAnswerService.deleteVote(eachAnswer.id).then(response => {
+            questionAnswerService.deleteAnswerVote(eachAnswer.id).then(response => {
                 if (response.status === 1) {
                     updatedAnswerArray = [
                         ...this.state.answersToQuestion.slice(0, answerIndex),
@@ -152,7 +155,7 @@ class displayQuestionAnswerView extends Component {
         if (eachAnswer.currentUserVote === -1) {
             updateDownVote[0]["currentUserVote"] = 0;
             updateDownVote[0]["totalReputation"] = parseInt(updateDownVote[0]["totalReputation"]) + 1;
-            questionAnswerService.deleteVote(eachAnswer.id).then(response => {
+            questionAnswerService.deleteAnswerVote(eachAnswer.id).then(response => {
                 if (response.status === 1) {
                     updatedAnswerArray = [
                         ...this.state.answersToQuestion.slice(0, answerIndex),
@@ -194,6 +197,68 @@ class displayQuestionAnswerView extends Component {
 
                     this.setState({
                         answersToQuestion: updatedAnswerArray
+                    });
+                }
+            });
+        }
+    };
+
+    upVoteQuestion = (currentState, event) => {
+        if (currentState.currentUserVoteForQuestion === 0) {
+            questionAnswerService.upVoteQuestion(currentState.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) + 1,
+                        currentUserVoteForQuestion: 1
+                    });
+                }
+            });
+        } else if (currentState.currentUserVoteForQuestion === -1) {
+            questionAnswerService.upVoteQuestion(currentState.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) + 2,
+                        currentUserVoteForQuestion: 1
+                    });
+                }
+            });
+        } else {
+            questionAnswerService.deleteQuestionVote(currentState.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) - 1,
+                        currentUserVoteForQuestion: 0
+                    });
+                }
+            });
+        }
+    };
+
+    downVoteQuestion = (currentState) => {
+        if (currentState.currentUserVoteForQuestion === 0) {
+            questionAnswerService.downVoteQuestion(currentState.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) - 1,
+                        currentUserVoteForQuestion: -1
+                    });
+                }
+            });
+        } else if (currentState.currentUserVoteForQuestion === 1) {
+            questionAnswerService.downVoteQuestion(currentState.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) - 2,
+                        currentUserVoteForQuestion: -1
+                    });
+                }
+            });
+        } else {
+            questionAnswerService.deleteQuestionVote(this.state.questionId).then(response => {
+                if (response.status === 1) {
+                    this.setState({
+                        questionVotes: parseInt(currentState.questionVotes) + 1,
+                        currentUserVoteForQuestion: 0
                     });
                 }
             });
@@ -307,11 +372,23 @@ class displayQuestionAnswerView extends Component {
         // TODO: Link up the votes for the question
         return (
             <div className="dq-question-votes-wrapper">
-                <button className="btn btn-outline-secondary">
+                <button
+                    className={`btn ${this.state.currentUserVoteForQuestion === 1 ? "btn-outline-success" : "btn-outline-secondary"}`}
+                    onClick={() => {
+                        this.upVoteQuestion(this.state);
+                    }}
+                >
                     <i className="fas fa-thumbs-up"/>
                 </button>
-                <span className="dq-question-vote">{this.state.questionVotes}</span>
-                <button className="btn btn-outline-secondary">
+                <span className="dq-question-vote">
+                    <strong>{this.state.questionVotes}</strong>
+                </span>
+                <button
+                    className={`btn ${this.state.currentUserVoteForQuestion === -1 ? "btn-outline-danger" : "btn-outline-secondary"}`}
+                    onClick={() => {
+                        this.downVoteQuestion(this.state);
+                    }}
+                >
                     <i className="fas fa-thumbs-down"/>
                 </button>
             </div>
@@ -348,7 +425,7 @@ class displayQuestionAnswerView extends Component {
                                     <button
                                         className={`btn ${eachAnswer.currentUserVote === 1 ? "btn-outline-success" : "btn-outline-secondary"}`}
                                         onClick={() => {
-                                            this.upVoteAnswer(eachAnswer)
+                                            this.upVoteAnswer(eachAnswer);
                                         }}
                                     >
                                         <i className={"fas fa-thumbs-up"}/>
@@ -361,7 +438,7 @@ class displayQuestionAnswerView extends Component {
                                     <button
                                         className={`btn ${eachAnswer.currentUserVote === -1 ? "btn-outline-danger" : "btn-outline-secondary"}`}
                                         onClick={() => {
-                                            this.downVoteAnswer(eachAnswer)
+                                            this.downVoteAnswer(eachAnswer);
                                         }}>
                                         <i className={"fas fa-thumbs-down "}/>
                                     </button>
