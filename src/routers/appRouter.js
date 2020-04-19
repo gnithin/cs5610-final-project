@@ -27,7 +27,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/privacy-policy"
-                        component={AnyAuthComponent(PrivacyView)}
+                        component={PrivacyView}
                     />
 
                     <Route
