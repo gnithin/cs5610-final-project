@@ -35,3 +35,8 @@
 .wc-privacy-links-wrapper {
     margin-top: 30px;
 }
+
+.wc-user-message {
+    font-size: 150%;
+    margin-bottom: 10px;
+}
