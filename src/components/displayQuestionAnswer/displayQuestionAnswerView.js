@@ -6,9 +6,7 @@ import questionAnswerService from "../../services/questionAnswerService";
 import SO from "../../services/stackOverflowService";
 import './displayQuestionAnswer.css'
 import Utils from "../../common/utils";
-
-const showdown = require('showdown');
-const markdownConvertor = new showdown.Converter();
+import ComponentUtils from "../../common/componentUtils";
 
 class displayQuestionAnswerView extends Component {
 
@@ -207,7 +205,7 @@ class displayQuestionAnswerView extends Component {
             <div className={''}>
                 <NavBarComponent/>
 
-                <div className={'container-fluid'}>
+                <div className={'container-fluid dq-wrapper'}>
                     <div className="row">
                         <div className={'col-md-8 dq-question-wrapper'}>
                             {this.renderQuestion()}
@@ -275,7 +273,6 @@ class displayQuestionAnswerView extends Component {
             );
         }
 
-        let markdown = markdownConvertor.makeHtml(this.state.questionDescription);
         return (
             <React.Fragment>
                 <div className="col-12 dq-entry dq-question-head-wrapper" id={'questionTitle'}>
@@ -300,7 +297,7 @@ class displayQuestionAnswerView extends Component {
                 }
 
                 <div className="col-12 dq-entry dq-question-description" id="questionDesc">
-                    <div dangerouslySetInnerHTML={{__html: markdown}}/>
+                    {ComponentUtils.getMarkdownComponentForText(this.state.questionDescription)}
                 </div>
             </React.Fragment>
         );
@@ -336,12 +333,11 @@ class displayQuestionAnswerView extends Component {
                 <hr/>
                 {this.state.answersToQuestion.map(
                     (eachAnswer, index) => {
-                        let markdown = markdownConvertor.makeHtml(eachAnswer.answer);
                         return (
                             <div key={index}>
                                 <div className={'card '}>
                                     <span className={'card-body '}>
-                                        <div className="md-formatting" dangerouslySetInnerHTML={{__html: markdown}}/>
+                                        {ComponentUtils.getMarkdownComponentForText(eachAnswer.answer)}
                                     </span>
                                     <div className={'card-footer'}>
                                 <span className={'pull-left'}>
@@ -425,11 +421,12 @@ class displayQuestionAnswerView extends Component {
             );
         }
 
-        let markdown = markdownConvertor.makeHtml(this.state.answerToPost);
         return (
             <React.Fragment>
                 <div className="font-weight-bold">Answer Preview</div>
-                <div className="md-formatting" dangerouslySetInnerHTML={{__html: markdown}}/>
+                <div className="qa-answer-preview">
+                    {ComponentUtils.getMarkdownComponentForText(this.state.answerToPost)}
+                </div>
             </React.Fragment>
         );
     }

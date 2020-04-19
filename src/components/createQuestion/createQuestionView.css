@@ -5,3 +5,7 @@
 .cq-question-wrapper {
     margin-top: 20px;
 }
+
+.cq-markdown-preview {
+    font-size: 120%;
+}
