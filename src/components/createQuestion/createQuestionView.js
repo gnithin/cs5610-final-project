@@ -7,10 +7,7 @@ import SO from '../../services/stackOverflowService'
 import Utils from "../../common/utils";
 import {DebounceInput} from 'react-debounce-input';
 import './createQuestionView.css'
-
-const showdown = require('showdown');
-
-const markdownConvertor = new showdown.Converter();
+import ComponentUtils from "../../common/componentUtils";
 
 class CreateQuestionView extends Component {
     state = {
@@ -178,11 +175,12 @@ class CreateQuestionView extends Component {
             return (<React.Fragment/>);
         }
 
-        let markdown = markdownConvertor.makeHtml(this.state.questionDescription);
         return (
             <React.Fragment>
                 <div className="font-weight-bold">Question Preview</div>
-                <div dangerouslySetInnerHTML={{__html: markdown}}/>
+                <div className="cq-markdown-preview">
+                    {ComponentUtils.getMarkdownComponentForText(this.state.questionDescription)}
+                </div>
             </React.Fragment>
         );
     }

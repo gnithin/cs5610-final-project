@@ -6,6 +6,7 @@ import questionAnswerService from "../../services/questionAnswerService";
 import SO from "../../services/stackOverflowService";
 import './displayQuestionAnswer.css'
 import Utils from "../../common/utils";
+import ComponentUtils from "../../common/componentUtils";
 
 class displayQuestionAnswerView extends Component {
 
@@ -204,7 +205,7 @@ class displayQuestionAnswerView extends Component {
             <div className={''}>
                 <NavBarComponent/>
 
-                <div className={'container-fluid'}>
+                <div className={'container-fluid dq-wrapper'}>
                     <div className="row">
                         <div className={'col-md-8 dq-question-wrapper'}>
                             {this.renderQuestion()}
@@ -296,7 +297,7 @@ class displayQuestionAnswerView extends Component {
                 }
 
                 <div className="col-12 dq-entry dq-question-description" id="questionDesc">
-                    {this.state.questionDescription}
+                    {ComponentUtils.getMarkdownComponentForText(this.state.questionDescription)}
                 </div>
             </React.Fragment>
         );
@@ -335,7 +336,9 @@ class displayQuestionAnswerView extends Component {
                         return (
                             <div key={index}>
                                 <div className={'card '}>
-                                    <span className={'card-body'}>{eachAnswer.answer}</span>
+                                    <span className={'card-body '}>
+                                        {ComponentUtils.getMarkdownComponentForText(eachAnswer.answer)}
+                                    </span>
                                     <div className={'card-footer'}>
                                 <span className={'pull-left'}>
                                     Answered by <strong>{eachAnswer.user.name}</strong>
@@ -385,16 +388,22 @@ class displayQuestionAnswerView extends Component {
     renderPostAnswer() {
         return (
             <div className={'mb-4'}>
-                                        <textarea className={'form-control mb-4'}
-                                                  rows={'4'}
-                                                  value={this.state.answerToPost}
-                                                  placeholder="Post your answer here..."
-                                                  onChange={(event) => {
-                                                      this.setState({
-                                                          answerToPost: event.target.value
-                                                      })
-                                                  }}>
-                                        </textarea>
+                <textarea
+                    className={'form-control mb-4'}
+                    rows={'4'}
+                    value={this.state.answerToPost}
+                    placeholder="Post your answer here..."
+                    onChange={(event) => {
+                        this.setState({
+                            answerToPost: event.target.value
+                        })
+                    }}>
+                </textarea>
+
+                <div className="answer-preview">
+                    {this.renderPreview()}
+                </div>
+
                 <button className={'btn btn-success'}
                         onClick={() => this.createAnswerToQuestion(
                             this.state.answerToPost,
@@ -402,6 +411,23 @@ class displayQuestionAnswerView extends Component {
                     Post Answer
                 </button>
             </div>
+        );
+    }
+
+    renderPreview() {
+        if (Utils.isEmptyStr(this.state.answerToPost)) {
+            return (
+                <React.Fragment/>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                <div className="font-weight-bold">Answer Preview</div>
+                <div className="qa-answer-preview">
+                    {ComponentUtils.getMarkdownComponentForText(this.state.answerToPost)}
+                </div>
+            </React.Fragment>
         );
     }
 }

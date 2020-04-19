@@ -24,9 +24,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-right: 50px;
 }
 
 .q-block {
-    flex-grow: 2;
+}
+
+.home-q-user {
+    margin: 5px 0px;
 }

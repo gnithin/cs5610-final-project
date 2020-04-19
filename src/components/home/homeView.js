@@ -8,6 +8,7 @@ import questionAnswerService from "../../services/questionAnswerService";
 import LoadingComponent from "../loader";
 import Utils from "../../common/utils";
 import './home.css'
+import {format} from "timeago.js";
 
 class HomeView extends Component {
     state = {
@@ -100,20 +101,20 @@ class HomeView extends Component {
                             this.props.history.push(`/questions/${question.id}`);
                         }}
                     >
-                        <div className="card-body block-wrapper">
-                            <div className="rep-block">
+                        <div className="card-body block-wrapper row">
+                            <div className="col-1 rep-block">
                                 <div>{question.totalReputation}</div>
                                 <div>votes</div>
                             </div>
-                            <div className="q-block">
+                            <div className="q-block col-11">
                                 {this.renderAdminDelete(() => {
                                     this.deleteQuestion(question.id)
                                 })}
                                 <h4 className="card-title">{question.title}</h4>
+                                <h6 className="card-subtitle text-muted home-q-user">By {username}</h6>
                                 <p className="card-text">
-                                    {Utils.limitSentence(question.description, 100)}
+                                    {format(question.createdTimestamp)}
                                 </p>
-                                <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
                             </div>
                         </div>
                     </div>

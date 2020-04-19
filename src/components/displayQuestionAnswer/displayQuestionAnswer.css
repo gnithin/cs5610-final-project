@@ -1,3 +1,7 @@
+.dq-wrapper {
+   margin-bottom: 150px;
+}
+
 .dq-entry {
     margin: 20px 0px;
 }
@@ -47,5 +51,9 @@
 }
 
 .dq-similar-questions-wrapper {
-   margin-top: 20px;
+    margin-top: 20px;
+}
+
+.qa-answer-preview {
+    font-size: 120%;
 }

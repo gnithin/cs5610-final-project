@@ -7,6 +7,7 @@ import './profile.css'
 import Utils from "../../common/utils";
 import {withRouter} from "react-router-dom";
 import LoadingComponent from "../loader";
+import {format} from "timeago.js";
 
 const MAX_COUNT_DETAILS = 180;
 
@@ -124,7 +125,7 @@ class ProfileView extends Component {
                                     {Utils.limitSentence(question.title)}
                                 </div>
                                 <div className="activity-contents">
-                                    {Utils.limitSentence(question.description, MAX_COUNT_DETAILS)}
+                                    Asked {format(question.createdTimestamp)}
                                 </div>
                             </div>
                         </div>
@@ -153,7 +154,7 @@ class ProfileView extends Component {
                                     {Utils.limitSentence(answer.question.title)}
                                 </div>
                                 <div className="activity-contents">
-                                    {Utils.limitSentence(answer.answer, MAX_COUNT_DETAILS)}
+                                    Answered {format(answer.createdTimestamp)}
                                 </div>
                             </div>
                         </div>
