@@ -111,9 +111,6 @@ class HomeView extends Component {
                                 })}
                                 <h4 className="card-title">{question.title}</h4>
                                 <p className="card-text text-truncate">
-                                    {Utils.limitSentence(question.description, 100)} asad a da asdadsasd ad asda sd asda
-                                    sd ad a sda sd a dasd asd asdasdasda sd asda sd adsasd asda sda sd d sfs df sdf
-                                    sdfsdfs das da dsa da dss
                                 </p>
                                 <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
                             </div>
