@@ -10,6 +10,7 @@ import Profile from "../components/profile"
 
 import authenticatedComponent from "./authenticatedComponent";
 import WelcomeView from "../components/welcome";
+import unauthenticatedComponent from "./unauthenticatedComponent";
 
 class AppRouter extends Component {
 
@@ -24,12 +25,12 @@ class AppRouter extends Component {
 
                     <Route
                         path="/register"
-                        component={Register}
+                        component={unauthenticatedComponent(Register)}
                     />
 
                     <Route
                         path="/login"
-                        component={Login}
+                        component={unauthenticatedComponent(Login)}
                     />
 
                     <Route
