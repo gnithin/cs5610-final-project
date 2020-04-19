@@ -1,17 +1,14 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
-import {connect} from "react-redux";
-
-import loginService from '../services/loginAndRegistrationService'
-import userAction from "../redux/actions/userProfileActions";
 import utils from "../common/utils";
+import loginService from "../services/loginAndRegistrationService";
 import Loader from "../components/loader";
+import userAction from "../redux/actions/userProfileActions";
+import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
 
-
-const authenticateComponent = (WrappedComponent) => {
+const baseAuthComponent = (WrappedComponent, redirectLoggedIn, redirectUrl) => {
     const AuthComponent = (props) => {
-        // TODO: Add logic to check for login here, and remove this constant
-
+        // When there is no state at all
         if (utils.isNull(props.isLoggedIn)) {
             loginService.currentLoggedInService().then(response => {
                 if (response.status === 1) {
@@ -23,22 +20,32 @@ const authenticateComponent = (WrappedComponent) => {
             return (<Loader/>)
         }
 
-        if (false === props.isLoggedIn) {
-            return (
-                <Redirect to={{
-                    pathname: '/login',
-                }}/>
-            );
-        }
+        if (redirectLoggedIn) {
+            // Redirect only if the user is logged-in
+            if (props.isLoggedIn) {
+                return (
+                    <Redirect to={{
+                        pathname: redirectUrl,
+                    }}/>
+                );
+            }
 
+        } else {
+            // Redirect only if the user is not logged-in
+            if (false === props.isLoggedIn) {
+                return (
+                    <Redirect to={{
+                        pathname: redirectUrl,
+                    }}/>
+                );
+            }
+        }
 
         return (
             <WrappedComponent {...props}/>
         );
-
     };
 
-    // TODO: Add redux state
     const reduxToComponentMapper = (state) => {
         return {
             isLoggedIn: state.userProfile.isLoggedIn
@@ -53,8 +60,7 @@ const authenticateComponent = (WrappedComponent) => {
         }
     };
 
-    // Whatever redux connection needs to be done can be added here.
     return connect(reduxToComponentMapper, dispatchMapper)(AuthComponent);
 };
 
-export default authenticateComponent;
+export default baseAuthComponent;

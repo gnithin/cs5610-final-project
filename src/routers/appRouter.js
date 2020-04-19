@@ -8,8 +8,9 @@ import Register from "../components/register"
 
 import Profile from "../components/profile"
 
-import authenticateComponent from "./authenticateComponent";
+import authenticatedComponent from "./authenticatedComponent";
 import WelcomeView from "../components/welcome";
+import unauthenticatedComponent from "./unauthenticatedComponent";
 
 class AppRouter extends Component {
 
@@ -24,12 +25,12 @@ class AppRouter extends Component {
 
                     <Route
                         path="/register"
-                        component={Register}
+                        component={unauthenticatedComponent(Register)}
                     />
 
                     <Route
                         path="/login"
-                        component={Login}
+                        component={unauthenticatedComponent(Login)}
                     />
 
                     <Route
@@ -39,17 +40,17 @@ class AppRouter extends Component {
 
                     <Route
                         path="/home"
-                        component={authenticateComponent(Home)}
+                        component={authenticatedComponent(Home)}
                     />
 
                     <Route
                         path="/create/questions"
-                        component={authenticateComponent(CreateQuestion)}
+                        component={authenticatedComponent(CreateQuestion)}
                     />
 
                     <Route
                         path="/questions/:questionId"
-                        component={authenticateComponent(ViewQuestion)}
+                        component={authenticatedComponent(ViewQuestion)}
                     />
 
                     <Route
