@@ -8,6 +8,7 @@ import questionAnswerService from "../../services/questionAnswerService";
 import LoadingComponent from "../loader";
 import Utils from "../../common/utils";
 import './home.css'
+import {format} from "timeago.js";
 
 class HomeView extends Component {
     state = {
@@ -110,9 +111,10 @@ class HomeView extends Component {
                                     this.deleteQuestion(question.id)
                                 })}
                                 <h4 className="card-title">{question.title}</h4>
-                                <p className="card-text text-truncate">
+                                <h6 className="card-subtitle text-muted home-q-user">By {username}</h6>
+                                <p className="card-text">
+                                    {format(question.createdTimestamp)}
                                 </p>
-                                <h6 className="card-subtitle mb-2 text-muted">By {username}</h6>
                             </div>
                         </div>
                     </div>
