@@ -8,7 +8,7 @@ import utils from "../common/utils";
 import Loader from "../components/loader";
 
 
-const authenticateComponent = (WrappedComponent) => {
+const authenticatedComponent = (WrappedComponent) => {
     const AuthComponent = (props) => {
         if (utils.isNull(props.isLoggedIn)) {
             loginService.currentLoggedInService().then(response => {
@@ -54,4 +54,4 @@ const authenticateComponent = (WrappedComponent) => {
     return connect(reduxToComponentMapper, dispatchMapper)(AuthComponent);
 };
 
-export default authenticateComponent;
+export default authenticatedComponent;
