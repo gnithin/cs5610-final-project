@@ -16,12 +16,17 @@ class NavBarComponent extends Component {
     };
 
     render() {
+        let chowkPath = "/welcome";
+        if (true === this.props.isLoggedIn) {
+            chowkPath = "/home";
+        }
+
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="navbar-brand titleStyle">
                     <Link
                         title="Chowk"
-                        to={`/home`}
+                        to={chowkPath}
                     >
                         Chowk
                     </Link>
