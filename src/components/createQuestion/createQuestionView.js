@@ -48,7 +48,7 @@ class CreateQuestionView extends Component {
     SOQuery = (data) => {
         if (data === "") {
             this.setState({
-                relatedQuestions:null,
+                relatedQuestions: null,
             });
             return;
         }
@@ -95,21 +95,26 @@ class CreateQuestionView extends Component {
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label htmlFor="questionDesc"
-                                       className="col-sm-2 col-form-label">Question
-                                    Description</label>
+                                <label
+                                    htmlFor="questionDesc"
+                                    className="col-sm-2 col-form-label"
+                                >
+                                    Question
+                                    Description
+                                </label>
                                 <div className="col-sm-10">
-                  <textarea type="text"
-                            className="form-control"
-                            id="questionDesc"
-                            placeholder="Provide details about the problem"
-
-                            onChange={(e) => {
-                                this.setState({
-                                    questionDescription: e.target.value
-                                })
-
-                            }}/>
+                                    <textarea
+                                        type="text"
+                                        className="form-control"
+                                        id="questionDesc"
+                                        placeholder="Provide details about the problem"
+                                        rows={10}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                questionDescription: e.target.value
+                                            })
+                                        }}
+                                    />
                                 </div>
                             </div>
                             <div className="form-group row">
