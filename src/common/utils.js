@@ -44,4 +44,11 @@ export default class Utils {
         }
         return colour;
     }
+
+    // https://stackoverflow.com/a/34064434/1518924
+    // ^ Picked it up from here
+    static htmlUnescape(input) {
+        let doc = (new DOMParser().parseFromString(input, "text/html"));
+        return doc.documentElement.textContent;
+    }
 }

@@ -248,7 +248,7 @@ class displayQuestionAnswerView extends Component {
                                         rel="noopener noreferrer"
                                         href={eachItem.link}
                                     >
-                                        {eachItem.title}
+                                        {Utils.htmlUnescape(eachItem.title)}
                                     </a>
                                 </li>
                             )

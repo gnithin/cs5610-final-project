@@ -16,3 +16,17 @@ code {
 .md-formatting {
     white-space: pre-wrap;
 }
+
+.chowk-logo {
+    font-family: Helvetica, sans-serif;
+}
+
+.chowk-logo-link,
+.chowk-logo-link a,
+.chowk-logo-link a:active,
+.chowk-logo-link a:hover,
+.chowk-logo-link a:visited {
+    font-family: Helvetica, sans-serif !important;
+    text-decoration: none;
+    color: lightgrey !important;
+}

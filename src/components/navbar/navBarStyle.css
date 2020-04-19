@@ -1,3 +1,9 @@
-.titleStyle {
-    font-family: Helvetica, sans-serif;
+.profile-username,
+.profile-username a,
+.profile-username a:visited,
+.profile-username a:hover,
+.profile-username a:active {
+    margin-left: 50px;
+    text-decoration: none;
+    color: lightgrey !important;
 }
