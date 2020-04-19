@@ -10,8 +10,6 @@ import Loader from "../components/loader";
 
 const authenticateComponent = (WrappedComponent) => {
     const AuthComponent = (props) => {
-        // TODO: Add logic to check for login here, and remove this constant
-
         if (utils.isNull(props.isLoggedIn)) {
             loginService.currentLoggedInService().then(response => {
                 if (response.status === 1) {
@@ -38,7 +36,6 @@ const authenticateComponent = (WrappedComponent) => {
 
     };
 
-    // TODO: Add redux state
     const reduxToComponentMapper = (state) => {
         return {
             isLoggedIn: state.userProfile.isLoggedIn

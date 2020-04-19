@@ -9,9 +9,6 @@ import {withRouter} from "react-router-dom";
 import LoadingComponent from "../loader";
 import {format} from "timeago.js";
 
-const MAX_COUNT_DETAILS = 180;
-
-
 class ProfileView extends Component {
     state = {
         userProfileData: {},
