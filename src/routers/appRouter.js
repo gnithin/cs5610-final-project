@@ -11,7 +11,7 @@ import Profile from "../components/profile"
 import authenticatedComponent from "./authenticatedComponent";
 import WelcomeView from "../components/welcome";
 import unauthenticatedComponent from "./unauthenticatedComponent";
-import AnyAuthComponent from "./anyAuthComponent";
+import anyAuthComponent from "./anyAuthComponent";
 import PrivacyView from "../components/privacy";
 
 class AppRouter extends Component {
@@ -22,12 +22,12 @@ class AppRouter extends Component {
                 <Switch>
                     <Route
                         path="/welcome"
-                        component={AnyAuthComponent(WelcomeView)}
+                        component={anyAuthComponent(WelcomeView)}
                     />
 
                     <Route
                         path="/privacy-policy"
-                        component={PrivacyView}
+                        component={anyAuthComponent(PrivacyView)}
                     />
 
                     <Route
@@ -42,7 +42,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/profiles/:userId"
-                        component={AnyAuthComponent(Profile)}
+                        component={anyAuthComponent(Profile)}
                     />
 
                     <Route

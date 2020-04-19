@@ -1,6 +1,6 @@
 import baseAuthComponent from "./baseAuthComponent";
 
-const AnyAuthComponent = (WrappedComponent) => {
+const anyAuthComponent = (WrappedComponent) => {
     return baseAuthComponent(
         WrappedComponent,
         false,
@@ -9,4 +9,4 @@ const AnyAuthComponent = (WrappedComponent) => {
     )
 };
 
-export default AnyAuthComponent;
+export default anyAuthComponent;
