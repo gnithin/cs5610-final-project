@@ -6,7 +6,7 @@ import userAction from "../redux/actions/userProfileActions";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 
-const baseAuthComponent = (WrappedComponent, redirectLoggedIn, redirectUrl) => {
+const baseAuthComponent = (WrappedComponent, shouldRedirect, redirectLoggedIn, redirectUrl) => {
     const AuthComponent = (props) => {
         // When there is no state at all
         if (utils.isNull(props.isLoggedIn)) {
@@ -20,24 +20,26 @@ const baseAuthComponent = (WrappedComponent, redirectLoggedIn, redirectUrl) => {
             return (<Loader/>)
         }
 
-        if (redirectLoggedIn) {
-            // Redirect only if the user is logged-in
-            if (props.isLoggedIn) {
-                return (
-                    <Redirect to={{
-                        pathname: redirectUrl,
-                    }}/>
-                );
-            }
+        if (shouldRedirect) {
+            if (redirectLoggedIn) {
+                // Redirect only if the user is logged-in
+                if (props.isLoggedIn) {
+                    return (
+                        <Redirect to={{
+                            pathname: redirectUrl,
+                        }}/>
+                    );
+                }
 
-        } else {
-            // Redirect only if the user is not logged-in
-            if (false === props.isLoggedIn) {
-                return (
-                    <Redirect to={{
-                        pathname: redirectUrl,
-                    }}/>
-                );
+            } else {
+                // Redirect only if the user is not logged-in
+                if (false === props.isLoggedIn) {
+                    return (
+                        <Redirect to={{
+                            pathname: redirectUrl,
+                        }}/>
+                    );
+                }
             }
         }
 
