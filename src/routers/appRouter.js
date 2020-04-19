@@ -12,6 +12,7 @@ import authenticatedComponent from "./authenticatedComponent";
 import WelcomeView from "../components/welcome";
 import unauthenticatedComponent from "./unauthenticatedComponent";
 import AnyAuthComponent from "./anyAuthComponent";
+import PrivacyView from "../components/privacy";
 
 class AppRouter extends Component {
 
@@ -22,6 +23,11 @@ class AppRouter extends Component {
                     <Route
                         path="/welcome"
                         component={AnyAuthComponent(WelcomeView)}
+                    />
+
+                    <Route
+                        path="/privacy-policy"
+                        component={AnyAuthComponent(PrivacyView)}
                     />
 
                     <Route
