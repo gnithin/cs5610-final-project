@@ -30,11 +30,37 @@ class ProfileView extends Component {
         );
     }
 
+    renderEditButton() {
+        if (
+            false === this.props.isLoggedIn ||
+            (
+                this.props.loggedInUser.isAdmin === false &&
+                this.state.userProfileData.id !== this.props.loggedInUser.id
+            )
+        ) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <div className="col col-md-5 profile-edit-btn-wrapper">
+                <button className="btn btn-primary">
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    &nbsp; Edit
+                </button>
+            </div>
+        );
+    }
+
     renderSidebar() {
         let user = this.state.userProfileData;
         return (
             <div className="sidebar-wrapper">
-                <h2>Profile</h2>
+                <div className="row">
+                    <div className="col col-md-7">
+                        <h2>Profile</h2>
+                    </div>
+                    {this.renderEditButton()}
+                </div>
                 <div className="avatar-wrapper">
                     <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
                     </div>
@@ -191,7 +217,10 @@ class ProfileView extends Component {
 }
 
 const stateMapper = (state) => {
-    return {}
+    return {
+        isLoggedIn: state.userProfile.isLoggedIn,
+        loggedInUser: state.userProfile.userDetails,
+    }
 };
 
 const dispatchMapper = (dispatch) => {
