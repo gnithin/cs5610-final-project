@@ -4,6 +4,8 @@ import SearchBarView from "./searchBarView";
 import NavBarComponent from "../navbar/NavBarComponent";
 import Utils from "../../common/utils";
 import {searchQuestionsService} from "../../services/questionService";
+import {connect} from "react-redux";
+import SearchQuestionActions from "../../redux/actions/searchQuestionsActions";
 
 const SEARCH_PARAM = "query";
 
@@ -61,7 +63,7 @@ class SearchContainer extends Component {
         });
 
         searchQuestionsService(query).then(resp => {
-            console.log("Got response!", resp);
+            this.props.setSearchResults(resp);
 
         }).catch(e => {
             this.setState({
@@ -74,9 +76,24 @@ class SearchContainer extends Component {
             })
 
         });
+       
         console.log("Got query! - ", query);
         window.history.pushState({}, "", `?${SEARCH_PARAM}=${query}`)
     }
 }
 
-export default SearchContainer;
+const reduxToComponentMapper = (state) => {
+    return {
+        questions: state.searchQuestions.questions,
+    };
+};
+
+const componentToReduxMapper = (dispatcher) => {
+    return {
+        setSearchResults: (results) => {
+            return dispatcher(SearchQuestionActions.setResults(results));
+        }
+    }
+};
+
+export default connect(reduxToComponentMapper, componentToReduxMapper)(SearchContainer);
