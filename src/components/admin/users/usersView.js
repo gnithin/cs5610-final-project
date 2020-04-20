@@ -4,8 +4,8 @@ import Utils from "../../../common/utils";
 import './users.css'
 import {Link} from "react-router-dom";
 
-const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb}) => {
-    const renderAdminControlForUser = (user) => {
+const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb, loggedInUser}) => {
+    const renderAdminControlForUser = (user, isCurrentUser) => {
         if (user.isAdmin) {
             return (
                 <button
@@ -13,27 +13,36 @@ const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb}) => {
                     onClick={() => {
                         userUnsetAdminCb(user.id);
                     }}
+                    disabled={isCurrentUser}
                 >
                     Remove as Admin
                 </button>
             );
         }
+
         return (
             <button
                 className="btn btn-success"
                 onClick={() => {
                     userSetAdminCb(user.id);
                 }}
+                disabled={isCurrentUser}
             >
                 Add as Admin
             </button>
         );
     };
 
-
     return (
         <div className="au-users-wrapper">
             {users.map(user => {
+                let isCurrentUser = false;
+                if (false === Utils.isNull(loggedInUser)) {
+                    if (loggedInUser.id === user.id) {
+                        isCurrentUser = true;
+                    }
+                }
+
                 return (
                     <div className="card" key={`au-${user.id}`}>
                         <div className="card-body row">
@@ -56,15 +65,18 @@ const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb}) => {
 
                             <div className="col-4 au-user-edit-tools">
                                 <div className="au-user-edit-option">
-                                    {renderAdminControlForUser(user)}
+                                    {renderAdminControlForUser(user, isCurrentUser)}
                                 </div>
-                                <div
-                                    className="au-user-edit-option"
-                                    onClick={() => {
-                                        userDeleteCb(user.id);
-                                    }}
-                                >
-                                    <button className="btn btn-danger">Remove user</button>
+                                <div className="au-user-edit-option">
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => {
+                                            userDeleteCb(user.id);
+                                        }}
+                                        disabled={isCurrentUser}
+                                    >
+                                        Remove user
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +89,8 @@ const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb}) => {
 
 const reduxToComponentMapper = (state) => {
     return {
-        users: state.adminUsers.users
+        users: state.adminUsers.users,
+        loggedInUser: state.userProfile.userDetails,
     }
 };
 
