@@ -28,7 +28,7 @@ class AppRouter extends Component {
                     />
 
                     <Route
-                        path="/users"
+                        path="/admin/users"
                         component={adminAuthenticatedComponent(Users)}
                     />
 
