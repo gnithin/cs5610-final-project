@@ -72,15 +72,18 @@ class UsersContainer extends Component {
     }
 
     userDeleteHandler(userId) {
-
+        // TODO:
+        this.fetchAllUsers();
     }
 
     userSetAdminHandler(userId) {
-
+        // TODO:
+        this.fetchAllUsers();
     }
 
     userUnsetAdminHandler(userId) {
-
+        // TODO:
+        this.fetchAllUsers();
     }
 }
 
