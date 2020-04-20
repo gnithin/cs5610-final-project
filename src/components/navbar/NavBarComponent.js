@@ -22,10 +22,7 @@ class NavBarComponent extends Component {
     };
 
     render() {
-        let chowkPath = "/welcome";
-        if (true === this.props.isLoggedIn) {
-            chowkPath = "/home";
-        }
+        let chowkPath = "/home";
 
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -42,18 +39,14 @@ class NavBarComponent extends Component {
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right">
-                    {
-                        this.props.isLoggedIn
-                        &&
-                        <Link
-                            className="btn btn-primary ml-3"
-                            title="Search questions"
-                            to={`/search`}
-                        >
-                            <i className="fa fa-search" aria-hidden="true"></i> &nbsp;
-                            Search Questions
-                        </Link>
-                    }
+                    <Link
+                        className="btn btn-primary ml-3"
+                        title="Search questions"
+                        to={`/search`}
+                    >
+                        <i className="fa fa-search" aria-hidden="true"/> &nbsp;
+                        Search Questions
+                    </Link>
                 </div>
 
                 <div className="navbar-nav nav-right my-2 my-lg-0">
@@ -65,9 +58,14 @@ class NavBarComponent extends Component {
                             title="Create Question"
                             to={`/create/questions`}
                         >
-                            <i className="fa fa-plus" aria-hidden="true"></i> &nbsp;
+                            <i className="fa fa-plus" aria-hidden="true"/> &nbsp;
                             New Question
                         </Link>
+                    }
+                    {
+                        !this.props.isLoggedIn
+                        &&
+                        <Link className={"btn btn-success ml-2"} to={"/login"}>Login</Link>
                     }
                 </div>
 
@@ -81,6 +79,11 @@ class NavBarComponent extends Component {
                         >
                             Logout
                         </button>
+                    }
+                    {
+                        !this.props.isLoggedIn
+                        &&
+                        <Link className={"btn btn-primary ml-2"} to={"/register"}>Register</Link>
                     }
                 </div>
             </nav>

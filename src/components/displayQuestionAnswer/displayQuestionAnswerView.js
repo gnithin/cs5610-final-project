@@ -7,6 +7,7 @@ import SO from "../../services/stackOverflowService";
 import './displayQuestionAnswer.css'
 import Utils from "../../common/utils";
 import ComponentUtils from "../../common/componentUtils";
+import {Link} from "react-router-dom";
 
 class displayQuestionAnswerView extends Component {
 
@@ -19,13 +20,12 @@ class displayQuestionAnswerView extends Component {
         relatedQuestions: {items: []},
         questionAuthor: null,
         questionVotes: 0,
-        currentUserVoteForQuestion: 0,
+        currentUserVoteForQuestion: null,
     };
 
     componentDidMount() {
         questionAnswerService.findQuestionDetails(
             this.props.match.params.questionId).then(questionResponse => {
-            console.log('DEBUG: questionResponse', questionResponse);
             if (questionResponse.status === 1) {
                 this.setState({
                     questionId: questionResponse.data.id,
@@ -142,6 +142,8 @@ class displayQuestionAnswerView extends Component {
                     this.setState({
                         answersToQuestion: updatedAnswerArray
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         }
@@ -198,12 +200,14 @@ class displayQuestionAnswerView extends Component {
                     this.setState({
                         answersToQuestion: updatedAnswerArray
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         }
     };
 
-    upVoteQuestion = (currentState, event) => {
+    upVoteQuestion = (currentState) => {
         if (currentState.currentUserVoteForQuestion === 0) {
             questionAnswerService.upVoteQuestion(currentState.questionId).then(response => {
                 if (response.status === 1) {
@@ -211,6 +215,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) + 1,
                         currentUserVoteForQuestion: 1
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         } else if (currentState.currentUserVoteForQuestion === -1) {
@@ -220,6 +226,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) + 2,
                         currentUserVoteForQuestion: 1
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         } else {
@@ -229,6 +237,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) - 1,
                         currentUserVoteForQuestion: 0
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         }
@@ -242,6 +252,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) - 1,
                         currentUserVoteForQuestion: -1
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         } else if (currentState.currentUserVoteForQuestion === 1) {
@@ -251,6 +263,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) - 2,
                         currentUserVoteForQuestion: -1
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         } else {
@@ -260,6 +274,8 @@ class displayQuestionAnswerView extends Component {
                         questionVotes: parseInt(currentState.questionVotes) + 1,
                         currentUserVoteForQuestion: 0
                     });
+                } else if (response.responseCode === 401) {
+                    this.props.history.push('/login');
                 }
             });
         }
@@ -277,7 +293,7 @@ class displayQuestionAnswerView extends Component {
 
                             <div className="col-12 dq-entry">
                                 {this.renderAnswers()}
-                                {this.renderPostAnswer()}
+                                {this.props.isLoggedIn && this.renderPostAnswer()}
                             </div>
                         </div>
 
@@ -369,7 +385,6 @@ class displayQuestionAnswerView extends Component {
     }
 
     renderQuestionVotes() {
-        // TODO: Link up the votes for the question
         return (
             <div className="dq-question-votes-wrapper">
                 <button
@@ -418,7 +433,7 @@ class displayQuestionAnswerView extends Component {
                                     </span>
                                     <div className={'card-footer'}>
                                 <span className={'pull-left'}>
-                                    Answered by <strong>{eachAnswer.user.name}</strong>
+                                    Answered by <Link target={'_blank'} to={`/profiles/${eachAnswer.user.id}`}><strong>{eachAnswer.user.name}</strong></Link>
                                 </span>
 
                                         <span className={'pull-right'}>
@@ -511,7 +526,8 @@ class displayQuestionAnswerView extends Component {
 
 const stateMapper = (state) => {
     return {
-        isAdmin: state.userProfile.isAdmin
+        isAdmin: state.userProfile.isAdmin,
+        isLoggedIn: state.userProfile.isLoggedIn,
     }
 };
 

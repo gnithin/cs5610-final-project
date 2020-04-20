@@ -7,6 +7,7 @@ import registerService from "../../services/loginAndRegistrationService";
 import userAction from "../../redux/actions/userProfileActions";
 import Utils from "../../common/utils";
 import LoadingComponent from "../loader";
+import NavBarComponent from "../navbar/NavBarComponent";
 
 class RegisterView extends Component {
     state = {
@@ -15,6 +16,7 @@ class RegisterView extends Component {
         password: "",
         isLoading: false,
         errMsg: null,
+        confirmPassword: "",
     };
 
     registerMethod = () => {
@@ -70,7 +72,7 @@ class RegisterView extends Component {
     render() {
         return (
             <div>
-                {/*<NavBarComponent/>*/}
+                <NavBarComponent/>
 
                 <div id="logreg-forms">
                     <br/>
@@ -93,11 +95,34 @@ class RegisterView extends Component {
 
                             <input type="password" id="inputPassword" className="form-control" placeholder="Password"
                                    required style={{"textAlign": "center"}}
-                                   onChange={(e) => this.setState({password: e.target.value})}/>
+                                   onChange={(e) => {
+                                       if (e.target.value !== this.state.confirmPassword) {
+                                           this.setState({
+                                               errMsg: "passwords dont match"
+                                           })
+                                       } else {
+                                           this.setState({
+                                               errMsg: ""
+                                           })
+                                       }
+                                       this.setState({password: e.target.value})
+                                   }}/>
 
                             <input type="password" id="inputConfirmPassword" className="form-control"
                                    placeholder="Confirm Password"
-                                   required style={{"textAlign": "center"}}/>
+                                   required style={{"textAlign": "center"}}
+                                   onChange={(e) => {
+                                       if (e.target.value !== this.state.password) {
+                                           this.setState({
+                                               errMsg: "passwords dont match"
+                                           })
+                                       } else {
+                                           this.setState({
+                                               errMsg: ""
+                                           })
+                                       }
+                                       this.setState({confirmPassword: e.target.value})
+                                   }}/>
 
                             <br/>
 
@@ -136,7 +161,7 @@ class RegisterView extends Component {
                 />
             </span>);
         }
-        
+
         return (
             <button
                 className="btn btn-success btn-block"
