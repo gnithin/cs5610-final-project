@@ -8,6 +8,7 @@ import Utils from "../../common/utils";
 import {withRouter} from "react-router-dom";
 import LoadingComponent from "../loader";
 import {format} from "timeago.js";
+import Sidebar from "./sidebar";
 
 class ProfileView extends Component {
     state = {
@@ -27,83 +28,6 @@ class ProfileView extends Component {
                     this.props.history.push("/home");
                 }
             }
-        );
-    }
-
-    renderEditButton() {
-        if (
-            false === this.props.isLoggedIn ||
-            (
-                this.props.loggedInUser.isAdmin === false &&
-                this.state.userProfileData.id !== this.props.loggedInUser.id
-            )
-        ) {
-            return (<React.Fragment/>);
-        }
-
-        return (
-            <div className="col col-md-5 profile-edit-btn-wrapper">
-                <button className="btn btn-primary">
-                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    &nbsp; Edit
-                </button>
-            </div>
-        );
-    }
-
-    renderSidebar() {
-        let user = this.state.userProfileData;
-        return (
-            <div className="sidebar-wrapper">
-                <div className="row">
-                    <div className="col col-md-7">
-                        <h2>Profile</h2>
-                    </div>
-                    {this.renderEditButton()}
-                </div>
-                <div className="avatar-wrapper">
-                    <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
-                    </div>
-                </div>
-
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-user" aria-hidden="true"></i> &nbsp; Name
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.name}
-                    </div>
-                </div>
-
-                {false === Utils.isNull(this.state.userProfileData.email) &&
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-envelope" aria-hidden="true"></i> &nbsp; Email
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.email}
-                    </div>
-                </div>
-                }
-
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-star" aria-hidden="true"></i> &nbsp; Reputation
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.totalReputation}
-                    </div>
-                </div>
-
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-lock" aria-hidden="true"></i> &nbsp; Admin
-                    </div>
-                    <div className="profile-entry-content">
-                        {(this.state.userProfileData.isAdmin) ? "Yes" : "No"}
-                    </div>
-                </div>
-            </div>
         );
     }
 
@@ -203,7 +127,10 @@ class ProfileView extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12 col-sm-3">
-                            {this.renderSidebar()}
+                            <Sidebar
+                                user={this.state.userProfileData}
+                                isLoading={this.state.isLoading}
+                            />
                         </div>
                         <div className="col-12 col-sm-9">
                             {this.renderActivity()}
