@@ -49,7 +49,7 @@ class NavBarComponent extends Component {
                             title="Create Question"
                             to={`/create/questions`}
                         >
-                            <i className="fa fa-plus" aria-hidden="true"></i> &nbsp;
+                            <i className="fa fa-plus" aria-hidden="true"/> &nbsp;
                             Question
                         </Link>
                     }
@@ -65,6 +65,14 @@ class NavBarComponent extends Component {
                         >
                             Logout
                         </button>
+                    }
+                    {
+                        !this.props.isLoggedIn
+                        &&
+                        <div className="text-center mt-0 mb-0">
+                            <Link className={"btn btn-success"} to={"/login"}>Login</Link>
+                            <Link className={"btn btn-primary ml-2"} to={"/register"}>Register</Link>
+                        </div>
                     }
                 </div>
             </nav>

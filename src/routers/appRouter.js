@@ -13,6 +13,7 @@ import WelcomeView from "../components/welcome";
 import unauthenticatedComponent from "./unauthenticatedComponent";
 import anyAuthComponent from "./anyAuthComponent";
 import PrivacyView from "../components/privacy";
+import baseAuthComponent from "./baseAuthComponent";
 
 class AppRouter extends Component {
 
@@ -47,7 +48,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/home"
-                        component={authenticatedComponent(Home)}
+                        component={baseAuthComponent(Home,false,false,'/home')}
                     />
 
                     <Route
@@ -57,7 +58,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/questions/:questionId"
-                        component={authenticatedComponent(ViewQuestion)}
+                        component={baseAuthComponent(ViewQuestion, false, false, '/questions/:questionId')}
                     />
 
                     <Route

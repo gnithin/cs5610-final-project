@@ -55,14 +55,6 @@ class HomeView extends Component {
         return (
             <div>
                 <NavBarComponent/>
-                {
-                    !this.props.isLoggedIn
-                    &&
-                    <div className="text-center mt-3 mb-2">
-                        <Link className={"btn btn-success"} to={"login"}>Login</Link>
-                        <Link className={"btn btn-primary ml-5"} to={"register"}>Register</Link>
-                    </div>
-                }
                 <div className="container-fluid home-content-wrapper">
                     <div className="row">
                         <div className="offset-1 col-9 home-header">
@@ -134,7 +126,7 @@ class HomeView extends Component {
     }
 
     renderAdminDelete(deleteCb) {
-        if (false === this.props.isAdmin) {
+        /*if (false === this.props.isAdmin) {
             return (<React.Fragment/>);
         }
 
@@ -149,7 +141,23 @@ class HomeView extends Component {
                     <i className={"fas fa-trash-alt"}></i>
                 </button>
             </div>
-        );
+        );*/
+
+        if (this.props.isAdmin) {
+            return (
+                <div className="admin-delete-question">
+                    <button
+                        className="btn btn-danger"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            deleteCb()
+                        }}>
+                        <i className={"fas fa-trash-alt"}/>
+                    </button>
+                </div>
+            );
+        }
+        return (<React.Fragment/>);
     }
 }
 
