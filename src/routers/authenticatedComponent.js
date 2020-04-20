@@ -10,7 +10,8 @@ const authenticatedComponent = (WrappedComponent) => {
         WrappedComponent,
         true,
         false,
-        '/login'
+        '/login',
+        false
     )
 };
 

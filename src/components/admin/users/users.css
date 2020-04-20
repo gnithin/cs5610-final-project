@@ -1,0 +1,14 @@
+.au-users-wrapper {
+    margin: 20px 0px;
+}
+
+.au-user-edit-tools {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.au-user-edit-option {
+    margin: 5px;
+}

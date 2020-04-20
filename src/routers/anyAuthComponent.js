@@ -5,7 +5,8 @@ const anyAuthComponent = (WrappedComponent) => {
         WrappedComponent,
         false,
         null,
-        null
+        null,
+        false,
     )
 };
 

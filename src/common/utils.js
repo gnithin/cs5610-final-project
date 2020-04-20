@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default class Utils {
     static isNull(obj) {
         return (typeof (obj) === "undefined" || obj === null)
@@ -50,5 +52,9 @@ export default class Utils {
     static htmlUnescape(input) {
         let doc = (new DOMParser().parseFromString(input, "text/html"));
         return doc.documentElement.textContent;
+    }
+
+    static formatDate(dateStr) {
+        return moment(dateStr).format('Do MMMM YYYY');
     }
 }
