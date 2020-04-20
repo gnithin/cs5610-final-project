@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 import LoadingComponent from "../loader";
 import {format} from "timeago.js/esm";
 import Utils from "../../common/utils";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
+import './searchResults.css'
 
-const SearchResultsView = ({questions, isLoading, isError}) => {
+const SearchResultsView = ({history, questions, query, isLoading, isError}) => {
     if (true === isError) {
         return (
             <div className="col-12">
-                <span>Couldn't find any results!</span>
+                <span className="sr-message">Couldn't find any results!</span>
             </div>
         );
     }
@@ -23,9 +24,19 @@ const SearchResultsView = ({questions, isLoading, isError}) => {
     }
 
     if (questions.length === 0) {
+        if (Utils.isEmptyStr(query)) {
+            return (
+                <div className="col-12">
+                    <span className="sr-message">
+                        Search for questions
+                    </span>
+                </div>
+            );
+        }
+
         return (
             <div className="col-12">
-                <span>Couldn't find any results!</span>
+                <span className="sr-message">Couldn't find any results!</span>
             </div>
         );
     }
@@ -41,17 +52,14 @@ const SearchResultsView = ({questions, isLoading, isError}) => {
                 <div className="card-title">
                     <h4>{question.title}</h4>
                 </div>
-                <div className="">
-                    {question.description}
-                </div>
-                <div>
-                    Asked {format(question.createdTimestamp)}
-                </div>
-                <div>
-                    Asked by
+                <div className="card-text">
+                    Asked by - &nbsp;
                     <Link to={`/profiles/${user.id}`}>
                         {user.name}
                     </Link>
+                </div>
+                <div className="card-text text-muted">
+                    Asked {format(question.createdTimestamp)}
                 </div>
             </React.Fragment>
         );
@@ -61,12 +69,18 @@ const SearchResultsView = ({questions, isLoading, isError}) => {
         <div className="col-12">
             <div className="row">
                 <div className="col-12">
-                    Results
+                    <span className="sr-message">Results</span>
                 </div>
-                <div className="col-12">
+                <div className="col-12 sr-results-wrapper">
                     {questions.map(question => {
                         return (
-                            <div className="card" key={`q-${question.id}`}>
+                            <div
+                                className="card sr-entry"
+                                key={`q-${question.id}`}
+                                onClick={(e) => {
+                                    history.push(`/questions/${question.id}`)
+                                }}
+                            >
                                 <div className="card-body col-12">
                                     {renderIndividualCardEntries(question)}
                                 </div>
@@ -83,7 +97,9 @@ const SearchResultsView = ({questions, isLoading, isError}) => {
 const reduxToComponentMapper = (state) => {
     return {
         questions: state.searchQuestions.questions,
+        query: state.searchQuestions.query,
     };
 };
 
-export default connect(reduxToComponentMapper)(SearchResultsView);
+export default withRouter(connect(reduxToComponentMapper)(SearchResultsView));
+

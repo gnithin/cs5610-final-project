@@ -1,7 +1,8 @@
 import {RESET_SEARCH_QUESTION_RESULTS, SET_SEARCH_QUESTION_RESULTS} from "../actions/searchQuestionsActions";
 
 let initialState = {
-    questions: []
+    questions: [],
+    query: "",
 };
 
 const searchQuestionsReducer = (state = initialState, action) => {
@@ -9,14 +10,15 @@ const searchQuestionsReducer = (state = initialState, action) => {
         case SET_SEARCH_QUESTION_RESULTS: {
             return {
                 ...state,
-                questions: action.data,
+                questions: action.data.questions,
+                query: action.data.query,
             }
         }
 
         case RESET_SEARCH_QUESTION_RESULTS: {
             return {
                 ...state,
-                questions: [],
+                ...initialState,
             }
         }
 

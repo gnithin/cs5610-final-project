@@ -67,9 +67,10 @@ class SearchContainer extends Component {
         });
 
         searchQuestionsService(query).then(resp => {
-            this.props.setSearchResults(resp);
+            this.props.setSearchResults(resp, query);
 
         }).catch(e => {
+            this.props.resetSearchResults();
             this.setState({
                 isError: true,
             })
@@ -78,7 +79,6 @@ class SearchContainer extends Component {
             this.setState({
                 isLoading: false,
             })
-
         });
 
         console.log("Got query! - ", query);
@@ -94,8 +94,8 @@ const reduxToComponentMapper = (state) => {
 
 const componentToReduxMapper = (dispatcher) => {
     return {
-        setSearchResults: (results) => {
-            return dispatcher(SearchQuestionActions.setResults(results));
+        setSearchResults: (results, query) => {
+            return dispatcher(SearchQuestionActions.setResults(results, query));
         },
         resetSearchResults: () => {
             return dispatcher(SearchQuestionActions.resetResults());
