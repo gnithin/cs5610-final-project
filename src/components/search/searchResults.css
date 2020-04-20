@@ -1,0 +1,12 @@
+.sr-message {
+    margin: 10px;
+    font-size: 120%;
+}
+
+.sr-results-wrapper {
+    margin: 20px 0px;
+}
+
+.sr-entry {
+    cursor: pointer;
+}
