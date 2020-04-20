@@ -38,6 +38,7 @@ class NavBarComponent extends Component {
                         Chowk
                     </Link>
                     {this.renderProfile()}
+                    {this.renderAdminDashboard()}
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right">
@@ -90,6 +91,36 @@ class NavBarComponent extends Component {
                 </span>
             </Link>
         );
+    }
+
+    renderAdminDashboard() {
+        let isLoggedIn = this.props.isLoggedIn;
+        if (Utils.isNull(isLoggedIn) || false === isLoggedIn) {
+            return (<React.Fragment/>);
+        }
+
+        let user = this.props.userDetails;
+        if (
+            false === (
+                false === Utils.isNull(user) &&
+                user.isAdmin === true
+            )
+        ) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <Link
+                className="profile-admin-dashboard btn btn-primary"
+                title="Profile"
+                to={`/admin/users`}
+            >
+                <span>
+                    Admin Dashboard
+                </span>
+            </Link>
+        );
+
     }
 }
 
