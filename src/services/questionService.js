@@ -40,8 +40,26 @@ export const getQuestionService = () =>
         }
     });
 
+export const searchQuestionsService = (query) => {
+    let url = `${API_URL}/api/questions/search?search=${query}`;
+    return fetch(
+        url,
+        {
+            credentials: 'include'
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            throw new Error("Error fetching response");
+        }
+
+        return resp.json();
+    }).then(resp => {
+        return resp.data;
+    });
+};
+
 export default {
     createQuestionService,
-    getQuestionService
+    getQuestionService,
+    searchQuestionsService,
 }
-

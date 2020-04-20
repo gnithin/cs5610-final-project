@@ -3,6 +3,7 @@ import SearchResultsView from "./searchResultsView";
 import SearchBarView from "./searchBarView";
 import NavBarComponent from "../navbar/NavBarComponent";
 import Utils from "../../common/utils";
+import {searchQuestionsService} from "../../services/questionService";
 
 const SEARCH_PARAM = "query";
 
@@ -54,7 +55,25 @@ class SearchContainer extends Component {
     }
 
     performSearchHandler(query) {
-        // TODO:
+        this.setState({
+            isLoading: true,
+            isError: false,
+        });
+
+        searchQuestionsService(query).then(resp => {
+            console.log("Got response!", resp);
+
+        }).catch(e => {
+            this.setState({
+                isError: true,
+            })
+
+        }).finally(() => {
+            this.setState({
+                isLoading: false,
+            })
+
+        });
         console.log("Got query! - ", query);
         window.history.pushState({}, "", `?${SEARCH_PARAM}=${query}`)
     }
