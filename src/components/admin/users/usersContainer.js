@@ -72,18 +72,27 @@ class UsersContainer extends Component {
     }
 
     userDeleteHandler(userId) {
-        // TODO:
-        this.fetchAllUsers();
+        AdminUsersService.deleteUser(userId).then(() => {
+            this.fetchAllUsers();
+        }).catch(e => {
+            console.log("Unable to delete user")
+        });
     }
 
     userSetAdminHandler(userId) {
-        // TODO:
-        this.fetchAllUsers();
+        AdminUsersService.setUserAsAdmin(userId).then(() => {
+            this.fetchAllUsers();
+        }).catch(e => {
+            console.log("Unable to set user as admin")
+        });
     }
 
     userUnsetAdminHandler(userId) {
-        // TODO:
-        this.fetchAllUsers();
+        AdminUsersService.unsetUserAsAdmin(userId).then(() => {
+            this.fetchAllUsers();
+        }).catch(e => {
+            console.log("Unable to unset user as admin")
+        });
     }
 }
 

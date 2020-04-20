@@ -35,7 +35,7 @@ const UsersView = ({users, userSetAdminCb, userUnsetAdminCb, userDeleteCb}) => {
         <div className="au-users-wrapper">
             {users.map(user => {
                 return (
-                    <div className="card">
+                    <div className="card" key={`au-${user.id}`}>
                         <div className="card-body row">
                             <div className="col-8">
                                 <h4 className="card-title">
