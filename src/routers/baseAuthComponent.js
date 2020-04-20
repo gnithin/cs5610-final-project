@@ -51,8 +51,8 @@ const baseAuthComponent = (
                         // Redirect if the logged-in user is not an admin
                         if (
                             false === (
-                                false === utils.isNull(this.props.userDetails) &&
-                                this.props.userDetails.isAdmin === true
+                                false === utils.isNull(props.userDetails) &&
+                                props.userDetails.isAdmin === true
                             )
                         ) {
                             return (
