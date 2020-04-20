@@ -6,7 +6,13 @@ import userAction from "../redux/actions/userProfileActions";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 
-const baseAuthComponent = (WrappedComponent, shouldRedirect, redirectLoggedIn, redirectUrl) => {
+const baseAuthComponent = (
+    WrappedComponent,
+    shouldRedirect,
+    redirectLoggedIn,
+    redirectUrl,
+    adminOnly = false,
+) => {
     const AuthComponent = (props) => {
         // When there is no state at all
         if (utils.isNull(props.isLoggedIn)) {
@@ -39,6 +45,23 @@ const baseAuthComponent = (WrappedComponent, shouldRedirect, redirectLoggedIn, r
                             pathname: redirectUrl,
                         }}/>
                     );
+                } else {
+                    if (adminOnly === true) {
+                        // Make sure that the user is an admin
+                        // Redirect if the logged-in user is not an admin
+                        if (
+                            false === (
+                                false === utils.isNull(props.userDetails) &&
+                                props.userDetails.isAdmin === true
+                            )
+                        ) {
+                            return (
+                                <Redirect to={{
+                                    pathname: redirectUrl,
+                                }}/>
+                            );
+                        }
+                    }
                 }
             }
         }
@@ -50,7 +73,8 @@ const baseAuthComponent = (WrappedComponent, shouldRedirect, redirectLoggedIn, r
 
     const reduxToComponentMapper = (state) => {
         return {
-            isLoggedIn: state.userProfile.isLoggedIn
+            isLoggedIn: state.userProfile.isLoggedIn,
+            userDetails: state.userProfile.userDetails,
         };
     };
 

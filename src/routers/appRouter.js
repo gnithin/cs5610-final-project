@@ -14,6 +14,9 @@ import unauthenticatedComponent from "./unauthenticatedComponent";
 import anyAuthComponent from "./anyAuthComponent";
 import PrivacyView from "../components/privacy";
 import baseAuthComponent from "./baseAuthComponent";
+import adminAuthenticatedComponent from "./adminAuthenticatedComponent";
+import Users from '../components/admin/users'
+import Search from '../components/search'
 
 class AppRouter extends Component {
 
@@ -24,6 +27,11 @@ class AppRouter extends Component {
                     <Route
                         path="/welcome"
                         component={anyAuthComponent(WelcomeView)}
+                    />
+
+                    <Route
+                        path="/admin/users"
+                        component={adminAuthenticatedComponent(Users)}
                     />
 
                     <Route
@@ -48,7 +56,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/home"
-                        component={baseAuthComponent(Home,false,false,'/home')}
+                        component={anyAuthComponent(Home)}
                     />
 
                     <Route
@@ -58,7 +66,12 @@ class AppRouter extends Component {
 
                     <Route
                         path="/questions/:questionId"
-                        component={baseAuthComponent(ViewQuestion, false, false, '/questions/:questionId')}
+                        component={anyAuthComponent(ViewQuestion)}
+                    />
+
+                    <Route
+                        path="/search"
+                        component={anyAuthComponent(Search)}
                     />
 
                     <Route

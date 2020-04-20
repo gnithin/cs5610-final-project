@@ -22,10 +22,7 @@ class NavBarComponent extends Component {
     };
 
     render() {
-        let chowkPath = "/welcome";
-        if (true === this.props.isLoggedIn) {
-            chowkPath = "/home";
-        }
+        let chowkPath = "/home";
 
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,9 +35,25 @@ class NavBarComponent extends Component {
                         Chowk
                     </Link>
                     {this.renderProfile()}
+                    {this.renderAdminDashboard()}
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right">
+                    {
+                        !this.props.isLoggedIn
+                        &&
+                        <Link
+                            className="btn btn-primary ml-3"
+                            title="Search questions"
+                            to={`/search`}
+                        >
+                            <i className="fa fa-search" aria-hidden="true"/> &nbsp;
+                            Search Questions
+                        </Link>
+                    }
+                </div>
+
+                <div className="navbar-nav nav-right my-2 my-lg-0">
                     {
                         this.props.isLoggedIn
                         &&
@@ -50,8 +63,13 @@ class NavBarComponent extends Component {
                             to={`/create/questions`}
                         >
                             <i className="fa fa-plus" aria-hidden="true"/> &nbsp;
-                            Question
+                            New Question
                         </Link>
+                    }
+                    {
+                        !this.props.isLoggedIn
+                        &&
+                        <Link className={"btn btn-success ml-2"} to={"/login"}>Login</Link>
                     }
                 </div>
 
@@ -69,10 +87,7 @@ class NavBarComponent extends Component {
                     {
                         !this.props.isLoggedIn
                         &&
-                        <div className="text-center mt-0 mb-0">
-                            <Link className={"btn btn-success"} to={"/login"}>Login</Link>
-                            <Link className={"btn btn-primary ml-2"} to={"/register"}>Register</Link>
-                        </div>
+                        <Link className={"btn btn-primary ml-2"} to={"/register"}>Register</Link>
                     }
                 </div>
             </nav>
@@ -98,6 +113,36 @@ class NavBarComponent extends Component {
                 </span>
             </Link>
         );
+    }
+
+    renderAdminDashboard() {
+        let isLoggedIn = this.props.isLoggedIn;
+        if (Utils.isNull(isLoggedIn) || false === isLoggedIn) {
+            return (<React.Fragment/>);
+        }
+
+        let user = this.props.userDetails;
+        if (
+            false === (
+                false === Utils.isNull(user) &&
+                user.isAdmin === true
+            )
+        ) {
+            return (<React.Fragment/>);
+        }
+
+        return (
+            <Link
+                className="profile-admin-dashboard btn btn-primary"
+                title="Profile"
+                to={`/admin/users`}
+            >
+                <span>
+                    Admin Dashboard
+                </span>
+            </Link>
+        );
+
     }
 }
 

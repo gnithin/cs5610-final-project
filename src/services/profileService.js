@@ -1,7 +1,7 @@
-const PROD_URL = "https://web-dev-project-server.herokuapp.com/api/users";
-// const LOCAL_API_URL = "http://localhost:2000";
+import CONSTANTS from "../common/constants";
 
-const API_URL = PROD_URL;
+const API_URL = `${CONSTANTS.BASE_URL}/api/users`;
+
 let errorMessage = {
     responseCode: null,
     responseData: {}

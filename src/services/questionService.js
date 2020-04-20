@@ -1,7 +1,7 @@
-const PROD_URL = "https://web-dev-project-server.herokuapp.com";
-// const LOCAL_API_URL = "http://localhost:2000";
+import CONSTANTS from "../common/constants";
 
-const API_URL = PROD_URL;
+const API_URL = `${CONSTANTS.BASE_URL}`;
+
 let errorMessage = {
     responseCode: null,
     responseData: {}
@@ -40,8 +40,26 @@ export const getQuestionService = () =>
         }
     });
 
+export const searchQuestionsService = (query) => {
+    let url = `${API_URL}/api/questions/search?search=${query}`;
+    return fetch(
+        url,
+        {
+            credentials: 'include'
+        }
+    ).then(resp => {
+        if (!resp.ok) {
+            throw new Error("Error fetching response");
+        }
+
+        return resp.json();
+    }).then(resp => {
+        return resp.data;
+    });
+};
+
 export default {
     createQuestionService,
-    getQuestionService
+    getQuestionService,
+    searchQuestionsService,
 }
-

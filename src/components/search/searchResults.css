@@ -1,0 +1,17 @@
+.sr-message {
+    margin: 10px;
+    font-size: 120%;
+}
+
+.sr-results-wrapper {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.sr-entry {
+    cursor: pointer;
+}
+
+.sr-results-heading {
+    padding-top: 10px;
+}
