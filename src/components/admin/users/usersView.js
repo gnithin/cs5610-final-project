@@ -3,13 +3,25 @@ import {connect} from "react-redux";
 
 const UsersView = ({users}) => {
     return (
-        <ul>
+        <div className="au-users-wrapper">
             {users.map(user => {
-                return <li>
-                    {user.name}
-                </li>
+                return (
+                    <div className="card">
+                        <div className="card-body">
+                            <h4 className="card-title">
+                                {user.name}
+                            </h4>
+                            <div>
+                                Email: {user.email}
+                            </div>
+                            <div>
+                                Member from - {user.createdTimestamp}
+                            </div>
+                        </div>
+                    </div>
+                );
             })}
-        </ul>
+        </div>
     );
 };
 
