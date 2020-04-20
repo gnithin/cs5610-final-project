@@ -11,7 +11,7 @@ class RelatedResults extends Component {
     getStateFromProps(props) {
         return {
             query: props.query,
-            results: null,
+            results: [],
             isLoading: false,
         }
     }
@@ -28,10 +28,9 @@ class RelatedResults extends Component {
     }
 
     fetchResults() {
-        console.log("DEBUG: query - ", this.state.query);
         if (Utils.isEmptyStr(this.state.query)) {
             this.setState({
-                results: null,
+                results: [],
                 isLoading: false,
             });
             return;
@@ -43,7 +42,7 @@ class RelatedResults extends Component {
 
         searchQuestions(this.state.query).then(resp => {
             this.setState({
-                results: resp,
+                results: resp.items,
             })
 
         }).catch((e) => {
@@ -57,8 +56,11 @@ class RelatedResults extends Component {
     }
 
     render() {
-        // TODO: loading
-        if (Utils.isNull(this.state.results)) {
+        if (
+            Utils.isEmptyStr(this.state.query) ||
+            Utils.isNull(this.state.results) ||
+            this.state.results.length === 0
+        ) {
             return (<span></span>)
         }
 
@@ -68,7 +70,7 @@ class RelatedResults extends Component {
                     Related - '{this.state.query}'
                 </div>
                 <ul className="list-group">
-                    {this.state.results.items.slice(0, 10).map(
+                    {this.state.results.slice(0, 10).map(
                         (eachItem, index) => {
                             return (
                                 <li className="list-group-item" key={index}>
