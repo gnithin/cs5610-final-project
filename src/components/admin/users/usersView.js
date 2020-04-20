@@ -1,11 +1,22 @@
 import React from 'react';
+import {connect} from "react-redux";
 
-const UsersView = () => {
+const UsersView = ({users}) => {
     return (
-        <div>
-            Users view!
-        </div>
+        <ul>
+            {users.map(user => {
+                return <li>
+                    {user.name}
+                </li>
+            })}
+        </ul>
     );
 };
 
-export default UsersView;
+const reduxToComponentMapper = (state) => {
+    return {
+        users: state.adminUsers.users
+    }
+};
+
+export default connect(reduxToComponentMapper)(UsersView);
