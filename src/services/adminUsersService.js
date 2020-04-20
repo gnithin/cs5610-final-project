@@ -11,6 +11,8 @@ export default class AdminUsersService {
                 throw new Error("couldn't fetch all users");
             }
             return resp.json()
+        }).then(resp => {
+            return resp.data;
         })
     }
 }

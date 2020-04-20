@@ -9,6 +9,7 @@ const adminUsersReducer = (state = initialState, action) => {
         case SET_ADMIN_USERS_RESULTS: {
             return {
                 ...state,
+                users: [...action.data],
             };
         }
 
