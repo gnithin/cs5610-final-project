@@ -39,18 +39,14 @@ class NavBarComponent extends Component {
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right">
-                    {
-                        !this.props.isLoggedIn
-                        &&
-                        <Link
-                            className="btn btn-primary ml-3"
-                            title="Search questions"
-                            to={`/search`}
-                        >
-                            <i className="fa fa-search" aria-hidden="true"/> &nbsp;
-                            Search Questions
-                        </Link>
-                    }
+                    <Link
+                        className="btn btn-primary ml-3"
+                        title="Search questions"
+                        to={`/search`}
+                    >
+                        <i className="fa fa-search" aria-hidden="true"/> &nbsp;
+                        Search Questions
+                    </Link>
                 </div>
 
                 <div className="navbar-nav nav-right my-2 my-lg-0">

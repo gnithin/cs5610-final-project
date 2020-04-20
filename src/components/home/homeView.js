@@ -9,11 +9,14 @@ import LoadingComponent from "../loader";
 import Utils from "../../common/utils";
 import './home.css'
 import {format} from "timeago.js";
+import profileService from "../../services/profileService";
 
 class HomeView extends Component {
     state = {
         questionList: [],
         isLoading: true,
+        userQuestionList: [],
+        userAnswerList: [],
     };
 
     componentDidMount() {
@@ -26,6 +29,16 @@ class HomeView extends Component {
         }).finally(() => {
             this.setState({isLoading: false});
         });
+
+        if (this.props.isLoggedIn) {
+            profileService.getUserProfileData(this.props.userData.id).then(r => {
+                console.log('DEBUG: Profile Data on home page', r);
+                this.setState({
+                    userQuestionList: r.data.questions,
+                    userAnswerList: r.data.answers
+                })
+            })
+        }
     }
 
 
@@ -42,7 +55,6 @@ class HomeView extends Component {
         })
     };
 
-
     render() {
         if (this.state.isLoading) {
             return (
@@ -56,8 +68,22 @@ class HomeView extends Component {
             <div>
                 <NavBarComponent/>
                 <div className="container-fluid home-content-wrapper">
+                    {
+                        this.props.isLoggedIn
+                        &&
+                        <div className="row">
+                            <div className="col-12 col-lg-6 home-header">
+                                <h2>My Questions</h2>
+                                {this.renderMyQuestions()}
+                            </div>
+                            <div className="col-12 col-lg-6 home-header">
+                                <h2>My Answers</h2>
+                                {this.renderMyAnswers()}
+                            </div>
+                        </div>
+                    }
                     <div className="row">
-                        <div className="offset-1 col-9 home-header">
+                        <div className="offset-1 col-10 home-header">
                             <h2>New Questions</h2>
                         </div>
                         {this.renderQuestions()}
@@ -97,7 +123,7 @@ class HomeView extends Component {
 
                 return (
                     <div
-                        className="card offset-1 col-9 question-entry"
+                        className="card offset-1 col-10 question-entry"
                         key={`q-${question.id}`}
                         onClick={(e) => {
                             this.props.history.push(`/questions/${question.id}`);
@@ -125,24 +151,71 @@ class HomeView extends Component {
         );
     }
 
-    renderAdminDelete(deleteCb) {
-        /*if (false === this.props.isAdmin) {
-            return (<React.Fragment/>);
+    renderMyAnswers() {
+        if (
+            Utils.isNull(this.state.userAnswerList) ||
+            this.state.userAnswerList.length === 0
+        ) {
+            return (<div>No new answers!. Try refreshing in sometime :)</div>);
         }
 
         return (
-            <div className="admin-delete-question">
-                <button
-                    className="btn btn-danger"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        deleteCb()
-                    }}>
-                    <i className={"fas fa-trash-alt"}></i>
-                </button>
-            </div>
-        );*/
+            this.state.userAnswerList.slice(0,2).map(answer => {
+                return (
+                    <div
+                        className="card col-12 question-entry"
+                        key={`q-${answer.id}`}
+                        onClick={(e) => {
+                            this.props.history.push(`/questions/${answer.question.id}`);
+                        }}
+                    >
+                        <div className="card-body block-wrapper row">
+                            <div className="q-block col-12">
+                                <h4 className="card-title">{answer.answer}</h4>
+                                <p className="card-text">
+                                    {format(answer.createdTimestamp)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })
+        );
+    }
 
+    renderMyQuestions() {
+        if (
+            Utils.isNull(this.state.userQuestionList) ||
+            this.state.userQuestionList.length === 0
+        ) {
+            return (<div>No new questions!. Try refreshing in sometime :)</div>);
+        }
+
+        return (
+            this.state.userQuestionList.slice(0, 2).map(question => {
+                return (
+                    <div
+                        className="card col-12 question-entry"
+                        key={`q-${question.id}`}
+                        onClick={(e) => {
+                            this.props.history.push(`/questions/${question.id}`);
+                        }}
+                    >
+                        <div className="card-body block-wrapper row">
+                            <div className="q-block col-12">
+                                <h4 className="card-title">{question.title}</h4>
+                                <p className="card-text">
+                                    {format(question.createdTimestamp)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            })
+        );
+    }
+
+    renderAdminDelete(deleteCb) {
         if (this.props.isAdmin) {
             return (
                 <div className="admin-delete-question">
