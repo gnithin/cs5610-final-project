@@ -47,11 +47,26 @@ class NavBarComponent extends Component {
                         &&
                         <Link
                             className="btn btn-primary ml-3"
+                            title="Search questions"
+                            to={`/search`}
+                        >
+                            <i className="fa fa-search" aria-hidden="true"></i> &nbsp;
+                            Search Questions
+                        </Link>
+                    }
+                </div>
+
+                <div className="navbar-nav nav-right my-2 my-lg-0">
+                    {
+                        this.props.isLoggedIn
+                        &&
+                        <Link
+                            className="btn btn-primary ml-3"
                             title="Create Question"
                             to={`/create/questions`}
                         >
                             <i className="fa fa-plus" aria-hidden="true"></i> &nbsp;
-                            Question
+                            New Question
                         </Link>
                     }
                 </div>

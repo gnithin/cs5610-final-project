@@ -15,6 +15,7 @@ import anyAuthComponent from "./anyAuthComponent";
 import PrivacyView from "../components/privacy";
 import adminAuthenticatedComponent from "./adminAuthenticatedComponent";
 import Users from '../components/admin/users'
+import Search from '../components/search'
 
 class AppRouter extends Component {
 
@@ -65,6 +66,11 @@ class AppRouter extends Component {
                     <Route
                         path="/questions/:questionId"
                         component={authenticatedComponent(ViewQuestion)}
+                    />
+
+                    <Route
+                        path="/search"
+                        component={authenticatedComponent(Search)}
                     />
 
                     <Route
