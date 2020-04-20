@@ -28,6 +28,10 @@ class SearchContainer extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.resetSearchResults();
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -76,7 +80,7 @@ class SearchContainer extends Component {
             })
 
         });
-       
+
         console.log("Got query! - ", query);
         window.history.pushState({}, "", `?${SEARCH_PARAM}=${query}`)
     }
@@ -92,6 +96,9 @@ const componentToReduxMapper = (dispatcher) => {
     return {
         setSearchResults: (results) => {
             return dispatcher(SearchQuestionActions.setResults(results));
+        },
+        resetSearchResults: () => {
+            return dispatcher(SearchQuestionActions.resetResults());
         }
     }
 };

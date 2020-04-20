@@ -1,4 +1,4 @@
-import {SET_SEARCH_QUESTION_RESULTS} from "../actions/searchQuestionsActions";
+import {RESET_SEARCH_QUESTION_RESULTS, SET_SEARCH_QUESTION_RESULTS} from "../actions/searchQuestionsActions";
 
 let initialState = {
     questions: []
@@ -10,6 +10,13 @@ const searchQuestionsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 questions: action.data,
+            }
+        }
+
+        case RESET_SEARCH_QUESTION_RESULTS: {
+            return {
+                ...state,
+                questions: [],
             }
         }
 
