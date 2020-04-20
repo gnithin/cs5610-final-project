@@ -22,6 +22,14 @@ const SearchResultsView = ({questions, isLoading, isError}) => {
         );
     }
 
+    if (questions.length === 0) {
+        return (
+            <div className="col-12">
+                <span>Couldn't find any results!</span>
+            </div>
+        );
+    }
+
     const renderIndividualCardEntries = (question) => {
         let user = {};
         if (false === Utils.isNull(question.user) && false === Utils.isNull(question.user.name)) {
