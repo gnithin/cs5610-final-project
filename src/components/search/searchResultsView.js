@@ -66,28 +66,26 @@ const SearchResultsView = ({history, questions, query, isLoading, isError}) => {
     };
 
     return (
-        <div className="col-12">
-            <div className="row">
-                <div className="col-12">
-                    <span className="sr-message">Results</span>
-                </div>
-                <div className="col-12 sr-results-wrapper">
-                    {questions.map(question => {
-                        return (
-                            <div
-                                className="card sr-entry"
-                                key={`q-${question.id}`}
-                                onClick={(e) => {
-                                    history.push(`/questions/${question.id}`)
-                                }}
-                            >
-                                <div className="card-body col-12">
-                                    {renderIndividualCardEntries(question)}
-                                </div>
+        <div className="row no-gutters">
+            <div className="col-12 sr-results-heading">
+                <span className="sr-message">Results</span>
+            </div>
+            <div className="col-12 sr-results-wrapper">
+                {questions.map(question => {
+                    return (
+                        <div
+                            className="card sr-entry"
+                            key={`q-${question.id}`}
+                            onClick={(e) => {
+                                history.push(`/questions/${question.id}`)
+                            }}
+                        >
+                            <div className="card-body col-12">
+                                {renderIndividualCardEntries(question)}
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

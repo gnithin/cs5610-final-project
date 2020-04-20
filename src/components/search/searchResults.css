@@ -4,9 +4,14 @@
 }
 
 .sr-results-wrapper {
-    margin: 20px 0px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .sr-entry {
     cursor: pointer;
+}
+
+.sr-results-heading {
+    padding-top: 10px;
 }
