@@ -17,16 +17,34 @@ class ProfileView extends Component {
     };
 
     componentDidMount() {
-        profileService.getUserProfileData(this.props.match.params.userId).then(
-            userProfileData => {
-                if (userProfileData.status === 1) {
-                    this.setState({
-                        isLoading: false,
-                        userProfileData: userProfileData.data
-                    });
-                } else {
-                    this.props.history.push("/home");
-                }
+        this.fetchProfileDetails();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (
+            prevProps.match.params !== this.props.match.params &&
+            prevProps.match.params.userId !== this.props.match.params.userId
+        ) {
+            this.fetchProfileDetails();
+        }
+    }
+
+    fetchProfileDetails() {
+        this.setState(
+            {isLoading: true},
+            () => {
+                profileService.getUserProfileData(this.props.match.params.userId).then(
+                    userProfileData => {
+                        if (userProfileData.status === 1) {
+                            this.setState({
+                                isLoading: false,
+                                userProfileData: userProfileData.data
+                            });
+                        } else {
+                            this.props.history.push("/home");
+                        }
+                    }
+                );
             }
         );
     }
