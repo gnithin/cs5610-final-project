@@ -3,12 +3,15 @@ import UsersView from "./usersView";
 import AdminUsersActions from "../../../redux/actions/adminUsersActions";
 import {connect} from "react-redux";
 import LoadingComponent from "../../loader";
+import AdminUsersService from "../../../services/adminUsersService";
+import NavBarComponent from "../../navbar/NavBarComponent";
 
 class UsersContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
+            isError: false,
         }
     }
 
@@ -17,6 +20,27 @@ class UsersContainer extends Component {
     }
 
     render() {
+        return (
+            <React.Fragment>
+                <NavBarComponent/>
+                <div className="container-fluid">
+                    {this.renderComponent()}
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    renderComponent() {
+        if (this.state.isError) {
+            return (
+                <div className="row">
+                    <div className="col-12 alert alert-danger" role="alert">
+                        Error fetching users. Please try refreshing the page :(
+                    </div>
+                </div>
+            );
+        }
+
         if (this.state.isLoading) {
             return (<LoadingComponent/>);
         }
@@ -31,8 +55,20 @@ class UsersContainer extends Component {
     }
 
     fetchAllUsers() {
-        this.setState({isLoading: true});
-        // TODO: Logic
+        this.setState({
+            isLoading: true,
+            isError: false,
+        });
+        AdminUsersService.fetchAllUsers().then(users => {
+            this.props.setNewUsers(users);
+
+        }).catch(e => {
+            console.log("Couldn't fetch all the new users!", e.message);
+            this.setState({isError: true});
+
+        }).finally(() => {
+            this.setState({isLoading: false});
+        })
     }
 
     userDeleteHandler(userId) {
