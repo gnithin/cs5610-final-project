@@ -6,6 +6,7 @@ import Utils from "../../common/utils";
 import {searchQuestionsService} from "../../services/questionService";
 import {connect} from "react-redux";
 import SearchQuestionActions from "../../redux/actions/searchQuestionsActions";
+import RelatedResults from "./relatedResults";
 
 const SEARCH_PARAM = "query";
 
@@ -19,6 +20,7 @@ class SearchContainer extends Component {
         this.state = {
             isLoading: false,
             isError: false,
+            query: this.initialQuery,
         };
     }
 
@@ -51,10 +53,17 @@ class SearchContainer extends Component {
                     />
                 </div>
                 <div className="row">
-                    <SearchResultsView
-                        isLoading={this.state.isLoading}
-                        isError={this.state.isError}
-                    />
+                    <div className="col-12 col-md-6">
+                        <SearchResultsView
+                            isLoading={this.state.isLoading}
+                            isError={this.state.isError}
+                        />
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <RelatedResults
+                            query={this.state.query}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -64,6 +73,7 @@ class SearchContainer extends Component {
         this.setState({
             isLoading: true,
             isError: false,
+            query: query,
         });
 
         searchQuestionsService(query).then(resp => {
