@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
+import Utils from "../../../common/utils";
 
 const UsersView = ({users}) => {
     return (
@@ -15,7 +16,7 @@ const UsersView = ({users}) => {
                                 Email: {user.email}
                             </div>
                             <div>
-                                Member from - {user.createdTimestamp}
+                                Member from - {Utils.formatDate(user.createdTimestamp)}
                             </div>
                         </div>
                     </div>
