@@ -1,4 +1,3 @@
-import React from 'react';
 import baseAuthComponent from "./baseAuthComponent";
 
 const adminAuthenticatedComponent = (WrappedComponent) => {
