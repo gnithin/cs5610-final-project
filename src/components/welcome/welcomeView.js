@@ -52,6 +52,9 @@ class WelcomeView extends React.Component {
                 <Link to={"/register"}>
                     <button className="btn btn-primary wc-link">Register</button>
                 </Link>
+                <Link to={"/home"}>
+                    <button className="btn btn-link wc-link">Recent Questions</button>
+                </Link>
             </div>
         );
     }
