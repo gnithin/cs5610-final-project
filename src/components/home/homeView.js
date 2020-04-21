@@ -73,11 +73,11 @@ class HomeView extends Component {
                         &&
                         <div className="row">
                             <div className="offset-1 col-10 col-lg-5 home-header">
-                                <h2>My Recent Questions</h2>
+                                <h2>My Latest Question</h2>
                                 {this.renderMyQuestions()}
                             </div>
                             <div className="offset-lg-0 offset-1 col-10 col-lg-5 home-header">
-                                <h2>My Recent Answers</h2>
+                                <h2>My Latest Answer</h2>
                                 {this.renderMyAnswers()}
                             </div>
                         </div>
@@ -156,11 +156,11 @@ class HomeView extends Component {
             Utils.isNull(this.state.userAnswerList) ||
             this.state.userAnswerList.length === 0
         ) {
-            return (<div>No new answers!. Try refreshing in sometime :)</div>);
+            return (<div>No new answers! Try refreshing in sometime :)</div>);
         }
 
         return (
-            this.state.userAnswerList.slice(0,2).map(answer => {
+            this.state.userAnswerList.slice(0,1).map(answer => {
                 return (
                     <div
                         className="card col-12 question-entry"
@@ -188,7 +188,7 @@ class HomeView extends Component {
             Utils.isNull(this.state.userQuestionList) ||
             this.state.userQuestionList.length === 0
         ) {
-            return (<div>No new questions!. Try refreshing in sometime :)</div>);
+            return (<div>No new questions! Try refreshing in sometime :)</div>);
         }
 
         return (
