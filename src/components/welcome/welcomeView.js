@@ -12,6 +12,13 @@ class WelcomeView extends React.Component {
                     <div>
                         <h1 className="wc-header">Chowk</h1>
                         <span className="wc-tagline">Where questions come to die!</span>
+                        <div className="wc-desc-wrapper">
+                            <div className="wc-desc">
+                                Chowk is an open communication Q&A forum for computer science students and staff.
+                                <br/>
+                                The students can post questions, ask for guidance, or help out their peers.
+                            </div>
+                        </div>
                     </div>
                     {this.renderUserLinks()}
                     <div className="wc-privacy-links-wrapper">
@@ -53,7 +60,7 @@ class WelcomeView extends React.Component {
                     <button className="btn btn-primary wc-link">Register</button>
                 </Link>
                 <Link to={"/home"}>
-                    <button className="btn btn-link wc-link">Recent Questions</button>
+                    <button className="btn btn-primary wc-link">Browse Questions</button>
                 </Link>
             </div>
         );
