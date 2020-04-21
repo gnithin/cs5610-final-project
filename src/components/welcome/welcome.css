@@ -40,3 +40,14 @@
     font-size: 150%;
     margin-bottom: 10px;
 }
+
+.wc-desc-wrapper {
+    text-align: center;
+}
+
+.wc-desc {
+    margin: 10px auto;
+    padding: 20px;
+    width: 100%;
+    font-size: 120%;
+}
