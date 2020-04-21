@@ -19,6 +19,10 @@
     margin: 20px;
 }
 
+.profile-entry-submit {
+    text-align: right;
+}
+
 .profile-entry-header {
     font-size: 150%;
     font-weight: bold;

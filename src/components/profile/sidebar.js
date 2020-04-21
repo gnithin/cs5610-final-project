@@ -2,11 +2,27 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import {connect} from "react-redux";
 import Utils from "../../common/utils";
+import EditProfile from "./editProfile";
+import {editUserProfileData} from "../../services/profileService";
+import userProfileActions from "../../redux/actions/userProfileActions";
 
 class Sidebar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isEditing: false,
+            editErrorMsg: "",
+        };
+    }
+
     render() {
         if (this.props.isLoading || Utils.isNull(this.props.user)) {
             return (<React.Fragment/>)
+        }
+
+        if (this.state.isEditing) {
+            return this.renderEditableSidebar();
         }
 
         return this.renderReadOnlySidebar();
@@ -22,6 +38,7 @@ class Sidebar extends Component {
                     </div>
                     {this.renderEditButton()}
                 </div>
+
                 <div className="avatar-wrapper">
                     <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
                     </div>
@@ -79,14 +96,48 @@ class Sidebar extends Component {
             return (<React.Fragment/>);
         }
 
+        if (this.state.isEditing) {
+            return (
+                <React.Fragment/>
+            );
+        }
+
         return (
             <div className="col col-md-5 profile-edit-btn-wrapper">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" onClick={() => {
+                    this.setState({isEditing: true});
+                }}>
                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                     &nbsp; Edit
                 </button>
             </div>
         );
+    }
+
+    renderEditableSidebar() {
+        return (
+            <EditProfile
+                key={this.props.user.id}
+                user={this.props.user}
+                onSubmitCb={this.editUserHandler.bind(this)}
+                errorMsg={this.state.editErrorMsg}
+            />
+        );
+    }
+
+    editUserHandler(data) {
+        console.log("Sending data - ", data);
+        editUserProfileData(this.props.user.id, data).then((resp) => {
+            // Update the stored user entries
+            this.props.updateUserDetails(resp);
+
+            // Remove the edit option
+            this.setState({isEditing: false});
+            this.props.triggerResetCb();
+
+        }).catch(e => {
+            this.setState({editErrorMsg: "Unable to update profile!"})
+        });
     }
 }
 
@@ -101,4 +152,12 @@ const reduxToStateMapper = (state) => {
     };
 };
 
-export default connect(reduxToStateMapper)(Sidebar);
+const stateToReduxMapper = (dispatcher) => {
+    return {
+        updateUserDetails: (user) => {
+            return dispatcher(userProfileActions.setUserData(user));
+        }
+    }
+};
+
+export default connect(reduxToStateMapper, stateToReduxMapper)(Sidebar);

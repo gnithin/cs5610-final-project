@@ -148,6 +148,7 @@ class ProfileView extends Component {
                             <Sidebar
                                 user={this.state.userProfileData}
                                 isLoading={this.state.isLoading}
+                                triggerResetCb={this.triggerResetCb.bind(this)}
                             />
                         </div>
                         <div className="col-12 col-sm-9">
@@ -158,6 +159,10 @@ class ProfileView extends Component {
 
             </React.Fragment>
         );
+    }
+
+    triggerResetCb() {
+        this.fetchProfileDetails();
     }
 }
 
