@@ -16,6 +16,7 @@ import PrivacyView from "../components/privacy";
 import adminAuthenticatedComponent from "./adminAuthenticatedComponent";
 import Users from '../components/admin/users'
 import Search from '../components/search'
+import DefaultProfileView from "../components/defaultProfile/defaultProfileView";
 
 class AppRouter extends Component {
 
@@ -46,6 +47,12 @@ class AppRouter extends Component {
                     <Route
                         path="/login"
                         component={unauthenticatedComponent(Login)}
+                    />
+
+                    <Route
+                        exact
+                        path="/profile"
+                        component={authenticatedComponent(DefaultProfileView)}
                     />
 
                     <Route
