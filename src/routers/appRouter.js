@@ -77,7 +77,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/search"
-                        component={anyAuthComponent(Search)}
+                        component={authenticatedComponent(Search)}
                     />
 
                     <Route
