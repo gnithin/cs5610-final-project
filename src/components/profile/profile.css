@@ -19,6 +19,10 @@
     margin: 20px;
 }
 
+.profile-entry-submit {
+    text-align: right;
+}
+
 .profile-entry-header {
     font-size: 150%;
     font-weight: bold;
@@ -47,4 +51,8 @@
 }
 
 .activity-contents {
+}
+
+.profile-edit-btn-wrapper {
+    text-align: right;
 }

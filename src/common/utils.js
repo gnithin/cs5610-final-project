@@ -57,4 +57,11 @@ export default class Utils {
     static formatDate(dateStr) {
         return moment(dateStr).format('Do MMMM YYYY');
     }
+
+    static getVal(v, defaultVal = "") {
+        if (Utils.isNull(v)) {
+            return defaultVal;
+        }
+        return v;
+    }
 }

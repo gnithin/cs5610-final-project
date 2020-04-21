@@ -23,6 +23,30 @@ export const getUserProfileData = (userId) =>
             }
         });
 
+export const editUserProfileData = (userId, userData) => {
+    return fetch(
+        `${API_URL}/edit/${userId}`,
+        {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+            credentials: 'include'
+        }
+    ).then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error("Couldn't update user");
+
+    }).then(resp => {
+        return resp.data;
+
+    });
+};
+
 export default {
-    getUserProfileData
+    getUserProfileData,
+    editUserProfileData,
 }

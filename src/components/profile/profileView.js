@@ -8,6 +8,7 @@ import Utils from "../../common/utils";
 import {withRouter} from "react-router-dom";
 import LoadingComponent from "../loader";
 import {format} from "timeago.js";
+import Sidebar from "./sidebar";
 
 class ProfileView extends Component {
     state = {
@@ -16,68 +17,35 @@ class ProfileView extends Component {
     };
 
     componentDidMount() {
-        profileService.getUserProfileData(this.props.match.params.userId).then(
-            userProfileData => {
-                if (userProfileData.status === 1) {
-                    this.setState({
-                        isLoading: false,
-                        userProfileData: userProfileData.data
-                    });
-                } else {
-                    this.props.history.push("/home");
-                }
-            }
-        );
+        this.fetchProfileDetails();
     }
 
-    renderSidebar() {
-        let user = this.state.userProfileData;
-        return (
-            <div className="sidebar-wrapper">
-                <h2>Profile</h2>
-                <div className="avatar-wrapper">
-                    <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
-                    </div>
-                </div>
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (
+            prevProps.match.params !== this.props.match.params &&
+            prevProps.match.params.userId !== this.props.match.params.userId
+        ) {
+            this.fetchProfileDetails();
+        }
+    }
 
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-user" aria-hidden="true"></i> &nbsp; Name
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.name}
-                    </div>
-                </div>
-
-                {false === Utils.isNull(this.state.userProfileData.email) &&
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-envelope" aria-hidden="true"></i> &nbsp; Email
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.email}
-                    </div>
-                </div>
-                }
-
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-star" aria-hidden="true"></i> &nbsp; Reputation
-                    </div>
-                    <div className="profile-entry-content">
-                        {this.state.userProfileData.totalReputation}
-                    </div>
-                </div>
-
-                <div className="profile-entry">
-                    <div className="profile-entry-header">
-                        <i className="fa fa-lock" aria-hidden="true"></i> &nbsp; Admin
-                    </div>
-                    <div className="profile-entry-content">
-                        {(this.state.userProfileData.isAdmin) ? "Yes" : "No"}
-                    </div>
-                </div>
-            </div>
+    fetchProfileDetails() {
+        this.setState(
+            {isLoading: true},
+            () => {
+                profileService.getUserProfileData(this.props.match.params.userId).then(
+                    userProfileData => {
+                        if (userProfileData.status === 1) {
+                            this.setState({
+                                isLoading: false,
+                                userProfileData: userProfileData.data
+                            });
+                        } else {
+                            this.props.history.push("/home");
+                        }
+                    }
+                );
+            }
         );
     }
 
@@ -177,7 +145,11 @@ class ProfileView extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12 col-sm-3">
-                            {this.renderSidebar()}
+                            <Sidebar
+                                user={this.state.userProfileData}
+                                isLoading={this.state.isLoading}
+                                triggerResetCb={this.triggerResetCb.bind(this)}
+                            />
                         </div>
                         <div className="col-12 col-sm-9">
                             {this.renderActivity()}
@@ -188,10 +160,17 @@ class ProfileView extends Component {
             </React.Fragment>
         );
     }
+
+    triggerResetCb() {
+        this.fetchProfileDetails();
+    }
 }
 
 const stateMapper = (state) => {
-    return {}
+    return {
+        isLoggedIn: state.userProfile.isLoggedIn,
+        loggedInUser: state.userProfile.userDetails,
+    }
 };
 
 const dispatchMapper = (dispatch) => {
