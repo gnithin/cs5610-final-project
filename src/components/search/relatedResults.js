@@ -22,8 +22,11 @@ class RelatedResults extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.query !== this.props.query) {
-            this.setState({...this.getStateFromProps(this.props)});
-            this.fetchResults()
+            this.setState(
+                {...this.getStateFromProps(this.props)},
+                () => {
+                    this.fetchResults()
+                });
         }
     }
 
