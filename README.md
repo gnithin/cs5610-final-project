@@ -1,6 +1,6 @@
 # Chowk
+[Live site](https://web-dev-project-client.herokuapp.com/welcome)
 
-## Repo - 
 This repo contains the code for the client side application. 
 This app's usage is described in the `setup.md` file.
 
@@ -38,8 +38,10 @@ There will be two types of users -
 - This can be used as a suggestion, when the user is typing in the query. 
 
 ## Links
-Github repo -
+Client repo -
 https://github.com/gnithin/cs5610-final-project
+
+Server repo - https://github.com/gnithin/web-dev-project-server
 
 Google Docs -
 https://docs.google.com/document/d/1oojN3hU4jctmYicAaoftLO9cSYjgXnuymc3DVqKFb14/edit?usp=sharing
