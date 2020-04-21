@@ -64,4 +64,19 @@ export default class Utils {
         }
         return v;
     }
+
+    static toTitleCase(str) {
+        // Stolen from here -
+        // https://stackoverflow.com/a/196991/1518924
+        if (Utils.isNull(str)) {
+            return "";
+        }
+
+        return str.replace(
+            /\w\S*/g,
+            (txt) => {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
 }

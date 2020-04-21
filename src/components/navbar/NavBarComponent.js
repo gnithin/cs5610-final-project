@@ -112,7 +112,7 @@ class NavBarComponent extends Component {
                 to={`/profiles/${user.id}`}
             >
                 <span>
-                    {user.name}'s Profile
+                    {Utils.toTitleCase(user.name)}'s Profile
                 </span>
             </Link>
         );
