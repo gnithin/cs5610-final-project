@@ -13,7 +13,6 @@ import WelcomeView from "../components/welcome";
 import unauthenticatedComponent from "./unauthenticatedComponent";
 import anyAuthComponent from "./anyAuthComponent";
 import PrivacyView from "../components/privacy";
-import baseAuthComponent from "./baseAuthComponent";
 import adminAuthenticatedComponent from "./adminAuthenticatedComponent";
 import Users from '../components/admin/users'
 import Search from '../components/search'
