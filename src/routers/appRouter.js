@@ -62,7 +62,7 @@ class AppRouter extends Component {
 
                     <Route
                         path="/browse-questions"
-                        component={anyAuthComponent(Home)}
+                        component={unauthenticatedComponent(Home)}
                     />
 
                     <Route
