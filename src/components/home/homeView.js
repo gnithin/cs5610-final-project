@@ -72,12 +72,12 @@ class HomeView extends Component {
                         this.props.isLoggedIn
                         &&
                         <div className="row">
-                            <div className="col-12 col-lg-6 home-header">
-                                <h2>My Questions</h2>
+                            <div className="offset-1 col-10 col-lg-5 home-header">
+                                <h2>My Recent Questions</h2>
                                 {this.renderMyQuestions()}
                             </div>
-                            <div className="col-12 col-lg-6 home-header">
-                                <h2>My Answers</h2>
+                            <div className="offset-lg-0 offset-1 col-10 col-lg-5 home-header">
+                                <h2>My Recent Answers</h2>
                                 {this.renderMyAnswers()}
                             </div>
                         </div>

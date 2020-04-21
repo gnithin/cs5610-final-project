@@ -15,14 +15,17 @@ class NavBarComponent extends Component {
             }
 
             this.props.resetLoginState();
-            this.props.history.push('/login');
+            this.props.history.push('/welcome');
         }).catch(e => {
             console.log("Error logging out of the system! - ", e);
         });
     };
 
     render() {
-        let chowkPath = "/home";
+        let chowkPath = "/welcome";
+        if (true === this.props.isLoggedIn) {
+            chowkPath = "/home";
+        }
 
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -39,14 +42,18 @@ class NavBarComponent extends Component {
                 </div>
 
                 <div className="navbar-nav ml-auto nav-right">
-                    <Link
-                        className="btn btn-primary ml-3"
-                        title="Search questions"
-                        to={`/search`}
-                    >
-                        <i className="fa fa-search" aria-hidden="true"/> &nbsp;
-                        Search Questions
-                    </Link>
+                    {
+                        this.props.isLoggedIn
+                        &&
+                        <Link
+                            className="btn btn-primary ml-3"
+                            title="Search questions"
+                            to={`/search`}
+                        >
+                            <i className="fa fa-search" aria-hidden="true"/> &nbsp;
+                            Search Questions
+                        </Link>
+                    }
                 </div>
 
                 <div className="navbar-nav nav-right my-2 my-lg-0">
