@@ -39,8 +39,8 @@ class Sidebar extends Component {
                     {this.renderEditButton()}
                 </div>
 
-                <div className="avatar-wrapper">
-                    <div className="avatar" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
+                <div className="avatar-wrapper row">
+                    <div className="avatar col-12" style={{backgroundColor: Utils.stringToColour(`${user.id}`)}}>
                     </div>
                 </div>
 
