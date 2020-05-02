@@ -4,6 +4,8 @@
 This repo contains the code for the client side application. 
 This app's usage is described in the `setup.md` file.
 
+[Here is a demo](https://youtu.be/yHT04KPPhxg) of the site.
+
 The server-side application code is [here](https://github.com/gnithin/web-dev-project-server).
 
 ## About
