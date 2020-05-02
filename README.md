@@ -48,3 +48,8 @@ Server repo - https://github.com/gnithin/web-dev-project-server
 Google Docs -
 https://docs.google.com/document/d/1oojN3hU4jctmYicAaoftLO9cSYjgXnuymc3DVqKFb14/edit?usp=sharing
 
+## Project Team members 
+- Keshav Chandrashekar- [keshavchen](https://github.com/keshavchen)
+- Nithin Gangadharan - [gnithin](https://github.com/gnithin)
+- Tanmay Naik - [tsnaik](https://github.com/tsnaik)
+- Viral Patel - [patelviralb](https://github.com/patelviralb)
